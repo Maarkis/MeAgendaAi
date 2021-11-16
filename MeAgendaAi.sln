@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31911.260
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application", "1 - Application", "{3A75CCDB-6585-4852-BD0F-E608823064A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Application", "src\MeAgendaAi.Application\MeAgendaAi.Application.csproj", "{37DA57C1-0408-448C-BE28-C73811C3FF0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Domain", "2 - Domain", "{A4E89F26-6B34-451B-B932-D6F8AEC8F215}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Services", "3 - Services", "{3AF0623E-548F-4851-A34F-D1967D8A6A26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{8214BC20-A8D2-47BF-8703-13B19D5F1D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Domains", "src\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj", "{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Services", "src\MeAgendaAi.Services\MeAgendaAi.Services.csproj", "{9C111D54-AE7B-446D-AAF5-101804375642}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", "{1E48E9A9-8743-4E44-B663-51653236C001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Infra.Data", "src\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj", "{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Tests", "0 - Tests", "{861F3507-0F6B-4593-BAE9-958322EE1222}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.1 - Unit", "0.1 - Unit", "{9DB327F6-53D3-4A46-A372-9741A3CD9A6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Unit", "test\MeAgendaAi.Unit\MeAgendaAi.Unit.csproj", "{D003C178-4C8B-4585-96EE-307235ACE189}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.2 - Integration", "0.2 - Integration", "{CF29F18F-9CB0-49C0-9283-F0AAB20FDE7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Integration", "test\MeAgendaAi.Integration\MeAgendaAi.Integration.csproj", "{61EE7AC1-B933-4D17-BB4B-8981C47EED85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37DA57C1-0408-448C-BE28-C73811C3FF0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37DA57C1-0408-448C-BE28-C73811C3FF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37DA57C1-0408-448C-BE28-C73811C3FF0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37DA57C1-0408-448C-BE28-C73811C3FF0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C111D54-AE7B-446D-AAF5-101804375642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C111D54-AE7B-446D-AAF5-101804375642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C111D54-AE7B-446D-AAF5-101804375642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C111D54-AE7B-446D-AAF5-101804375642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D003C178-4C8B-4585-96EE-307235ACE189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D003C178-4C8B-4585-96EE-307235ACE189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D003C178-4C8B-4585-96EE-307235ACE189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D003C178-4C8B-4585-96EE-307235ACE189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37DA57C1-0408-448C-BE28-C73811C3FF0A} = {3A75CCDB-6585-4852-BD0F-E608823064A9}
+		{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4} = {A4E89F26-6B34-451B-B932-D6F8AEC8F215}
+		{9C111D54-AE7B-446D-AAF5-101804375642} = {3AF0623E-548F-4851-A34F-D1967D8A6A26}
+		{1E48E9A9-8743-4E44-B663-51653236C001} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
+		{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F} = {1E48E9A9-8743-4E44-B663-51653236C001}
+		{9DB327F6-53D3-4A46-A372-9741A3CD9A6D} = {861F3507-0F6B-4593-BAE9-958322EE1222}
+		{D003C178-4C8B-4585-96EE-307235ACE189} = {9DB327F6-53D3-4A46-A372-9741A3CD9A6D}
+		{CF29F18F-9CB0-49C0-9283-F0AAB20FDE7C} = {861F3507-0F6B-4593-BAE9-958322EE1222}
+		{61EE7AC1-B933-4D17-BB4B-8981C47EED85} = {CF29F18F-9CB0-49C0-9283-F0AAB20FDE7C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6AB72FD9-B976-4B94-9211-68CD0D5A1D0C}
+	EndGlobalSection
+EndGlobal
