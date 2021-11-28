@@ -13,23 +13,42 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Services", "3 - Service
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{8214BC20-A8D2-47BF-8703-13B19D5F1D64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Domains", "src\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj", "{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Domains", "src\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj", "{AE0FCDE1-59A4-458F-9AEC-E8EC5F73C8F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Services", "src\MeAgendaAi.Services\MeAgendaAi.Services.csproj", "{9C111D54-AE7B-446D-AAF5-101804375642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Services", "src\MeAgendaAi.Services\MeAgendaAi.Services.csproj", "{9C111D54-AE7B-446D-AAF5-101804375642}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", "{1E48E9A9-8743-4E44-B663-51653236C001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Infra.Data", "src\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj", "{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.Data", "src\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj", "{877DBB25-1DCD-4C8A-9A52-5E01FC1F0A5F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Tests", "0 - Tests", "{861F3507-0F6B-4593-BAE9-958322EE1222}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.1 - Unit", "0.1 - Unit", "{9DB327F6-53D3-4A46-A372-9741A3CD9A6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Unit", "test\MeAgendaAi.Unit\MeAgendaAi.Unit.csproj", "{D003C178-4C8B-4585-96EE-307235ACE189}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Unit", "test\MeAgendaAi.Unit\MeAgendaAi.Unit.csproj", "{D003C178-4C8B-4585-96EE-307235ACE189}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.2 - Integration", "0.2 - Integration", "{CF29F18F-9CB0-49C0-9283-F0AAB20FDE7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Integration", "test\MeAgendaAi.Integration\MeAgendaAi.Integration.csproj", "{61EE7AC1-B933-4D17-BB4B-8981C47EED85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Integration", "test\MeAgendaAi.Integration\MeAgendaAi.Integration.csproj", "{61EE7AC1-B933-4D17-BB4B-8981C47EED85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0206A0E7-0C26-4255-854E-F2705AD4FA40}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.0 - Common", "0.0 - Common", "{BA2F6A6D-BAC5-4D94-A5C6-086C54C37871}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Common", "test\MeAgendaAi.Common\MeAgendaAi.Common.csproj", "{7B15B82A-1BFA-4C0C-91A6-1CF2C9586F60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{DAD820B6-1303-4739-8BE9-4E9EACD65A63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.CrossCutting", "src\MeAgendaAi.Infra.CrossCutting\MeAgendaAi.Infra.CrossCutting.csproj", "{CC83C372-38AC-425F-83C3-8FC760F2F84F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.3 - Notification", "4.3 - Notification", "{613341E0-5860-46CF-8EE7-5FD60F59C33F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAí.Infra.Notification", "src\MeAgendaAí.Infra.Notification\MeAgendaAí.Infra.Notification.csproj", "{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +80,18 @@ Global
 		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61EE7AC1-B933-4D17-BB4B-8981C47EED85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B15B82A-1BFA-4C0C-91A6-1CF2C9586F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B15B82A-1BFA-4C0C-91A6-1CF2C9586F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B15B82A-1BFA-4C0C-91A6-1CF2C9586F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B15B82A-1BFA-4C0C-91A6-1CF2C9586F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC83C372-38AC-425F-83C3-8FC760F2F84F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC83C372-38AC-425F-83C3-8FC760F2F84F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC83C372-38AC-425F-83C3-8FC760F2F84F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC83C372-38AC-425F-83C3-8FC760F2F84F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +106,12 @@ Global
 		{D003C178-4C8B-4585-96EE-307235ACE189} = {9DB327F6-53D3-4A46-A372-9741A3CD9A6D}
 		{CF29F18F-9CB0-49C0-9283-F0AAB20FDE7C} = {861F3507-0F6B-4593-BAE9-958322EE1222}
 		{61EE7AC1-B933-4D17-BB4B-8981C47EED85} = {CF29F18F-9CB0-49C0-9283-F0AAB20FDE7C}
+		{BA2F6A6D-BAC5-4D94-A5C6-086C54C37871} = {861F3507-0F6B-4593-BAE9-958322EE1222}
+		{7B15B82A-1BFA-4C0C-91A6-1CF2C9586F60} = {BA2F6A6D-BAC5-4D94-A5C6-086C54C37871}
+		{DAD820B6-1303-4739-8BE9-4E9EACD65A63} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
+		{CC83C372-38AC-425F-83C3-8FC760F2F84F} = {DAD820B6-1303-4739-8BE9-4E9EACD65A63}
+		{613341E0-5860-46CF-8EE7-5FD60F59C33F} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
+		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34} = {613341E0-5860-46CF-8EE7-5FD60F59C33F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6AB72FD9-B976-4B94-9211-68CD0D5A1D0C}
