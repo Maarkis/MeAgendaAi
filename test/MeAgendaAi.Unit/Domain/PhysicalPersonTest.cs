@@ -1,9 +1,7 @@
 ﻿using Bogus;
 using FluentAssertions;
 using MeAgendaAi.Common.Builder;
-using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
-using MeAgendaAi.Domains.Validators;
 using NUnit.Framework;
 
 namespace MeAgendaAi.Unit.Domain

@@ -15,9 +15,10 @@ namespace MeAgendaAi.Infra.CrossCutting
         }
 
         public static IServiceCollection ConfigureDatabaseDependencies(this IServiceCollection services)
-        {            
-            services.AddScoped<IPhysicalPersonRepository, PhysicalPersonRepository>();
+        {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPhysicalPersonRepository, PhysicalPersonRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             return services;
         }
     }

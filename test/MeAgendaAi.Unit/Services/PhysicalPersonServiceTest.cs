@@ -8,16 +8,17 @@ using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Services;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Threading.Tasks;
 
 namespace MeAgendaAi.Unit.Services
 {
     public class PhysicalPersonServiceTest
     {
-        private readonly Mock<IUserService> _mockUserService;
-        private readonly Mock<IPhysicalPersonRepository> _mockPhysicalPersonRepository;
-        private readonly NotificationContext _notificationContext;
-        private readonly PhysicalPersonService _physicalPersonService;
+        private Mock<IUserService> _mockUserService;
+        private Mock<IPhysicalPersonRepository> _mockPhysicalPersonRepository;
+        private NotificationContext _notificationContext;
+        private PhysicalPersonService _physicalPersonService;
 
         public PhysicalPersonServiceTest()
         {
@@ -28,7 +29,13 @@ namespace MeAgendaAi.Unit.Services
         }
 
         [SetUp]
-        public void SetUp() => _notificationContext.Clear();
+        public void SetUp()
+        {
+            _notificationContext.Clear();
+            _mockUserService = new Mock<IUserService>();
+            _mockPhysicalPersonRepository = new Mock<IPhysicalPersonRepository>();
+            _physicalPersonService = new PhysicalPersonService(_mockUserService.Object, _mockPhysicalPersonRepository.Object, _notificationContext);
+        }
 
         [Test]
         public void AddPhysicalPerson_ShouldInvokeTheHasUserMethodOnce()
@@ -76,14 +83,19 @@ namespace MeAgendaAi.Unit.Services
             _mockUserService.Verify(verify => verify.AddAsync(It.IsAny<PhysicalPerson>()), Times.Never());
         }
 
-        public void AddPhysicalPerson_ShouldInvokeAddAsyncMethodWhenAnEntityIsValid()
+        [Test]
+        public void AddPhysicalPerson_ShouldInvokeAddAsyncOfRepositoryMethodWhenAnEntityIsValid()
         {
+            var guid = Guid.NewGuid();
             var request = new AddPhysicalPersonRequestBuilder().Generate();
-            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(true);
+            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockPhysicalPersonRepository
+                .Setup(method => method.AddAsync(It.IsAny<PhysicalPerson>()))
+                .ReturnsAsync(guid);
 
             _ = _physicalPersonService.AddAsync(request);
 
-            _mockUserService.Verify(verify => verify.AddAsync(It.IsAny<PhysicalPerson>()), Times.Once());
+            _mockPhysicalPersonRepository.Verify(verify => verify.AddAsync(It.IsAny<PhysicalPerson>()), Times.Once());
         }
 
         [Test]
@@ -91,11 +103,7 @@ namespace MeAgendaAi.Unit.Services
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
             var physicalPerson = new PhysicalPersonBuilder().ByRequest(request).Generate();
-
             _mockUserService.Setup(setup => setup.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
-            _mockUserService
-                .Setup(setup => setup.AddAsync(It.IsAny<PhysicalPerson>()))
-                .ReturnsAsync(physicalPerson.Id);
             _mockPhysicalPersonRepository
                 .Setup(method => method.AddAsync(It.IsAny<PhysicalPerson>()))
                 .ReturnsAsync(physicalPerson.Id);

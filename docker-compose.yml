@@ -29,7 +29,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin-meagendaai-db-ui
+    container_name: pgadmin-meagendaai-db-ui    
     volumes:
     - ./database/servers.json:/pgadmin4/servers.json
     ports:

@@ -9,7 +9,7 @@ namespace MeAgendaAi.Common.Builder
     {
         public UserBuilder() : base()
         {
-            RuleFor(prop => prop.Email, () => new EmailObjectBulder().Generate());
+            RuleFor(prop => prop.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(prop => prop.Password, faker => faker.Internet.Password());
         }
         public override User Generate(string ruleSets = null!)
@@ -24,7 +24,7 @@ namespace MeAgendaAi.Common.Builder
     {
         public static UserBuilder WithEmail(this UserBuilder builder, string email)
         {
-            builder.RuleFor(prop => prop.Email, () => new EmailObjectBulder().WithEmail(email).Generate());
+            builder.RuleFor(prop => prop.Email, () => new EmailObjectBuilder().WithEmail(email).Generate());
             return builder;
         }
         public static UserBuilder WithEmail(this UserBuilder builder, EmailObject email)

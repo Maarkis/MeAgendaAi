@@ -26,8 +26,7 @@ namespace MeAgendaAi.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("PK_TB_PHYSICAL_PERSON");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -49,6 +48,35 @@ namespace MeAgendaAi.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TB_USERS", (string)null);
+                });
+
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.Company", b =>
+                {
+                    b.HasBaseType("MeAgendaAi.Domains.Entities.User");
+
+                    b.Property<string>("CNPJ")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("CNPJ");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("varchar(160)")
+                        .HasColumnName("DSC_DESCRIPTION");
+
+                    b.Property<short>("LimitCancelHours")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasDefaultValue((short)0)
+                        .HasColumnName("TIME_LIMITCANCELHOURS");
+
+                    b.HasIndex("CNPJ")
+                        .IsUnique()
+                        .HasDatabaseName("IN_COMPANY_CNPJ");
+
+                    b.ToTable("TB_COMPANY", (string)null);
                 });
 
             modelBuilder.Entity("MeAgendaAi.Domains.Entities.PhysicalPerson", b =>
@@ -98,6 +126,37 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         });
 
                     b.Navigation("Email")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.Company", b =>
+                {
+                    b.HasOne("MeAgendaAi.Domains.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("MeAgendaAi.Domains.Entities.Company", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.NameObject", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("CompanyId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("NM_NAME");
+
+                            b1.HasKey("CompanyId");
+
+                            b1.ToTable("TB_COMPANY");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CompanyId");
+                        });
+
+                    b.Navigation("Name")
                         .IsRequired();
                 });
 
