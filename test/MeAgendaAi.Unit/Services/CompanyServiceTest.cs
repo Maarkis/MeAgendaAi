@@ -107,13 +107,45 @@ namespace MeAgendaAi.Unit.Services
         }
 
         [Test]
-        public void AddPhysicalPerson_ShouldNotInvokeAddAsyncOfdRepositoryMethodWhenAnEntityIsInvalid()
+        public void AddCompany_ShouldNotInvokeAddAsyncOfdRepositoryMethodWhenAnEntityIsInvalid()
         {
             var requestInvalid = new AddCompanyRequestBuilder().WithEmailInvalid().WithNameInvalid().Generate();
             _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == requestInvalid.Email))).ReturnsAsync(false);
             _mockCompanyRepository.Setup(method => method.AddAsync(It.IsAny<Company>())).ReturnsAsync(Guid.NewGuid());
 
             _ = _companyService.AddAsync(requestInvalid);
+
+            _mockCompanyRepository.Verify(verify => verify.AddAsync(It.IsAny<Company>()), Times.Never());
+        }
+
+        [Test]
+        public void AddCompany_ShouldAddNotificationWhenNotSamePasswordReturnTrue()
+        {
+            var request = new AddCompanyRequestBuilder().WithConfirmPassword("password-different").Generate();
+            var notification = new Notification("ConfirmPassword", "Senha de confirmação não é igual a senha");
+            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockUserService.Setup(method =>
+                method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword))).Returns(true);
+
+            _ = _companyService.AddAsync(request);
+
+            _notificationContext.Notifications.Should().ContainEquivalentOf(notification);
+        }
+
+        [Test]
+        public void AddCompany_ShouldNotInvokeAddAsyncMethodWhenNotSamePasswordMethodReturnTrue()
+        {
+            var request = new AddCompanyRequestBuilder().WithConfirmPassword("password-different").Generate();
+            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockUserService.Setup(method =>
+                method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+                .Returns(true);
+
+            _ = _companyService.AddAsync(request);
 
             _mockCompanyRepository.Verify(verify => verify.AddAsync(It.IsAny<Company>()), Times.Never());
         }

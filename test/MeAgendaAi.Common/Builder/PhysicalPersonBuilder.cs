@@ -1,4 +1,5 @@
-﻿using MeAgendaAi.Common.Builder.ValuesObjects;
+﻿using MeAgendaAi.Common.Builder.Common;
+using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Domains.Validators;
@@ -11,8 +12,7 @@ namespace MeAgendaAi.Common.Builder
         public PhysicalPersonBuilder() : base()
         {
             RuleFor(x => x.Email, () => new EmailObjectBuilder().Generate());
-            RuleFor(x => x.Password, faker => faker.Internet.Password());
-
+            RuleFor(x => x.Password, PasswordBuilder.Generate());
             RuleFor(x => x.Name, () => new NameObjectBuilder().Generate());
             RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
             RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());

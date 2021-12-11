@@ -63,5 +63,10 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             builder.WithEmail(email);
             return builder;
         }
+        public static AddCompanyRequestBuilder WithConfirmPassword(this AddCompanyRequestBuilder builder, string confirmPassword = "")
+        {
+            builder.RuleFor(prop => prop.ConfirmPassword, () => confirmPassword);
+            return builder;
+        }
     }
 }

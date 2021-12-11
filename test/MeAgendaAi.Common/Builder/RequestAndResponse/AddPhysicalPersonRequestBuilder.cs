@@ -1,5 +1,6 @@
 ﻿using AutoBogus;
 using Bogus;
+using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Common.Builder.RequestAndResponse
@@ -8,15 +9,15 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
     {
         public AddPhysicalPersonRequestBuilder()
         {
-            var password = new Faker().Internet.Password();
+            var password = PasswordBuilder.Generate();
             RuleFor(prop => prop.Name, faker => faker.Name.FirstName());
             RuleFor(prop => prop.Email, faker => faker.Internet.Email());
-            RuleFor(x => x.Password, () => password);
-            RuleFor(x => x.ConfirmPassword, () => password);
+            RuleFor(prop => prop.Password, () => password);
+            RuleFor(prop => prop.ConfirmPassword, () => password);
 
             RuleFor(prop => prop.Surname, faker => faker.Name.LastName());
-            RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
-            RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());
+            RuleFor(prop => prop.CPF, faker => faker.Random.Int(11).ToString());
+            RuleFor(prop => prop.RG, faker => faker.Random.Int(9).ToString());
         }
     }
 
@@ -53,7 +54,11 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
         {
             builder.WithEmail(email);
             return builder;
-        }        
-        
+        }
+        public static AddPhysicalPersonRequestBuilder WithConfirmPassword(this AddPhysicalPersonRequestBuilder builder, string confirmPassword = "")
+        {
+            builder.RuleFor(prop => prop.ConfirmPassword, () => confirmPassword);
+            return builder;
+        }
     }
 }

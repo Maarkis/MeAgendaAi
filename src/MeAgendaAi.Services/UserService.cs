@@ -14,6 +14,8 @@ namespace MeAgendaAi.Services.UserServices
         }
 
         public async Task<bool> HasUser(string email) => await _userRepository.GetByEmail(email) != null;
+        public bool SamePassword(string password, string confirmPassword) => password.Equals(confirmPassword);
+        public bool NotSamePassword(string password, string confirmPassword) => !SamePassword(password, confirmPassword);
     }
 
 }
