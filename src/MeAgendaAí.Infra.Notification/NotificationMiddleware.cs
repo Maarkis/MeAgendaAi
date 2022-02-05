@@ -26,7 +26,7 @@ namespace MeAgendaAi.Application.Notification
             context.HttpContext.Response.StatusCode = (int)_notificationContext.StatusCodes;
             context.HttpContext.Response.ContentType = _notificationContext.ResponseContentType;
 
-            var responseBase = new ResponseBase<IReadOnlyCollection<Notification>>(_notificationContext.Notifications, "Errors", false);
+            var responseBase = new ErrorMessage<IReadOnlyCollection<Notification>>(_notificationContext.Notifications, "Errors");
 
             var serializedNotifications = JsonConvert.SerializeObject(responseBase);            
             await context.HttpContext.Response.WriteAsync(serializedNotifications);

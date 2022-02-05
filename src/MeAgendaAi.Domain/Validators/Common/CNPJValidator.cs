@@ -8,6 +8,7 @@ namespace MeAgendaAi.Domains.Validators.Common
         {
             RuleFor(prop => prop)
                 .NotNull()
+                .WithMessage("CPNJ cannot be null")
                 .NotEmpty()
                 .WithMessage("CPNJ cannot be empty");
         }

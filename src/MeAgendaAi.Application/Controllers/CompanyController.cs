@@ -25,7 +25,7 @@ namespace MeAgendaAi.Application.Controllers
             var nameArchive = $"Report_Company_{DateTime.Now.ToShortDateString()}.{type}";
             var report = await _companyService.ReportAsync();
             if (report == null)
-                return NotFound(new ResponseBase("Nenhuma companhia encotrada."));
+                return NotFound(new BaseMessage("Nenhuma companhia encotrada."));
 
             return File(report, "csv/text", nameArchive);
         }

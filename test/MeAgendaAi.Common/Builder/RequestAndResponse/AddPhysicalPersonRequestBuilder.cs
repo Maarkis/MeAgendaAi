@@ -28,9 +28,31 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             builder.RuleFor(prop => prop.Name, () => name);
             return builder;
         }
+        public static AddPhysicalPersonRequestBuilder WithNameInvalid(this AddPhysicalPersonRequestBuilder builder, string name = "")
+        {
+            builder.WithName(name);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithNameInvalid(this AddPhysicalPersonRequestBuilder builder, int length)
+        {
+            var name = new Faker().Random.String(length);
+            builder.WithName(name);
+            return builder;
+        }
         public static AddPhysicalPersonRequestBuilder WithSurname(this AddPhysicalPersonRequestBuilder builder, string surname)
         {
             builder.RuleFor(prop => prop.Surname, () => surname);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithSurnameInvalid(this AddPhysicalPersonRequestBuilder builder, string surname = "")
+        {
+            builder.WithSurname(surname);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithSurnameInvalid(this AddPhysicalPersonRequestBuilder builder, int length)
+        {
+            var surname = new Faker().Random.String(length);
+            builder.WithSurname(surname);
             return builder;
         }
         public static AddPhysicalPersonRequestBuilder WithEmail(this AddPhysicalPersonRequestBuilder builder, string email)
@@ -38,26 +60,61 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             builder.RuleFor(prop => prop.Email, () => email);
             return builder;
         }
-        public static AddPhysicalPersonRequestBuilder WithNameInvalid(this AddPhysicalPersonRequestBuilder builder, int length = 0)
-        {
-            var name = new Faker().Random.String(length);
-            builder.WithName(name);
-            return builder;
-        }
-        public static AddPhysicalPersonRequestBuilder WithSurnameInvalid(this AddPhysicalPersonRequestBuilder builder, int length = 0)
-        {
-            var surname = new Faker().Random.String(length);
-            builder.WithSurname(surname);
-            return builder;
-        }
         public static AddPhysicalPersonRequestBuilder WithEmailInvalid(this AddPhysicalPersonRequestBuilder builder, string email = "")
         {
             builder.WithEmail(email);
             return builder;
         }
-        public static AddPhysicalPersonRequestBuilder WithConfirmPassword(this AddPhysicalPersonRequestBuilder builder, string confirmPassword = "")
+        public static AddPhysicalPersonRequestBuilder WithConfirmPassword(this AddPhysicalPersonRequestBuilder builder, string confirmPassword)
         {
             builder.RuleFor(prop => prop.ConfirmPassword, () => confirmPassword);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithConfirmPasswordInvalid(this AddPhysicalPersonRequestBuilder builder, string confirmPassword = "")
+        {
+            builder.WithConfirmPassword(confirmPassword);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithConfirmPasswordInvalid(this AddPhysicalPersonRequestBuilder builder, int length)
+        {
+            var confirmPassword = new Faker().Internet.Password(length);
+            builder.WithConfirmPassword(confirmPassword);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithPassword(this AddPhysicalPersonRequestBuilder builder, string password)
+        {
+            builder.RuleFor(prop => prop.Password, () => password);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithPasswordInvalid(this AddPhysicalPersonRequestBuilder builder, string password = "")
+        {
+            builder.WithPassword(password);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithPasswordInvalid(this AddPhysicalPersonRequestBuilder builder, int length)
+        {
+            var password = new Faker().Internet.Password(length);
+            builder.WithPassword(password);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithCPF(this AddPhysicalPersonRequestBuilder builder, string cpf)
+        {
+            builder.RuleFor(prop => prop.CPF, () => cpf);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithCPFInvalid(this AddPhysicalPersonRequestBuilder builder, string cpf = "")
+        {
+            builder.WithCPF(cpf);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithRG(this AddPhysicalPersonRequestBuilder builder, string rg)
+        {
+            builder.RuleFor(prop => prop.RG, () => rg);
+            return builder;
+        }
+        public static AddPhysicalPersonRequestBuilder WithRGInvalid(this AddPhysicalPersonRequestBuilder builder, string rg = "")
+        {
+            builder.WithRG(rg);
             return builder;
         }
     }
