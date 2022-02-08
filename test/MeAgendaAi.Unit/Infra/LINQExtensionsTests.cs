@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 namespace MeAgendaAi.Unit.Infra
 {
-
     [TestFixture]
     public class LINQExtensionsTests
     {
@@ -27,24 +26,23 @@ namespace MeAgendaAi.Unit.Infra
         public void ShouldReturnFasleWhenTheListHasOneOrMoreItems(IGenericTestCase genericTestCase) =>
             genericTestCase.ShouldReturnFasleWhenTheListHasOneOrMoreItems();
 
-
         [Test]
         [TestCaseSource("TypeCases")]
         public void ShouldReturnTrueWhenTheListIsEmpty(IGenericTestCase genericTestCase) =>
             genericTestCase.ShouldReturnTrueWhenTheListIsEmpty();
 
-
         [Test]
         [TestCaseSource("TypeCases")]
         public void ShouldReturnTrueWhenTheListIsNull(IGenericTestCase genericTestCase) =>
             genericTestCase.ShouldReturnTrueWhenTheListIsNull();
-
     }
 
     public interface IGenericTestCase
     {
         void ShouldReturnFasleWhenTheListHasOneOrMoreItems();
+
         void ShouldReturnTrueWhenTheListIsEmpty();
+
         void ShouldReturnTrueWhenTheListIsNull();
     }
 

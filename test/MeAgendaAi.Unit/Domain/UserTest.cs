@@ -84,6 +84,5 @@ namespace MeAgendaAi.Unit.Domain
             user.Valid.Should().BeFalse();
             user.Invalid.Should().BeTrue();
         }
-
     }
 }

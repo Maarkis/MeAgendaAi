@@ -1,27 +1,25 @@
-﻿using Bogus;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MeAgendaAi.Common.Builder;
+using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Interfaces.Repositories;
-using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Services.UserServices;
 using Moq;
+using Moq.AutoMock;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace MeAgendaAi.Unit.Services.UserTest
 {
     public class UserServiceTest
     {
-
-        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly AutoMocker _mocker;
         private readonly UserService _userService;
 
         public UserServiceTest()
         {
-            _mockUserRepository = new Mock<IUserRepository>();
-            _userService = new UserService(_mockUserRepository.Object);
+            _mocker = new AutoMocker();
+            _userService = _mocker.CreateInstance<UserService>();
         }
 
         [Test]
@@ -29,7 +27,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
             var email = physicalPerson.Email.Email;
-            _mockUserRepository
+            _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByEmail(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);
 
@@ -42,7 +40,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task HasUser_ShouldCheckIfUserExistsAndReturnFalse()
         {
             var email = new EmailObjectBuilder().Generate();
-            _mockUserRepository
+            _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByEmail(It.Is<string>(prop => prop == email.Email)));
 
             var response = await _userService.HasUser(email.Email);
@@ -55,23 +53,19 @@ namespace MeAgendaAi.Unit.Services.UserTest
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
             var email = physicalPerson.Email.Email;
-            _mockUserRepository
+            _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByEmail(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);
 
             var response = await _userService.HasUser(email);
 
-            _mockUserRepository.Verify(method => method.GetByEmail(It.Is<string>(prop => prop == email)), Times.Once());
+            _mocker.GetMock<IUserRepository>().Verify(method => method.GetByEmail(It.Is<string>(prop => prop == email)), Times.Once());
         }
-
 
         [Test]
         public void SamePassword_PasswordAndConfirmPasswordShouldTheSameAndReturnTrue()
         {
-            const int LENGTH_MININUM_PASSWORD = 06;
-            const int LENGTH_MAXIMUM_PASSWORD = 32;
-            var faker = new Faker();
-            var password = faker.Internet.Password(faker.Random.Int(LENGTH_MININUM_PASSWORD, LENGTH_MAXIMUM_PASSWORD));
+            var password = PasswordBuilder.Generate();
             var confirmPassword = password;
 
             var response = _userService.SamePassword(password, confirmPassword);
@@ -82,11 +76,8 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public void SamePassword_PasswordAndConfirmPasswordShouldNotSameAndReturnFalse()
         {
-            const int LENGTH_MININUM_PASSWORD = 06;
-            const int LENGTH_MAXIMUM_PASSWORD = 32;
-            var faker = new Faker();
-            var password = faker.Internet.Password(faker.Random.Int(LENGTH_MININUM_PASSWORD, LENGTH_MAXIMUM_PASSWORD));
-            var confirmPassword = faker.Internet.Password(faker.Random.Int(LENGTH_MININUM_PASSWORD, LENGTH_MAXIMUM_PASSWORD));
+            var password = PasswordBuilder.Generate();
+            var confirmPassword = PasswordBuilder.Generate();
 
             var response = _userService.SamePassword(password, confirmPassword);
 
@@ -96,11 +87,8 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public void NotSamePassword_PasswordAndConfirmPasswordShouldNotSameAndReturnTrue()
         {
-            const int LENGTH_MININUM_PASSWORD = 06;
-            const int LENGTH_MAXIMUM_PASSWORD = 32;
-            var faker = new Faker();
-            var password = faker.Internet.Password(faker.Random.Int(LENGTH_MININUM_PASSWORD, LENGTH_MAXIMUM_PASSWORD));
-            var confirmPassword = faker.Internet.Password(faker.Random.Int(LENGTH_MININUM_PASSWORD, LENGTH_MAXIMUM_PASSWORD));
+            var password = PasswordBuilder.Generate();
+            var confirmPassword = PasswordBuilder.Generate();
 
             var response = _userService.NotSamePassword(password, confirmPassword);
 
@@ -110,10 +98,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public void NotSamePassword_PasswordAndConfirmPasswordShouldSameAndReturnFalse()
         {
-            const int LENGTH_MININUM_PASSWORD = 06;
-            const int LENGTH_MAXIMUM_PASSWORD = 32;
-            var faker = new Faker();
-            var password = faker.Internet.Password(faker.Random.Int(LENGTH_MININUM_PASSWORD, LENGTH_MAXIMUM_PASSWORD));
+            var password = PasswordBuilder.Generate();
             var confirmPassword = password;
 
             var response = _userService.NotSamePassword(password, confirmPassword);
