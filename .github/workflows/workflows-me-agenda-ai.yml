@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:                
+    env:
       ASPNETCORE_ENVIRONMENT: Development
     strategy:
       matrix:
@@ -23,14 +23,14 @@ jobs:
           include-prerelease: true
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore MeAgendaAi.sln
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build MeAgendaAi.sln --configuration Release --no-restore
+
 
       - name: Initialize docker (Docker-compose)
         run: docker-compose up -d  --build
 
       - name: Test
         run: dotnet test MeAgendaAi.sln --no-restore --verbosity normal
-
