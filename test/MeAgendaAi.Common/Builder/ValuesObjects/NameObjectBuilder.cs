@@ -36,5 +36,10 @@ namespace MeAgendaAi.Common.Builder.ValuesObjects
             builder.RuleFor(prop => prop.Surname, () => surname);
             return builder;
         }
+        public static NameObjectBuilder WithoutSurname(this NameObjectBuilder builder)
+        {
+            builder.RuleFor(prop => prop.Surname, () => null!);
+            return builder;
+        }
     }
 }

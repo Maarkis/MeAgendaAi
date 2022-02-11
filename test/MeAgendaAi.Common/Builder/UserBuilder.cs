@@ -14,9 +14,9 @@ namespace MeAgendaAi.Common.Builder
         }
         public override User Generate(string ruleSets = null!)
         {
-            var valueObjets = base.Generate(ruleSets);
-            valueObjets.Validate(valueObjets, new UserValidator<User>());
-            return valueObjets;
+            var entity = base.Generate(ruleSets);
+            entity.Validate();
+            return entity;
         }
     }
 

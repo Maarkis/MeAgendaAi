@@ -43,7 +43,7 @@ namespace MeAgendaAi.Infra.Data.Maps
                    .IsRequired()
                    .HasColumnType("smallint")
                    .HasDefaultValue(0)
-                   .HasColumnName("TIME_LIMITCANCELHOURS");
+                   .HasColumnName("TIME_LIMIT_CANCEL_HOURS");
 
             builder.Property(prop => prop.Description)
                    .IsRequired()

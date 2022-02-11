@@ -1,5 +1,6 @@
 ﻿using MeAgendaAi.Domains.Entities.Base;
 using MeAgendaAi.Domains.Interfaces.Repositories;
+using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Infra.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +26,12 @@ namespace MeAgendaAi.Integration.SetUp
         protected static string ConnectionString =>
             _configuration.GetConnectionString(CONNECTION_STRING_NAME);
 
+        [SetUp]
+        public virtual async Task SetUpAsync() => await Database.CleanAsync(ConnectionString);
+
+
         [OneTimeSetUp]
-        public virtual async Task OneTimeSetUpAsync()
+        public virtual void OneTimeSetUp()
         {
             _server = new WebApiFactory<Program>();
             _client = _server.CreateClient(new WebApplicationFactoryClientOptions
@@ -40,7 +45,6 @@ namespace MeAgendaAi.Integration.SetUp
             _configuration = _serviceProvider.GetRequiredService<IConfiguration>();
 
             Database.CreateDatabase(_dbContext);
-            await Database.CleanAsync(ConnectionString);
         }
 
         [OneTimeTearDown]
@@ -55,20 +59,10 @@ namespace MeAgendaAi.Integration.SetUp
                 else
                     _serviceScope.Dispose();
                 _server.Dispose();
+                GC.SuppressFinalize(this);
             }
         }
 
-        public Uri AssembleRequisitionTo(string entrypoint, string method = "") => new($"{_client.BaseAddress}api/{entrypoint}/{method}");
-    }
-
-    public abstract class TestBase<T> : TestBase where T : Entity
-    {
-        protected IRepository<T> _repository { get; private set; } = default!;
-
-        public override async Task OneTimeSetUpAsync()
-        {
-            await base.OneTimeSetUpAsync();
-            _repository = _serviceProvider.GetRequiredService<IRepository<T>>() ?? throw new InvalidOperationException("Base repository not found.");
-        }
+        public Uri RequisitionAssemblyFor(string entrypoint, string method = "") => new($"{_client.BaseAddress}api/{entrypoint}/{method}");
     }
 }

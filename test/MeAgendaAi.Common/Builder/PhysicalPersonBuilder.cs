@@ -2,7 +2,6 @@
 using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
-using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder
@@ -20,7 +19,7 @@ namespace MeAgendaAi.Common.Builder
         public override PhysicalPerson Generate(string ruleSets = null!)
         {
             var entity = base.Generate(ruleSets);
-            entity.Validate(entity, new PhysicalPersonValidator());
+            entity.Validate();
             return entity;
         }
     }

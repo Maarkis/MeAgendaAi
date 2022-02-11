@@ -19,8 +19,9 @@ namespace MeAgendaAi.Domains.Entities
             CPF = cpf;
             RG = rg;
 
-            Validate(this, new PhysicalPersonValidator());
+            Validate();
         }
 
+        public new bool Validate() => Validate(this, new PhysicalPersonValidator());
     }
 }

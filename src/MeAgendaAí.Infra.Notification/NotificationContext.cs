@@ -6,7 +6,7 @@ namespace MeAgendaAi.Application.Notification
     public class NotificationContext
     {
         public string ResponseContentType = "application/json";
-        public HttpStatusCode StatusCodes = HttpStatusCode.BadRequest;
+        public HttpStatusCode StatusCodes = HttpStatusCode.BadRequest;        
 
         private readonly List<Notification> _notifications;
         public IReadOnlyCollection<Notification> Notifications => _notifications;
@@ -28,7 +28,7 @@ namespace MeAgendaAi.Application.Notification
         }
         public void Clear() => _notifications.Clear();
         public void SetResponseContentType(string contentType) => ResponseContentType = contentType;
-        public void SetResponseStatusCode(HttpStatusCode statusCode) => StatusCodes = statusCode;
+        public void SetResponseStatusCode(HttpStatusCode statusCode) => StatusCodes = statusCode;        
     }
 }
 

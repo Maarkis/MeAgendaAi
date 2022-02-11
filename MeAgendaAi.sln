@@ -57,6 +57,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cryptography", "Cryptograph
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.Cryptography", "src\MeAgendaAi.Infra.Cryptography\MeAgendaAi.Infra.Cryptography.csproj", "{02E6F70D-BB0E-439B-9F21-34D187F4D367}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.5 - Extension", "4.5 - Extension", "{9C8CAA68-9AC1-4F6F-ADB2-D11F0EB6339E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.Extension", "src\MeAgendaAi.Infra.Extension\MeAgendaAi.Infra.Extension.csproj", "{57B4E380-9AE7-4C10-BD58-17791F58AADB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +107,10 @@ Global
 		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57B4E380-9AE7-4C10-BD58-17791F58AADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57B4E380-9AE7-4C10-BD58-17791F58AADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57B4E380-9AE7-4C10-BD58-17791F58AADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57B4E380-9AE7-4C10-BD58-17791F58AADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +134,8 @@ Global
 		{9F9FD0FB-5E71-43C7-96E2-99333DDDDE4F} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
 		{09BAA0E7-07CE-48D6-A999-6AC2F9F3981E} = {9F9FD0FB-5E71-43C7-96E2-99333DDDDE4F}
 		{02E6F70D-BB0E-439B-9F21-34D187F4D367} = {09BAA0E7-07CE-48D6-A999-6AC2F9F3981E}
+		{9C8CAA68-9AC1-4F6F-ADB2-D11F0EB6339E} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
+		{57B4E380-9AE7-4C10-BD58-17791F58AADB} = {9C8CAA68-9AC1-4F6F-ADB2-D11F0EB6339E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6AB72FD9-B976-4B94-9211-68CD0D5A1D0C}
