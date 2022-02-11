@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, develop]    
+    branches: [main, develop]
 
 jobs:
   build:
@@ -16,18 +16,21 @@ jobs:
         dotnet-version: ["6.0.x"]
 
     steps:
+      - uses: actions/checkout@v2
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: ${{matrix.dotnet-version}}
           include-prerelease: true
 
+      - name: Clean project
+        run: dotnet clean MeAgendaAi.sln
+
       - name: Install dependencies
         run: dotnet restore MeAgendaAi.sln
 
       - name: Build
         run: dotnet build MeAgendaAi.sln --configuration Release --no-restore
-
 
       - name: Initialize docker (Docker-compose)
         run: docker-compose up -d  --build
