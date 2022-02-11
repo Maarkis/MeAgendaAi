@@ -1,0 +1,48 @@
+version: '3.2'
+
+services:
+  meagendaai-api:
+    image: ${DOCKER_REGISTRY-}me-agenda-ai
+    container_name: application-me-agenda-ai
+    build: 
+        context: .
+        dockerfile: ./Dockerfile
+    ports:
+        - 49160:80
+    environment:
+        ASPNETCORE_ENVIRONMENT: Development
+        
+    networks:
+        - meagendaai-network
+
+  postgresdb:
+      image: postgres
+      container_name: postgres-meagedaai-db
+      ports:
+        - 5432:5432
+      networks:
+        - meagendaai-network
+      environment:
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: 123
+        POSTGRES_DB: meAgendaAi
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-meagendaai-db-ui
+    volumes:
+    - ./database/servers.json:/pgadmin4/servers.json
+    ports:
+        - 8081:8081
+    networks:
+        - meagendaai-network
+    environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: 123
+        PGADMIN_LISTEN_PORT: 8081
+    depends_on:
+     - postgresdb
+
+networks: 
+  meagendaai-network:
+    driver: bridge

@@ -1,0 +1,18 @@
+﻿using MeAgendaAi.Domains.Validators;
+
+namespace MeAgendaAi.Domains.ValueObjects
+{
+    public class NameObject : ValueObjects
+    {
+        public string Name { get; private set; }
+        public string? Surname { get; private set; }
+        public string FullName => $"{Name} {Surname}".Trim();
+
+        public NameObject(string name, string surname = default!)
+        {
+            Name = name;
+            Surname = surname;
+            Validate(this, new NameValidator(includeSurname: surname != null));
+        }
+    }
+}
