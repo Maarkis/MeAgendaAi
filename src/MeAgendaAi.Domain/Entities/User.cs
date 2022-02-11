@@ -16,9 +16,10 @@ namespace MeAgendaAi.Domains.Entities
             Email = new EmailObject(email);
             Password = password;
 
-            Validate(this, new UserValidator<User>());
+            Validate();
         }
 
+        public bool Validate() => Validate(this, new UserValidator<User>());
         public void Encript(string password) => Password = password;
     }
 }

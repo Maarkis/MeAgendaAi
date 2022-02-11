@@ -3,7 +3,7 @@ using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
-
+using MeAgendaAi.Infra.Cryptography;
 
 namespace MeAgendaAi.Services
 {
@@ -41,6 +41,8 @@ namespace MeAgendaAi.Services
                 _notificationContext.AddNotifications(physicalPerson.ValidationResult);
                 return Guid.Empty;
             }
+
+            physicalPerson.Encript(Encrypt.EncryptString(physicalPerson.Password, physicalPerson.Id.ToString()));
 
             return await AddAsync(physicalPerson);
         }

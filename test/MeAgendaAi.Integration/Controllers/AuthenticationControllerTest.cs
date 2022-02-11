@@ -21,7 +21,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
 
             response.Should().Be201Created();
         }
@@ -31,7 +31,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var requestInvalid = new AddPhysicalPersonRequestBuilder().WithNameInvalid().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), requestInvalid);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
 
             response.Should().Be400BadRequest();
         }
@@ -41,7 +41,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<Guid>>();
 
             var physicalPersonInDatabase = await _dbContext.PhysicalPersons.FirstAsync(f => f.Email.Email == request.Email);
@@ -60,7 +60,7 @@ namespace MeAgendaAi.Integration.Controllers
             listErrorsExpected.AddRange(noticationContext.Notifications.ToList());
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), requestInvalid);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
             content.Should().BeEquivalentTo(responseExpected);
@@ -77,7 +77,7 @@ namespace MeAgendaAi.Integration.Controllers
             listErrorsExpected.Add(new("Email", "Email já cadastrado"));
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
             content.Should().BeEquivalentTo(responseExpected);
@@ -91,7 +91,7 @@ namespace MeAgendaAi.Integration.Controllers
             listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
             content.Should().BeEquivalentTo(responseExpected);
@@ -104,7 +104,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddCompanyRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
 
             response.Should().Be201Created();
         }
@@ -114,7 +114,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var requestInvalid = new AddCompanyRequestBuilder().WithNameInvalid().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), requestInvalid);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), requestInvalid);
 
             response.Should().Be400BadRequest();
         }
@@ -124,7 +124,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddCompanyRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<Guid>>();
 
             var companyInDatabase = await _dbContext.Companies.FirstAsync(f => f.Email.Email == request.Email);
@@ -143,7 +143,7 @@ namespace MeAgendaAi.Integration.Controllers
             listErrorsExpected.AddRange(noticationContext.Notifications.ToList());
 
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), requestInvalid);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), requestInvalid);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
@@ -161,7 +161,7 @@ namespace MeAgendaAi.Integration.Controllers
             listErrorsExpected.Add(new("Email", "Email já cadastrado"));
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
             content.Should().BeEquivalentTo(responseExpected);
@@ -175,7 +175,7 @@ namespace MeAgendaAi.Integration.Controllers
             listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
             content.Should().BeEquivalentTo(responseExpected);

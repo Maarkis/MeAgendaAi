@@ -13,16 +13,10 @@ namespace MeAgendaAi.Infra.Cryptography
             byte[] byteSalt = GenerateSalt(salt);
             byte[] bytes = ComputeHash(str, byteSalt);
 
-            return ConcateBytes(bytes);
+            return ConvertBytes(bytes);
         }
 
-        private static string ConcateBytes(byte[] passwordBytes)
-        {
-            var encrypt = new StringBuilder();
-            foreach (byte bit in passwordBytes)
-                encrypt.Append(bit.ToString());
-            return encrypt.ToString();
-        }
+        private static string ConvertBytes(byte[] passwordBytes) => Convert.ToBase64String(passwordBytes);
 
         private static byte[] ComputeHash(
             string str, byte[] salt,

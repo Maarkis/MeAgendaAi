@@ -1,5 +1,4 @@
-﻿using MeAgendaAi.Domains.Entities;
-using MeAgendaAi.Domains.Interfaces.Services;
+﻿using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Services;
 using MeAgendaAi.Services.UserServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +12,7 @@ namespace MeAgendaAi.Infra.CrossCutting
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPhysicalPersonService, PhysicalPersonService>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IReport, ReportService>();
             return services;
         }
     }

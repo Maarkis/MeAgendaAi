@@ -21,6 +21,7 @@ namespace MeAgendaAi.Infra.Data.Repositories
             return entity.Id;
         }
 
+        public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
         public void Dispose() => _context.Dispose();
     }
 }

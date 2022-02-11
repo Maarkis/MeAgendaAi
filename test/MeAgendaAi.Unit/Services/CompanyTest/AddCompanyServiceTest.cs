@@ -13,21 +13,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MeAgendaAi.Unit.Services
+namespace MeAgendaAi.Unit.Services.CompanyTest
 {
-    public class CompanyServiceTest
+    public class AddCompanyServiceTest
     {
         private Mock<IUserService> _mockUserService;
         private Mock<ICompanyRepository> _mockCompanyRepository;
         private NotificationContext _notificationContext;
+        private Mock<IReport> _report;
         private CompanyService _companyService;
 
-        public CompanyServiceTest()
+        public AddCompanyServiceTest()
         {
             _mockUserService = new Mock<IUserService>();
             _mockCompanyRepository = new Mock<ICompanyRepository>();
             _notificationContext = new NotificationContext();
-            _companyService = new CompanyService(_mockUserService.Object, _mockCompanyRepository.Object, _notificationContext);
+            _report = new Mock<IReport>();
+            _companyService = new CompanyService(_mockUserService.Object, _mockCompanyRepository.Object, _notificationContext, _report.Object);
         }
 
         [SetUp]
@@ -36,7 +38,7 @@ namespace MeAgendaAi.Unit.Services
             _mockUserService = new Mock<IUserService>();
             _mockCompanyRepository = new Mock<ICompanyRepository>();
             _notificationContext.Clear();
-            _companyService = new CompanyService(_mockUserService.Object, _mockCompanyRepository.Object, _notificationContext);
+            _companyService = new CompanyService(_mockUserService.Object, _mockCompanyRepository.Object, _notificationContext, _report.Object);
         }
 
         [Test]

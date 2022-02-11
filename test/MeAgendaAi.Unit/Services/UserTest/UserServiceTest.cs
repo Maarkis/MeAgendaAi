@@ -10,7 +10,7 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace MeAgendaAi.Unit.Services
+namespace MeAgendaAi.Unit.Services.UserTest
 {
     public class UserServiceTest
     {

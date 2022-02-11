@@ -11,16 +11,16 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace MeAgendaAi.Unit.Services
+namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
 {
-    public class PhysicalPersonServiceTest
+    public class AddPhysicalPersonServiceTest
     {
         private Mock<IUserService> _mockUserService;
         private Mock<IPhysicalPersonRepository> _mockPhysicalPersonRepository;
         private NotificationContext _notificationContext;
         private PhysicalPersonService _physicalPersonService;
 
-        public PhysicalPersonServiceTest()
+        public AddPhysicalPersonServiceTest()
         {
             _mockUserService = new Mock<IUserService>();
             _mockPhysicalPersonRepository = new Mock<IPhysicalPersonRepository>();

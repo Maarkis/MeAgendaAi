@@ -7,12 +7,15 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="CsvHelper" Version="27.2.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>		
-		<ProjectReference Include="..\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj" />
+		<ProjectReference Include="..\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj" />		
+		<ProjectReference Include="..\MeAgendaAi.Infra.Cryptography\MeAgendaAi.Infra.Cryptography.csproj" />
 		<ProjectReference Include="..\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj" />
+		<ProjectReference Include="..\MeAgendaAi.Infra.Extension\MeAgendaAi.Infra.Extension.csproj" />
 		<ProjectReference Include="..\MeAgendaAí.Infra.Notification\MeAgendaAí.Infra.Notification.csproj" />
 	</ItemGroup>
 

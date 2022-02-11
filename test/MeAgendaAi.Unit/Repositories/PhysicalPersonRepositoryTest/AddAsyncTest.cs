@@ -7,14 +7,14 @@ using Moq;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
-namespace MeAgendaAi.Unit.Repositories
+namespace MeAgendaAi.Unit.Repositories.PhysicalPersonRepositoryTest
 {
-    public class PhysicalPersonRepositoryTest
+    public class AddAsyncTest
     {
         private readonly Mock<AppDbContext> _contextDb;
         private readonly Mock<DbSet<PhysicalPerson>> _dbSetPhysicalPerson;
 
-        public PhysicalPersonRepositoryTest()
+        public AddAsyncTest()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase("AppDatabase").Options;
@@ -23,7 +23,7 @@ namespace MeAgendaAi.Unit.Repositories
         }
 
         [Test]
-        public async Task PhysicalPersonRepository_ShouldInvokeAddAsyncMethodOnce()
+        public async Task AddAsync_ShouldInvokeAddAsyncMethodOnce()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
             _contextDb.Setup(x => x.Set<PhysicalPerson>()).Returns(_dbSetPhysicalPerson.Object);
@@ -35,7 +35,7 @@ namespace MeAgendaAi.Unit.Repositories
         }
 
         [Test]
-        public async Task PhysicalPersonRepository_ShouldInvokeSaveChangesAsyncMethodOnce()
+        public async Task AddAsync_ShouldInvokeSaveChangesAsyncMethodOnce()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
             _contextDb.Setup(x => x.Set<PhysicalPerson>()).Returns(_dbSetPhysicalPerson.Object);
