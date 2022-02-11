@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:                
+      ASPNETCORE_ENVIRONMENT: Development
     strategy:
       matrix:
         dotnet-version: ["6.0.x"]
@@ -26,9 +28,9 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
+      - name: Initialize docker (Docker-compose)
+        run: docker-compose up -d  --build
 
-      - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag me-agenda-ai-image:$(date +%s)
+      - name: Test
+        run: dotnet test MeAgendaAi.sln --no-restore --verbosity normal
+
