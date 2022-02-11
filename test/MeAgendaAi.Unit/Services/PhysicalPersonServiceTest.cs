@@ -103,7 +103,12 @@ namespace MeAgendaAi.Unit.Services
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
             var physicalPerson = new PhysicalPersonBuilder().ByRequest(request).Generate();
-            _mockUserService.Setup(setup => setup.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockUserService.Setup(method =>
+              method.NotSamePassword(
+                  It.Is<string>(password => password == request.Password),
+                  It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+              .Returns(false);
             _mockPhysicalPersonRepository
                 .Setup(method => method.AddAsync(It.IsAny<PhysicalPerson>()))
                 .ReturnsAsync(physicalPerson.Id);
@@ -111,6 +116,38 @@ namespace MeAgendaAi.Unit.Services
             var response = await _physicalPersonService.AddAsync(request);
 
             response.Should().Be(physicalPerson.Id);
+        }
+
+        [Test]
+        public void AddPhysicalPerson_ShouldAddNotificationWhenNotSamePasswordReturnTrue()
+        {
+            var request = new AddPhysicalPersonRequestBuilder().WithConfirmPassword("password-different").Generate();
+            var notification = new Notification("ConfirmPassword", "Senha de confirmação não é igual a senha");
+            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockUserService.Setup(method =>
+                method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword))).Returns(true);
+
+            _ = _physicalPersonService.AddAsync(request);
+
+            _notificationContext.Notifications.Should().ContainEquivalentOf(notification);
+        }
+
+        [Test]
+        public void AddPhysicalPerson_ShouldNotInvokeAddAsyncMethodWhenNotSamePasswordMethodReturnTrue()
+        {
+            var request = new AddPhysicalPersonRequestBuilder().WithConfirmPassword("password-different").Generate();
+            _mockUserService.Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email))).ReturnsAsync(false);
+            _mockUserService.Setup(method =>
+                method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+                .Returns(true);
+
+            _ = _physicalPersonService.AddAsync(request);
+
+            _mockPhysicalPersonRepository.Verify(verify => verify.AddAsync(It.IsAny<PhysicalPerson>()), Times.Never());
         }
     }
 }

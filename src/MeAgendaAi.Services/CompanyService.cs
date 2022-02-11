@@ -26,6 +26,12 @@ namespace MeAgendaAi.Services
                 return Guid.Empty;
             }
 
+            if (_userService.NotSamePassword(request.Password, request.ConfirmPassword))
+            {
+                _notificationContext.AddNotification("ConfirmPassword", "Senha de confirmação não é igual a senha");
+                return Guid.Empty;
+            }
+
             var company = new Company(request.Email, request.Password, request.Name, request.CNPJ, request.Description, request.LimitCancelHours);
             if (company.Invalid)
             {

@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using FluentAssertions;
-using MeAgendaAi.Common.Builder;
+using MeAgendaAi.Common.Builder.Common;
+using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
 using NUnit.Framework;
 
@@ -8,19 +9,19 @@ namespace MeAgendaAi.Unit.Domain
 {
     public class PhysicalPersonTest
     {
-        private readonly Faker Faker;
+        private readonly Faker _faker;
 
-        public PhysicalPersonTest() => Faker = new Faker();
+        public PhysicalPersonTest() => _faker = new Faker();
 
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypePhysicalPerson()
         {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
-            var name = Faker.Name.FirstName();
-            var surname = Faker.Name.LastName();
-            var cpf = Faker.Random.Int(11).ToString();
-            var rg = Faker.Random.Int(9).ToString();
+            var email = _faker.Internet.Email();
+            var password = PasswordBuilder.Generate();
+            var name = _faker.Name.FirstName();
+            var surname = _faker.Name.LastName();
+            var cpf = _faker.Random.Int(11).ToString();
+            var rg = _faker.Random.Int(9).ToString();
 
             var physicalPerson = new PhysicalPerson(email, password, name, surname, cpf, rg);
 
@@ -31,16 +32,24 @@ namespace MeAgendaAi.Unit.Domain
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypePhysicalPersonWithCorrectValues()
         {
-            var physicalPersonExpected = new PhysicalPersonBuilder().Generate();
+            var physicalPersonExpected = new
+            {
+                Email = new EmailObjectBuilder().Generate(),
+                Password = PasswordBuilder.Generate(),
+                Name = new NameObjectBuilder().Generate(),
+                CPF = _faker.Random.Int(11).ToString(),
+                RG = _faker.Random.Int(9).ToString(),
+            };
 
-            var physicalPerson = new PhysicalPerson(physicalPersonExpected.Email.Email, physicalPersonExpected.Password,
-                                                    physicalPersonExpected.Name.Name, physicalPersonExpected.Name.Surname,
-                                                    physicalPersonExpected.CPF, physicalPersonExpected.RG);
+            var physicalPerson = new PhysicalPerson(
+                physicalPersonExpected.Email.Email,
+                physicalPersonExpected.Password,
+                physicalPersonExpected.Name.Name,
+                physicalPersonExpected.Name.Surname,
+                physicalPersonExpected.CPF,
+                physicalPersonExpected.RG);
 
-            physicalPerson.Should().BeEquivalentTo(physicalPersonExpected,
-                options => options.Excluding(prop => prop.Id)
-                                  .Excluding(prop => prop.CreatedAt)
-                                  .Excluding(prop => prop.LastUpdatedAt));
+            physicalPerson.Should().BeEquivalentTo(physicalPersonExpected, options => options.ExcludingMissingMembers());
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using AutoBogus;
-using FluentValidation;
 using FluentValidation.Results;
 using MeAgendaAi.Domains.Entities.Base;
-using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder

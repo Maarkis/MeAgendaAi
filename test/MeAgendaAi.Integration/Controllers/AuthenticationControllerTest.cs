@@ -50,7 +50,7 @@ namespace MeAgendaAi.Integration.Controllers
         }
 
         [Test]
-        public async Task AuthenticationAddClient_ShouldAddAPhysicalPersonTypeUserAndReturnBaseResponseWithGuidAndReturn400BadRequest()
+        public async Task AuthenticationAddClient_ShouldAddAPhysicalPersonTypeUserAndReturnAllErros()
         {
             var requestInvalid = new AddPhysicalPersonRequestBuilder().WithNameInvalid().Generate();
             var physicalPersonInvalid = new PhysicalPersonBuilder().ByRequest(requestInvalid).Generate();
@@ -58,12 +58,42 @@ namespace MeAgendaAi.Integration.Controllers
             noticationContext.AddNotifications(physicalPersonInvalid.ValidationResult);
             var listErrorsExpected = new List<Notification>();
             listErrorsExpected.AddRange(noticationContext.Notifications.ToList());
-
+            var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
 
             var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), requestInvalid);
             var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
 
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldTryToAddPhysicalPersonTypeUserAlreadyAddedAndReturnError()
+        {
+            var physicalPerson = new PhysicalPersonBuilder().Generate();
+            await _dbContext.PhysicalPersons.AddAsync(physicalPerson);
+            await _dbContext.SaveChangesAsync();
+            var request = new AddPhysicalPersonRequestBuilder().WithEmail(physicalPerson.Email.Email).Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("Email", "Email já cadastrado"));
             var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
+
+            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
+
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldTryToAddPhysicalPersonTypeUserWithPasswordAndConfirmPasswordNotEqual()
+        {
+            var request = new AddPhysicalPersonRequestBuilder().WithConfirmPassword("different-password").Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
+            var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
+
+            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
+
             content.Should().BeEquivalentTo(responseExpected);
         }
     }
@@ -103,7 +133,7 @@ namespace MeAgendaAi.Integration.Controllers
         }
 
         [Test]
-        public async Task AuthenticationAddCompany_ShouldAddCompanyTypeUserAndReturnBaseResponseWithGuidAndReturn400BadRequest()
+        public async Task AuthenticationAddCompany_ShouldAddCompanyTypeUserAndReturnAllErros()
         {
             var requestInvalid = new AddCompanyRequestBuilder().WithNameInvalid().Generate();
             var companyInvalid = new CompanyBuilder().ByRequest(requestInvalid).Generate();
@@ -120,5 +150,35 @@ namespace MeAgendaAi.Integration.Controllers
             content.Should().BeEquivalentTo(responseExpected);
         }
 
+        [Test]
+        public async Task AuthenticationAddCompany_ShouldTryToAddCompanyTypeUserAlreadyAddedAndReturnError()
+        {
+            var company = new CompanyBuilder().Generate();
+            await _dbContext.Companies.AddAsync(company);
+            await _dbContext.SaveChangesAsync();
+            var request = new AddCompanyRequestBuilder().WithEmail(company.Email.Email).Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("Email", "Email já cadastrado"));
+            var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
+
+            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
+
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+        [Test]
+        public async Task AuthenticationAddCompany_ShouldTryToAddPhysicalPersonTypeUserWithPasswordAndConfirmPasswordNotEqual()
+        {
+            var request = new AddCompanyRequestBuilder().WithConfirmPassword("different-password").Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
+            var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
+
+            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
+
+            content.Should().BeEquivalentTo(responseExpected);
+        }
     }
 }
