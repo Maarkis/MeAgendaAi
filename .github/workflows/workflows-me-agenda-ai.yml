@@ -11,13 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: ["3.0", "3.1.x", "5.0.x", "6.0x"]
+        dotnet-version: ["6.0.x"]
 
     steps:
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: ${{matrix.dotnet-version}}
+          include-prerelease: true
 
       - name: Install dependencies
         run: dotnet restore
