@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MeAgendaAi.Infra.Data.Maps
 {
-    public abstract class BaseEntityConfiguration<EntityType> : IEntityTypeConfiguration<EntityType> where EntityType : Entity
+    public abstract class BaseEntityConfigurationMap<EntityType> : IEntityTypeConfiguration<EntityType> where EntityType : Entity
     {
         public void Configure(EntityTypeBuilder<EntityType> builder)
         {

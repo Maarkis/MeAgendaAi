@@ -40,7 +40,7 @@ namespace MeAgendaAi.Unit.Services
         [Test]
         public async Task ShouldCheckIfUserExistsAndReturnFalse()
         {
-            var email = new EmailObjectBulder().Generate();
+            var email = new EmailObjectBuilder().Generate();
             _mockUserRepository
                 .Setup(method => method.GetByEmail(It.Is<string>(prop => prop == email.Email)));
 

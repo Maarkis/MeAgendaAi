@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeAgendaAi.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211119040449_AddPunctuantionInTheCPFFieldWithTypeColumn")]
-    partial class AddPunctuantionInTheCPFFieldWithTypeColumn
+    [Migration("20211127181031_Map_User_PhysicalPerson_Company")]
+    partial class Map_User_PhysicalPerson_Company
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,8 +28,7 @@ namespace MeAgendaAi.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("PK_TB_PHYSICAL_PERSON");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -53,6 +52,35 @@ namespace MeAgendaAi.Infra.Data.Migrations
                     b.ToTable("TB_USERS", (string)null);
                 });
 
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.Company", b =>
+                {
+                    b.HasBaseType("MeAgendaAi.Domains.Entities.User");
+
+                    b.Property<string>("CNPJ")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("CNPJ");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("varchar(160)")
+                        .HasColumnName("DSC_DESCRIPTION");
+
+                    b.Property<short>("LimitCancelHours")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasDefaultValue((short)0)
+                        .HasColumnName("TIME_LIMITCANCELHOURS");
+
+                    b.HasIndex("CNPJ")
+                        .IsUnique()
+                        .HasDatabaseName("IN_COMPANY_CNPJ");
+
+                    b.ToTable("TB_COMPANY", (string)null);
+                });
+
             modelBuilder.Entity("MeAgendaAi.Domains.Entities.PhysicalPerson", b =>
                 {
                     b.HasBaseType("MeAgendaAi.Domains.Entities.User");
@@ -67,6 +95,10 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("RG");
+
+                    b.HasIndex("CPF")
+                        .IsUnique()
+                        .HasDatabaseName("IN_PHYSICAL_PERSON_CPF");
 
                     b.ToTable("TB_PHYSICAL_PERSON", (string)null);
                 });
@@ -96,6 +128,37 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         });
 
                     b.Navigation("Email")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.Company", b =>
+                {
+                    b.HasOne("MeAgendaAi.Domains.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("MeAgendaAi.Domains.Entities.Company", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.NameObject", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("CompanyId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("NM_NAME");
+
+                            b1.HasKey("CompanyId");
+
+                            b1.ToTable("TB_COMPANY");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CompanyId");
+                        });
+
+                    b.Navigation("Name")
                         .IsRequired();
                 });
 

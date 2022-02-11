@@ -12,6 +12,7 @@ namespace MeAgendaAi.Infra.CrossCutting
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPhysicalPersonService, PhysicalPersonService>();
+            services.AddScoped<ICompanyService, CompanyService>();
             return services;
         }
     }

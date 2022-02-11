@@ -10,7 +10,7 @@ namespace MeAgendaAi.Common.Builder
     {
         public PhysicalPersonBuilder() : base()
         {
-            RuleFor(x => x.Email, () => new EmailObjectBulder().Generate());
+            RuleFor(x => x.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(x => x.Password, faker => faker.Internet.Password());
 
             RuleFor(x => x.Name, () => new NameObjectBuilder().Generate());
@@ -29,7 +29,7 @@ namespace MeAgendaAi.Common.Builder
     {
         public static PhysicalPersonBuilder WithEmail(this PhysicalPersonBuilder builder, string email)
         {
-            builder.RuleFor(x => x.Email, () => new EmailObjectBulder().WithEmail(email).Generate());
+            builder.RuleFor(x => x.Email, () => new EmailObjectBuilder().WithEmail(email).Generate());
             return builder;
         }
         public static PhysicalPersonBuilder WithEmail(this PhysicalPersonBuilder builder, EmailObject email)

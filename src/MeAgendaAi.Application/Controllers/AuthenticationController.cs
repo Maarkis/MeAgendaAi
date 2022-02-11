@@ -10,9 +10,12 @@ namespace MeAgendaAi.Application.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IPhysicalPersonService _physicalPersonService;
-        public AuthenticationController(IPhysicalPersonService physicalPersonService)
+        private readonly ICompanyService _companyService;
+
+        public AuthenticationController(IPhysicalPersonService physicalPersonService, ICompanyService companyService)
         {
             _physicalPersonService = physicalPersonService;
+            _companyService = companyService;
         }
 
         [HttpPost]
@@ -23,7 +26,18 @@ namespace MeAgendaAi.Application.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var response = await _physicalPersonService.AddAsync(request);
-            return Ok(new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
+            return Created("", new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("AddCompany")]
+        public async Task<ActionResult<ResponseBase<Guid>>> AddCompany(AddCompanyRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var response = await _companyService.AddAsync(request);
+            return Created("", new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
         }
     }
 }

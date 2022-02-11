@@ -5,9 +5,9 @@ namespace MeAgendaAi.Domains.Entities
 {
     public class PhysicalPerson : User
     {
-        public NameObject Name { get; set; } = default!;
-        public string CPF { get; set; } = default!;
-        public string RG { get; set; } = default!;
+        public NameObject Name { get; protected set; } = default!;
+        public string CPF { get; protected set; } = default!;
+        public string RG { get; protected set; } = default!;
 
         private PhysicalPerson()
         {

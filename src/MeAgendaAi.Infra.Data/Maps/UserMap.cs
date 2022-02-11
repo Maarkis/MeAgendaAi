@@ -5,7 +5,7 @@ using NpgsqlTypes;
 
 namespace MeAgendaAi.Infra.Data.Maps
 {
-    public class UserMap : BaseEntityConfiguration<User>
+    public class UserMap : BaseEntityConfigurationMap<User>
     {
         const string ENTITY_NAME = "USERS";
         const string TABLE_NAME = $"TB_{ENTITY_NAME}";
@@ -16,6 +16,8 @@ namespace MeAgendaAi.Infra.Data.Maps
             base.Configure(builder);
 
             builder.ToTable(TABLE_NAME);
+
+            builder.HasKey(prop => prop.Id);                   
 
             builder.OwnsOne(prop => prop.Email)
                    .HasIndex(prop => prop.Email)

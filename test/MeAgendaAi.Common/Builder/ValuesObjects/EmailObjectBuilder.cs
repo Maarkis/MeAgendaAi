@@ -3,9 +3,9 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder.ValuesObjects
 {
-    public class EmailObjectBulder : BaseBuilderValueObject<EmailObject>
+    public class EmailObjectBuilder : BaseBuilderValueObject<EmailObject>
     {
-        public EmailObjectBulder()
+        public EmailObjectBuilder()
         {
             RuleFor(prop => prop.Email, faker => faker.Internet.Email());
             RuleFor(prop => prop.Valid, () => true);
@@ -21,7 +21,7 @@ namespace MeAgendaAi.Common.Builder.ValuesObjects
 
     public static class EmailObjectBulderExtensions
     {
-        public static EmailObjectBulder WithEmail(this EmailObjectBulder builder, string email)
+        public static EmailObjectBuilder WithEmail(this EmailObjectBuilder builder, string email)
         {
             builder.RuleFor(prop => prop.Email, () => email);
             return builder;

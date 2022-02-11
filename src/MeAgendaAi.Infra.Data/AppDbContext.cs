@@ -14,6 +14,7 @@ namespace MeAgendaAi.Infra.Data
 
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<PhysicalPerson> PhysicalPersons { get; set; } = default!;
+        public DbSet<Company> Companies { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,6 +23,7 @@ namespace MeAgendaAi.Infra.Data
 
             builder.Entity<User>(new UserMap().Configure);
             builder.Entity<PhysicalPerson>(new PhysicalPersonMap().Configure);
+            builder.Entity<Company>(new CompanyMap().Configure);
         }
     }
 }
