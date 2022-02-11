@@ -1,15 +1,12 @@
 ﻿using FluentAssertions;
-using FluentValidation.Results;
 using MeAgendaAi.Application.Validators;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
-using MeAgendaAi.Domains.RequestAndResponse;
 using NUnit.Framework;
 
 namespace MeAgendaAi.Unit.Validators
 {
     public class AddCompanyRequestValidatorTest
     {
-
         [Test]
         public void AddCompanyRequestValidator_ShouldValidateAndReturnValidAndWithoutError()
         {
@@ -26,7 +23,7 @@ namespace MeAgendaAi.Unit.Validators
         {
             var requestInvalid = new AddCompanyRequestBuilder()
                 .WithNameInvalid()
-                .WithEmailInvalid()                
+                .WithEmailInvalid()
                 .WithConfirmPasswordInvalid()
                 .WithPasswordInvalid()
                 .WithCNPJInvalid()

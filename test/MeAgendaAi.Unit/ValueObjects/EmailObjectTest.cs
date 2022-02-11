@@ -2,17 +2,13 @@
 using FluentAssertions;
 using MeAgendaAi.Domains.ValueObjects;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeAgendaAi.Unit.ValueObjects
 {
     public class EmailObjectTest
     {
         private readonly Faker Faker;
+
         public EmailObjectTest() => Faker = new Faker();
 
         [Test]
@@ -37,7 +33,7 @@ namespace MeAgendaAi.Unit.ValueObjects
         }
 
         [TestCase("E-mail cannot be empty", null)]
-        [TestCase("E-mail cannot be empty", "")]        
+        [TestCase("E-mail cannot be empty", "")]
         [TestCase("Invalid e-mail", "email@")]
         [TestCase("Invalid e-mail", "teste.email")]
         public void ShouldCreatedAnInvalidInstanceOfNameObjectWithErrorsInNameProperty(string messageError, string email)

@@ -17,7 +17,6 @@ namespace MeAgendaAi.Unit.Services.ReportTest
         public ReportServiceTest() => _reportService = new ReportService();
 
         [Test]
-        [Ignore("ReportCompany_ShouldCorrectlyGenerateReport - Ignored")]
         public void ReportCompany_ShouldCorrectlyGenerateReport()
         {
             const int quantityCompanies = 10;
@@ -28,21 +27,20 @@ namespace MeAgendaAi.Unit.Services.ReportTest
 
             using var stream = new MemoryStream(result);
             var reader = new StreamReader(stream);
-            var csvFile = reader.ReadToEnd().Trim();
+            var csvFile = reader.ReadToEnd();
             csvFile.Should().BeEquivalentTo(csvExpected);
         }
-
 
         [Test]
         public void ReportCompany_ShouldGenerateEmptyReportWhenListOfCompaniesIsNull()
         {
             var expectedCsv = "";
-             
+
             var result = _reportService.Generate<Company, CompanyMap>(null!);
 
             using var stream = new MemoryStream(result);
             var reader = new StreamReader(stream);
-            var csvFile = reader.ReadToEnd().Trim();
+            var csvFile = reader.ReadToEnd();
             csvFile.Should().BeEquivalentTo(expectedCsv);
         }
 
@@ -57,7 +55,7 @@ namespace MeAgendaAi.Unit.Services.ReportTest
 
             using var stream = new MemoryStream(result);
             var reader = new StreamReader(stream);
-            var csvFile = reader.ReadToEnd().Trim();
+            var csvFile = reader.ReadToEnd();
             csvFile.Should().BeEquivalentTo(expectedCsv);
         }
 
@@ -65,13 +63,15 @@ namespace MeAgendaAi.Unit.Services.ReportTest
         {
             var header = Header();
             var body = Body(header, companies);
-            return body.ToString().Trim();
+            return body.ToString();
         }
+
         private static StringBuilder Header()
         {
             var header = new StringBuilder();
-            return header.AppendLine("User Code;Name;Email;CNPJ;Description;Limit cancel hours");
+            return header.Append("User Code;Name;Email;CNPJ;Description;Limit cancel hours").Append("\r\n");
         }
+
         private StringBuilder Body(StringBuilder header, List<Company> companies)
         {
             companies.ForEach(company =>
@@ -82,12 +82,10 @@ namespace MeAgendaAi.Unit.Services.ReportTest
                 header.Append($"{company.CNPJ};");
                 header.Append($"{company.Description};");
                 header.Append($"{company.LimitCancelHours}");
-                header.AppendLine();
+                header.Append("\r\n");
             });
-
+            header.Append("\r\n");
             return header;
         }
     }
-
-
 }
