@@ -51,6 +51,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.3 - Notification", "4.3 -
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAí.Infra.Notification", "src\MeAgendaAí.Infra.Notification\MeAgendaAí.Infra.Notification.csproj", "{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.4 - Security", "4.4 - Security", "{9F9FD0FB-5E71-43C7-96E2-99333DDDDE4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cryptography", "Cryptography", "{09BAA0E7-07CE-48D6-A999-6AC2F9F3981E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.Cryptography", "src\MeAgendaAi.Infra.Cryptography\MeAgendaAi.Infra.Cryptography.csproj", "{02E6F70D-BB0E-439B-9F21-34D187F4D367}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +99,10 @@ Global
 		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E6F70D-BB0E-439B-9F21-34D187F4D367}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +123,9 @@ Global
 		{CC83C372-38AC-425F-83C3-8FC760F2F84F} = {DAD820B6-1303-4739-8BE9-4E9EACD65A63}
 		{613341E0-5860-46CF-8EE7-5FD60F59C33F} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
 		{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34} = {613341E0-5860-46CF-8EE7-5FD60F59C33F}
+		{9F9FD0FB-5E71-43C7-96E2-99333DDDDE4F} = {8214BC20-A8D2-47BF-8703-13B19D5F1D64}
+		{09BAA0E7-07CE-48D6-A999-6AC2F9F3981E} = {9F9FD0FB-5E71-43C7-96E2-99333DDDDE4F}
+		{02E6F70D-BB0E-439B-9F21-34D187F4D367} = {09BAA0E7-07CE-48D6-A999-6AC2F9F3981E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6AB72FD9-B976-4B94-9211-68CD0D5A1D0C}

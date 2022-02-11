@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj" />
+		<ProjectReference Include="..\..\src\MeAgendaAi.Infra.Cryptography\MeAgendaAi.Infra.Cryptography.csproj" />
 		<ProjectReference Include="..\..\src\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj" />
 		<ProjectReference Include="..\..\src\MeAgendaAi.Services\MeAgendaAi.Services.csproj" />
 		<ProjectReference Include="..\MeAgendaAi.Common\MeAgendaAi.Common.csproj" />
