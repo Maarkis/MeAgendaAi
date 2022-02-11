@@ -69,10 +69,10 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_ShouldNotGenerateReport()
         {
-            var responseExpected = new ResponseBase("Nenhuma companhia encotrada.");
+            var responseExpected = new BaseMessage("Nenhuma companhia encotrada.");
 
             var result = await _client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
-            var response = await result.Content.ReadFromJsonAsync<ResponseBase>();
+            var response = await result.Content.ReadFromJsonAsync<BaseMessage>();
 
             response.Should().BeEquivalentTo(responseExpected);
         }

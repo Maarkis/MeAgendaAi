@@ -21,23 +21,23 @@ namespace MeAgendaAi.Application.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("AddPhysicalPerson")]
-        public async Task<ActionResult<ResponseBase<Guid>>> AddClient(AddPhysicalPersonRequest request)
+        public async Task<ActionResult<SuccessMessage<Guid>>> AddClient(AddPhysicalPersonRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var response = await _physicalPersonService.AddAsync(request);
-            return Created("", new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
+            return Created("", new SuccessMessage<Guid>(response, "Cadastrado com sucesso"));
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("AddCompany")]
-        public async Task<ActionResult<ResponseBase<Guid>>> AddCompany(AddCompanyRequest request)
+        public async Task<ActionResult<SuccessMessage<Guid>>> AddCompany(AddCompanyRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var response = await _companyService.AddAsync(request);
-            return Created("", new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
+            return Created("", new SuccessMessage<Guid>(response, "Cadastrado com sucesso"));
         }
     }
 }
