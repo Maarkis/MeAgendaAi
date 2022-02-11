@@ -1,10 +1,5 @@
 ﻿using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeAgendaAi.Domains.Entities
 {
@@ -26,7 +21,8 @@ namespace MeAgendaAi.Domains.Entities
             Description = description;
             LimitCancelHours = limitCancelHours;
 
-            Validate(this, new CompanyValidator());
+            Validate();
         }
+        public new bool Validate() => Validate(this, new CompanyValidator());
     }
 }

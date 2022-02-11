@@ -15,7 +15,7 @@ namespace MeAgendaAi.Common.Builder
             RuleFor(prop => prop.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(prop => prop.Password, faker => faker.Internet.Password());
 
-            RuleFor(prop => prop.Name, () => new NameObjectBuilder().Generate());
+            RuleFor(prop => prop.Name, () => new NameObjectBuilder().WithoutSurname().Generate());
             RuleFor(prop => prop.CNPJ, faker => faker.Random.Int(14).ToString());
             RuleFor(prop => prop.Description, faker => faker.Lorem.Sentences(1));
             RuleFor(prop => prop.LimitCancelHours, faker => faker.Random.Int(1, 24));
@@ -24,7 +24,7 @@ namespace MeAgendaAi.Common.Builder
         public override Company Generate(string ruleSets = null!)
         {
             var entity = base.Generate(ruleSets);
-            entity.Validate(entity, new CompanyValidator());
+            entity.Validate();
             return entity;
         }
     }

@@ -11,5 +11,7 @@ namespace MeAgendaAi.Services
         public Service(IRepository<T> repository) => _repository = repository;
 
         public async Task<Guid> AddAsync(T entity) => await _repository.AddAsync(entity);
+
+        public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
     }
 }

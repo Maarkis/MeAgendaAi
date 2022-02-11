@@ -27,14 +27,57 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             builder.RuleFor(prop => prop.Name, () => name);
             return builder;
         }
+        public static AddCompanyRequestBuilder WithNameInvalid(this AddCompanyRequestBuilder builder, string name = "")
+        {
+            builder.WithName(name);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithNameInvalid(this AddCompanyRequestBuilder builder, int length)
+        {
+            var name = new Faker().Random.String(length);
+            builder.WithName(name);
+            return builder;
+        }
         public static AddCompanyRequestBuilder WithEmail(this AddCompanyRequestBuilder builder, string email)
         {
             builder.RuleFor(prop => prop.Email, () => email);
             return builder;
         }
+        public static AddCompanyRequestBuilder WithEmailInvalid(this AddCompanyRequestBuilder builder, string email = "")
+        {
+            builder.WithEmail(email);
+            return builder;
+        }
         public static AddCompanyRequestBuilder WithPassword(this AddCompanyRequestBuilder builder, string password)
         {
-            builder.RuleFor(x => x.Password, () => password);
+            builder.RuleFor(prop => prop.Password, () => password);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithPasswordInvalid(this AddCompanyRequestBuilder builder, string password = "")
+        {
+            builder.WithPassword(password);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithPasswordInvalid(this AddCompanyRequestBuilder builder, int length)
+        {
+            var password = new Faker().Internet.Password(length);
+            builder.WithPassword(password);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithConfirmPassword(this AddCompanyRequestBuilder builder, string confirmPassword)
+        {
+            builder.RuleFor(prop => prop.ConfirmPassword, () => confirmPassword);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithConfirmPasswordInvalid(this AddCompanyRequestBuilder builder, string confirmPassword = "")
+        {
+            builder.WithConfirmPassword(confirmPassword);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithConfirmPasswordInvalid(this AddCompanyRequestBuilder builder, int length)
+        {
+            var confirmPassword = new Faker().Internet.Password(length);
+            builder.WithConfirmPassword(confirmPassword);
             return builder;
         }
         public static AddCompanyRequestBuilder WithCNPJ(this AddCompanyRequestBuilder builder, string cnpj)
@@ -42,25 +85,30 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             builder.RuleFor(prop => prop.CNPJ, () => cnpj);
             return builder;
         }
+        public static AddCompanyRequestBuilder WithCNPJInvalid(this AddCompanyRequestBuilder builder, string cnpj = "")
+        {
+            builder.WithCNPJ(cnpj);
+            return builder;
+        }
         public static AddCompanyRequestBuilder WithDescription(this AddCompanyRequestBuilder builder, string description)
         {
             builder.RuleFor(prop => prop.Description, () => description);
             return builder;
         }
+        public static AddCompanyRequestBuilder WithDescriptionInvalid(this AddCompanyRequestBuilder builder, string description = "")
+        {
+            builder.WithDescription(description);
+            return builder;
+        }
+        public static AddCompanyRequestBuilder WithDescriptionInvalid(this AddCompanyRequestBuilder builder, int length)
+        {
+            var description = new Faker().Random.String(length);
+            builder.WithDescription(description);
+            return builder;
+        }
         public static AddCompanyRequestBuilder WithLimitCancelHours(this AddCompanyRequestBuilder builder, int limitCancelHours)
         {
             builder.RuleFor(prop => prop.LimitCancelHours, () => limitCancelHours);
-            return builder;
-        }
-        public static AddCompanyRequestBuilder WithNameInvalid(this AddCompanyRequestBuilder builder, int length = 0)
-        {
-            var name = new Faker().Random.String(length);
-            builder.WithName(name);
-            return builder;
-        }
-        public static AddCompanyRequestBuilder WithEmailInvalid(this AddCompanyRequestBuilder builder, string email = "")
-        {
-            builder.WithEmail(email);
             return builder;
         }
     }

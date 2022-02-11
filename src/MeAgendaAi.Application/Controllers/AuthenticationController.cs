@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
-using MeAgendaAi.Domains.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MeAgendaAi.Application.Controllers
 {
@@ -11,33 +11,48 @@ namespace MeAgendaAi.Application.Controllers
     {
         private readonly IPhysicalPersonService _physicalPersonService;
         private readonly ICompanyService _companyService;
+        private readonly ILogger<AuthenticationController> _logger;
 
-        public AuthenticationController(IPhysicalPersonService physicalPersonService, ICompanyService companyService)
-        {
-            _physicalPersonService = physicalPersonService;
-            _companyService = companyService;
-        }
+        private const string ActionType = "AuthenticationController";
+
+        public AuthenticationController(
+            IPhysicalPersonService physicalPersonService,
+            ICompanyService companyService,
+            ILogger<AuthenticationController> logger) =>
+            (_physicalPersonService, _companyService, _logger) = (physicalPersonService, companyService, logger);
 
         [HttpPost]
         [AllowAnonymous]
         [Route("AddPhysicalPerson")]
-        public async Task<ActionResult<ResponseBase<Guid>>> AddClient(AddPhysicalPersonRequest request)
+        public async Task<ActionResult<SuccessMessage<Guid>>> AddClient(AddPhysicalPersonRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            _logger.LogInformation("[{ActionType}/AddClient] Starting registration physical person process.", ActionType);
+
             var response = await _physicalPersonService.AddAsync(request);
-            return Created("", new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
+
+            _logger.LogInformation("[{ActionType}/AddClient] Completing the physical person registration process.", ActionType);
+
+            return Created("", new SuccessMessage<Guid>(response, "Cadastrado com sucesso"));
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("AddCompany")]
-        public async Task<ActionResult<ResponseBase<Guid>>> AddCompany(AddCompanyRequest request)
+        public async Task<ActionResult<SuccessMessage<Guid>>> AddCompany(AddCompanyRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            _logger.LogInformation("[{ActionType}/AddCompany] Starting registration company process.", ActionType);
+
             var response = await _companyService.AddAsync(request);
-            return Created("", new ResponseBase<Guid>(response, "Cadastrado com sucesso", true));
+
+            _logger.LogInformation("[{ActionType}/AddCompany] Completing the company registration process.", ActionType);
+
+            return Created("", new SuccessMessage<Guid>(response, "Cadastrado com sucesso"));
         }
     }
 }

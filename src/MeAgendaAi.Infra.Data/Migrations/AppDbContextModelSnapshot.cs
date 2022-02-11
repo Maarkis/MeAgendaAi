@@ -70,7 +70,7 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasDefaultValue((short)0)
-                        .HasColumnName("TIME_LIMITCANCELHOURS");
+                        .HasColumnName("TIME_LIMIT_CANCEL_HOURS");
 
                     b.HasIndex("CNPJ")
                         .IsUnique()

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.Text.RegularExpressions;
 
 namespace MeAgendaAi.Domains.Validators.Common
 {
@@ -9,6 +8,7 @@ namespace MeAgendaAi.Domains.Validators.Common
         {
             RuleFor(prop => prop)
                 .NotNull()
+                .WithMessage("RG cannot be null")
                 .NotEmpty()
                 .WithMessage("RG cannot be empty");
         }

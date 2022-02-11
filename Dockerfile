@@ -1,3 +1,4 @@
+
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
@@ -12,10 +13,6 @@ RUN dotnet restore "src/MeAgendaAi.Application/MeAgendaAi.Application.csproj"
 COPY . .
 WORKDIR "/src/src/MeAgendaAi.Application"
 RUN dotnet build "MeAgendaAi.Application.csproj" -c Release -o /app/build
-
-FROM build AS test
-WORKDIR /test
-RUN dotnet test
 
 FROM build AS publish
 RUN dotnet publish "MeAgendaAi.Application.csproj" -c Release -o /app/publish

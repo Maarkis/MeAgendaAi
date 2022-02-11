@@ -19,7 +19,7 @@ namespace MeAgendaAi.Domains.Entities.Base
             LastUpdatedAt = null;
             ValidationResult = new();
         }
-        public virtual bool Validate<T>(T entity, AbstractValidator<T> validationRules)
+        protected virtual bool Validate<T>(T entity, AbstractValidator<T> validationRules)
         {
             ValidationResult = validationRules.Validate(entity);
             return Valid = ValidationResult.IsValid;

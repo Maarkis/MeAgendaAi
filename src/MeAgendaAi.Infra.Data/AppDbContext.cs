@@ -1,5 +1,4 @@
 ﻿using MeAgendaAi.Domains.Entities;
-using MeAgendaAi.Domains.Entities.Base;
 using MeAgendaAi.Infra.Data.Maps;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +18,6 @@ namespace MeAgendaAi.Infra.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
 
             builder.Entity<User>(new UserMap().Configure);
             builder.Entity<PhysicalPerson>(new PhysicalPersonMap().Configure);

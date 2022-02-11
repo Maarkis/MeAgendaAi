@@ -21,7 +21,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
 
             response.Should().Be201Created();
         }
@@ -31,7 +31,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var requestInvalid = new AddPhysicalPersonRequestBuilder().WithNameInvalid().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), requestInvalid);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
 
             response.Should().Be400BadRequest();
         }
@@ -41,29 +41,67 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), request);
-            var content = await response.Content.ReadFromJsonAsync<ResponseBase<Guid>>();
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
+            var content = await response.Content.ReadFromJsonAsync<SuccessMessage<Guid>>();
 
             var physicalPersonInDatabase = await _dbContext.PhysicalPersons.FirstAsync(f => f.Email.Email == request.Email);
-            var responseExpected = new ResponseBase<Guid>(physicalPersonInDatabase.Id, "Cadastrado com sucesso", true);
+            var responseExpected = new SuccessMessage<Guid>(physicalPersonInDatabase.Id, "Cadastrado com sucesso");
             content.Should().BeEquivalentTo(responseExpected);
         }
 
         [Test]
-        public async Task AuthenticationAddClient_ShouldAddAPhysicalPersonTypeUserAndReturnBaseResponseWithGuidAndReturn400BadRequest()
+        public async Task AuthenticationAddClient_ShouldReturnErrorMessageWhenTryToAddAPhysicalPersonWithAnInvalidRequest()
         {
-            var requestInvalid = new AddPhysicalPersonRequestBuilder().WithNameInvalid().Generate();
-            var physicalPersonInvalid = new PhysicalPersonBuilder().ByRequest(requestInvalid).Generate();
-            var noticationContext = new NotificationContext();
-            noticationContext.AddNotifications(physicalPersonInvalid.ValidationResult);
+            var requestInvalid = new AddPhysicalPersonRequestBuilder().WithEmailInvalid().Generate();
+            var messageError = "Request: Email: Can't be empty";
+            var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<string>>();
+
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturn400BadRequestWhenTryToAddAPhysicalPersonWithAnInvalidRequest()
+        {
+            var requestInvalid = new AddPhysicalPersonRequestBuilder().WithEmailInvalid().Generate();
+            var messageError = "Request: Email: Can't be empty";
+            var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
+           
+            response.Should().Be400BadRequest();
+        }
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturnAnErrorWhenTryingToAddAnIndividualWithAlreadyRegisteredEmail()
+        {
+            var physicalPerson = new PhysicalPersonBuilder().Generate();
+            await _dbContext.PhysicalPersons.AddAsync(physicalPerson);
+            await _dbContext.SaveChangesAsync();
+            var request = new AddPhysicalPersonRequestBuilder().WithEmail(physicalPerson.Email.Email).Generate();
             var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.AddRange(noticationContext.Notifications.ToList());
+            listErrorsExpected.Add(new("Email", "Email já cadastrado"));
+            var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddPhysicalPerson"), requestInvalid);
-            var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
+            content.Should().BeEquivalentTo(responseExpected);
+        }
 
-            var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturnErrorWhenTryToAddAPhysicalPersonWithPasswordAndConfirmPasswordNotEqual()
+        {
+            var request = new AddPhysicalPersonRequestBuilder().WithConfirmPassword("different-password").Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
+            var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
+
             content.Should().BeEquivalentTo(responseExpected);
         }
     }
@@ -74,7 +112,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddCompanyRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
 
             response.Should().Be201Created();
         }
@@ -84,7 +122,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var requestInvalid = new AddCompanyRequestBuilder().WithNameInvalid().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), requestInvalid);
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), requestInvalid);
 
             response.Should().Be400BadRequest();
         }
@@ -94,31 +132,86 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddCompanyRequestBuilder().Generate();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), request);
-            var content = await response.Content.ReadFromJsonAsync<ResponseBase<Guid>>();
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
+            var content = await response.Content.ReadFromJsonAsync<SuccessMessage<Guid>>();
 
             var companyInDatabase = await _dbContext.Companies.FirstAsync(f => f.Email.Email == request.Email);
-            var responseExpected = new ResponseBase<Guid>(companyInDatabase.Id, "Cadastrado com sucesso", true);
+            var responseExpected = new SuccessMessage<Guid>(companyInDatabase.Id, "Cadastrado com sucesso");
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturnErrorMessageWhenTryToAddAPhysicalPersonWithAnInvalidRequest()
+        {
+            var requestInvalid = new AddPhysicalPersonRequestBuilder().WithEmailInvalid().Generate();
+            var messageError = "Request: Email: Can't be empty";
+            var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<string>>();
+
             content.Should().BeEquivalentTo(responseExpected);
         }
 
         [Test]
-        public async Task AuthenticationAddCompany_ShouldAddCompanyTypeUserAndReturnBaseResponseWithGuidAndReturn400BadRequest()
+        public async Task AuthenticationAddClient_ShouldReturnErrorWhenTryToAddACompanyWithLongLengthName()
         {
-            var requestInvalid = new AddCompanyRequestBuilder().WithNameInvalid().Generate();
+            var requestInvalid = new AddCompanyRequestBuilder().WithNameInvalid(100).Generate();
             var companyInvalid = new CompanyBuilder().ByRequest(requestInvalid).Generate();
             var noticationContext = new NotificationContext();
             noticationContext.AddNotifications(companyInvalid.ValidationResult);
             var listErrorsExpected = new List<Notification>();
             listErrorsExpected.AddRange(noticationContext.Notifications.ToList());
 
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), requestInvalid);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
 
-            var response = await _client.PostAsJsonAsync(AssembleRequisitionTo("Authentication", "AddCompany"), requestInvalid);
-            var content = await response.Content.ReadFromJsonAsync<ResponseBase<List<Notification>>>();
-
-            var responseExpected = new ResponseBase<List<Notification>>(listErrorsExpected, "Errors", false);
+            var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
             content.Should().BeEquivalentTo(responseExpected);
         }
 
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturnAnErrorWhenTryToAddACompanyWithAlreadyRegisteredEmail()
+        {
+            var company = new CompanyBuilder().Generate();
+            await _dbContext.Companies.AddAsync(company);
+            await _dbContext.SaveChangesAsync();
+            var request = new AddCompanyRequestBuilder().WithEmail(company.Email.Email).Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("Email", "Email já cadastrado"));
+            var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
+
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturnErrorWhenTryToAddACompanyWithPasswordAndConfirmPasswordNotEqual()
+        {
+            var request = new AddCompanyRequestBuilder().WithConfirmPassword("different-password").Generate();
+            var listErrorsExpected = new List<Notification>();
+            listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
+            var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
+            var content = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
+
+            content.Should().BeEquivalentTo(responseExpected);
+        }
+
+        [Test]
+        public async Task AuthenticationAddClient_ShouldReturn400BadRequestWhenTryToAddACompanyWithAnInvalidRequest()
+        {
+            var requestInvalid = new AddPhysicalPersonRequestBuilder().WithEmailInvalid().Generate();
+            var messageError = "Request: Email: Can't be empty";
+            var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
+
+            response.Should().Be400BadRequest();
+        }
     }
 }
