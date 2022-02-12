@@ -9,12 +9,13 @@ builder.Services
         .AddValidation<Program>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddAndConfigureSwaggerGen();
 builder.Services.ConfigureDatabaseDependencies();
 builder.Services.ConfigureDatabase(builder.Configuration.GetConnectionString("AppDb"));
 builder.Services.ConfigureServicesDependecies();
 builder.Services.ConfigureNotification();
-builder.Services.ConfigurationMiddlewareNotification();
+builder.Services.ConfigureMiddlewareNotification();
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(DefaultProfile));
 builder.Services.AddLogging(logging =>
 {
@@ -34,7 +35,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

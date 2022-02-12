@@ -4,6 +4,6 @@ namespace MeAgendaAi.Domains.Interfaces.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<User?> GetByEmail(string email);
+        Task<User?> GetEmailAsync(string email);
     }
 }

@@ -45,5 +45,22 @@ namespace MeAgendaAi.Unit.Mapping
 
             response.Should().BeEquivalentTo(responseExpected);
         }
+
+        [Test]
+        public void Mapper_ShouldMapUserToAuthenticateResponseCorrectly()
+        {
+            var user = new UserBuilder().Generate();
+            var authenticateResponseExpected = new AuthenticateResponse()
+            {
+                Id = user.Id,
+                Email = user.Email.Email,
+                CreatedAt = user.CreatedAt,
+                LastUpdatedAt = user.LastUpdatedAt
+            };
+
+            var response = _mapper.Map<AuthenticateResponse>(user);
+
+            response.Should().BeEquivalentTo(authenticateResponseExpected);
+        }
     }
 }

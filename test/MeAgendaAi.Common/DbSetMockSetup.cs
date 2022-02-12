@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Collections;
 using System.Data.Entity.Infrastructure;
@@ -20,10 +21,12 @@ namespace MeAgendaAi.Common
               .Setup(m => m.GetAsyncEnumerator())
               .Returns(new TestDbAsyncEnumerator<T>(dataToBeReturnedOnGet.GetEnumerator()));
 
-            dbMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<T>(mocks.Provider));
+            //dbMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<T>(mocks.Provider));
             dbMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(mocks.Expression);
             dbMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(mocks.ElementType);
             dbMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(mocks.GetEnumerator());
+
+            dbMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(new TestAsyncQueryProvider<T>(mocks.Provider));
 
             return dbMock;
         }
@@ -49,6 +52,41 @@ namespace MeAgendaAi.Common
         IEnumerator IEnumerable.GetEnumerator() => _mocks.GetEnumerator();
     }
 
+    internal class TestAsyncQueryProvider<TEntity> : IAsyncQueryProvider
+    {
+        private readonly IQueryProvider _inner;
+
+        internal TestAsyncQueryProvider(IQueryProvider inner)
+        {
+            _inner = inner;
+        }
+
+        public IQueryable CreateQuery(Expression expression)
+        {
+            return new TestDbAsyncEnumerable<TEntity>(expression);
+        }
+
+        public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+        {
+            return new TestDbAsyncEnumerable<TElement>(expression);
+        }
+
+        public object? Execute(Expression expression)
+        {
+            return _inner.Execute(expression);
+        }
+
+        public TResult Execute<TResult>(Expression expression)
+        {
+            return _inner.Execute<TResult>(expression);
+        }
+
+        public TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
+        {
+            return _inner.Execute<TResult>(expression);
+        }
+    }
+
     internal class TestAsyncEnumerator<T> : IAsyncEnumerator<T>
     {
         private readonly IEnumerator<T> _inner;
@@ -57,6 +95,7 @@ namespace MeAgendaAi.Common
         {
             _inner = inner;
         }
+
         public T Current
         {
             get { return _inner.Current; }
@@ -151,10 +190,12 @@ namespace MeAgendaAi.Common
 
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken) =>
             Task.FromResult(_inner.MoveNext());
+
         public T Current
         {
             get { return _inner.Current; }
         }
+
         object? IDbAsyncEnumerator.Current
         {
             get { return Current; }

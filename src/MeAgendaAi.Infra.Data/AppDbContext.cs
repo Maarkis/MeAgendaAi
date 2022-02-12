@@ -11,9 +11,9 @@ namespace MeAgendaAi.Infra.Data
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
-        public DbSet<User> Users { get; set; } = default!;
-        public DbSet<PhysicalPerson> PhysicalPersons { get; set; } = default!;
-        public DbSet<Company> Companies { get; set; } = default!;
+        public virtual DbSet<User> Users { get; set; } = default!;
+        public virtual DbSet<PhysicalPerson> PhysicalPersons { get; set; } = default!;
+        public virtual DbSet<Company> Companies { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -9,6 +9,7 @@ namespace MeAgendaAi.Application.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly IPhysicalPersonService _physicalPersonService;
         private readonly ICompanyService _companyService;
         private readonly ILogger<AuthenticationController> _logger;
@@ -16,10 +17,22 @@ namespace MeAgendaAi.Application.Controllers
         private const string ActionType = "AuthenticationController";
 
         public AuthenticationController(
+            IUserService userService,
             IPhysicalPersonService physicalPersonService,
             ICompanyService companyService,
             ILogger<AuthenticationController> logger) =>
-            (_physicalPersonService, _companyService, _logger) = (physicalPersonService, companyService, logger);
+            (_userService, _physicalPersonService, _companyService, _logger) = (userService, physicalPersonService, companyService, logger);
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Authenticate")]
+        public async Task<ActionResult> Authenticate(AuthenticateRequest request)
+        {
+            _logger.LogInformation("[{ActionType}/Authenticate] Starting user {request.Email} authentication process.", ActionType, request.Email);
+            var response = await _userService.AuthenticateAsync(request.Email, request.Password);
+            _logger.LogInformation("[{ActionType}/Authenticate] Completing the authentication process.", ActionType);
+            return Ok(response);
+        }
 
         [HttpPost]
         [AllowAnonymous]
