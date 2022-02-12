@@ -7,10 +7,10 @@ namespace MeAgendaAi.Infra.Data.Repositories
     public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly DbSet<User> _dbSet;
+
         public UserRepository(AppDbContext context) : base(context) => _dbSet = context.Set<User>();
 
-        public async Task<User?> GetByEmail(string email) =>
+        public async Task<User?> GetEmailAsync(string email) =>
             await _dbSet.Where(where => where.Email.Email == email).FirstOrDefaultAsync();
-
     }
 }

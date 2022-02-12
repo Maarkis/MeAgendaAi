@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using FluentAssertions;
+using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Infra.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using NUnit.Framework;
@@ -13,8 +14,7 @@ namespace MeAgendaAi.Unit.Segurity
         [Test]
         public void Encrypt_ShouldEncryptPasswordRandomic()
         {
-            var faker = new Faker();
-            var password = $"{faker.Lorem.Letter(faker.Random.Int(4, 8))}{faker.Random.Int(1, 999)}{faker.Lorem.Letter(faker.Random.Int(4, 8))}";
+            var password = PasswordBuilder.Generate();
             var salt = Guid.NewGuid();
             var saltBytes = Encoding.ASCII.GetBytes(salt.ToString());
             var passwordHash = KeyDerivation.Pbkdf2(

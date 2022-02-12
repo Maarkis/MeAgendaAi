@@ -11,7 +11,7 @@ namespace MeAgendaAi.Infra.CrossCutting
             return services;
         }
 
-        public static IMvcBuilder ConfigurationMiddlewareNotification(this IServiceCollection services)
+        public static IMvcBuilder ConfigureMiddlewareNotification(this IServiceCollection services)
         {
             return services.AddMvc(options => options.Filters.Add<NotificationMiddleware>());
         }

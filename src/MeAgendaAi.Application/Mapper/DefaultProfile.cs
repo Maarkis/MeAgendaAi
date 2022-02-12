@@ -8,6 +8,12 @@ namespace MeAgendaAi.Application.Mapper
     {
         public DefaultProfile()
         {
+            CreateMap<User, AuthenticateResponse>()
+                .ForMember(dest => dest.Id, option => option.MapFrom(source => source.Id))
+                .ForMember(dest => dest.Email, option => option.MapFrom(source => source.Email.Email))
+                .ForMember(dest => dest.CreatedAt, option => option.MapFrom(source => source.CreatedAt))
+                .ForMember(dest => dest.LastUpdatedAt, option => option.MapFrom(source => source.LastUpdatedAt))
+                .ForMember(dest => dest.Token, option => option.Ignore());
 
             CreateMap<PhysicalPerson, PhysicalPersonResponse>()
                 .ForMember(dest => dest.Id, option => option.MapFrom(origin => origin.Id))
@@ -25,7 +31,6 @@ namespace MeAgendaAi.Application.Mapper
                 .ForPath(dest => dest.ValidationResult, option => option.Ignore())
                 .ForPath(dest => dest.CreatedAt, option => option.Ignore())
                 .ForPath(dest => dest.LastUpdatedAt, option => option.Ignore());
-
         }
     }
 }

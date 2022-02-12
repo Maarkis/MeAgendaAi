@@ -14,14 +14,20 @@ namespace MeAgendaAi.Infra.Data.Repositories
             _context = context;
             _dbSet = context.Set<T>();
         }
-        public async Task<Guid> AddAsync(T entity)
+
+        public virtual async Task<Guid> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
-        public void Dispose() => _context.Dispose();
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
+
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

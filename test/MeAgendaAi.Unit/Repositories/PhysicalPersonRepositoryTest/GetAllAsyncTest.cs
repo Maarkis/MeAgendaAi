@@ -9,7 +9,7 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace MeAgendaAi.Unit.Repositories.CompanyRepositoryTest
+namespace MeAgendaAi.Unit.Repositories.PhysicalPersonRepositoryTest
 {
     public class GetAllAsyncTest
     {
@@ -24,16 +24,16 @@ namespace MeAgendaAi.Unit.Repositories.CompanyRepositoryTest
         }
 
         [Test]
-        public async Task GetAllAsync_ShouldInkoveToListAsyncMethodToReturnListOfCompanies()
+        public async Task GetAllAsync_ShouldInkoveToListAsyncMethodToReturnListPhysicalPersons()
         {
-            var companies = new CompanyBuilder().Generate(10);
-            _mockedDbContext.Set<Company>().AddRange(companies);
+            var physicalPersons = new PhysicalPersonBuilder().Generate(10);
+            _mockedDbContext.Set<PhysicalPerson>().AddRange(physicalPersons);
             _mockedDbContext.SaveChanges();
-            var repository = new CompanyRepository(_mockedDbContext);
+            var repository = new PhysicalPersonRepository(_mockedDbContext);
 
             var result = await repository.GetAllAsync();
 
-            result.Should().BeEquivalentTo(companies);
+            result.Should().BeEquivalentTo(physicalPersons);
         }
     }
 }
