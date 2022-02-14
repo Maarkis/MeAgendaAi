@@ -46,7 +46,7 @@ O email padrão é _admin@admin.com_ e a senha _123_ (**configuração definida 
 Ao acessar o _PgAdmin_ pela primeira vez o item **Servers** estará vazio, pois ainda não terá a configuração para se conectar-se ao banco de dados. Para configurar a conexão, siga as instruções abaixo:
 
 1. Click com o botão direito do mouse em **Servers** e acesse o menu _Create => Server_.
-2. Na guia **General** dê um nome para o servidor (_**Recomençado: MeAgendaAi**_).
+2. Na guia **General** dê um nome para o servidor (_**Recomendado: MeAgendaAi**_).
 3. Na guia **Connection**, no campo **Host/address**, digite _**postgresdb**_, preencha o campo **Port** com _**5432**_ e **Maintenance database** com _**postgres**_, caso ainda não esteja configurado.
 4. Ainda na guia **Connection**, no campo **Username**, digite _**admin**_ e no campo **Password**, digite _**123**_.
 5. Salve a configuração e neste momento, você já pode acessar o banco de dados.
