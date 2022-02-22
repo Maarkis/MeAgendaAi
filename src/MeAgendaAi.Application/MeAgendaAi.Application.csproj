@@ -6,6 +6,21 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<Choose>
+		<When Condition="'$(Configuration)' == 'Release'">
+			<ItemGroup>
+				<None Include="appsettings.Development.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+				<None Include="appsettings.json" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+				<Content Remove="appsettings.*.json;appsettings.json" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<None Include="appsettings.Development.json" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+				<None Include="appsettings.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="10.3.4"></PackageReference>

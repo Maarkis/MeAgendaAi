@@ -6,5 +6,6 @@ namespace MeAgendaAi.Domains.Interfaces.Repositories
     {
         Task<Guid> AddAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync();
+        Task<T?> GetByIdAsync(Guid Id);
     }
 }

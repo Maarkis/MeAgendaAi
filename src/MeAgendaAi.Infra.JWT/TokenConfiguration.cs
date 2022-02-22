@@ -5,7 +5,8 @@
         public const string SectionName = "TokenConfiguration";
         public string Audience { get; set; } = default!;
         public string Issuer { get; set; } = default!;
-        public int Seconds { get; set; }
+        public int ExpirationTimeInSeconds { get; set; }
+        public int RefreshTokenExpirationTimeInSeconds { get; set; }
         public bool ValidateLifeTime { get; set; }
         public bool ValidateAudience { get; set; }
         public bool ValidateIssuer { get; set; }

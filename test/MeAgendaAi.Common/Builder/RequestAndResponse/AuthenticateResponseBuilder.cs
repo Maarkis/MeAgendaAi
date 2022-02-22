@@ -48,6 +48,11 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             return builder;
         }
 
+        public static AuthenticateResponseBuilder WithRefreshToken(this AuthenticateResponseBuilder builder, string refreshToken)
+        {
+            builder.RuleFor(prop => prop.RefreshToken, () => refreshToken);
+            return builder;
+        }
         public static AuthenticateResponseBuilder FromUser(this AuthenticateResponseBuilder builder, User user)
         {
             builder.RuleFor(prop => prop.Id, () => user.Id);

@@ -4,13 +4,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Security.Principal;
 
 namespace MeAgendaAi.Infra.JWT
 {
     public interface IJSONWebTokenService
     {
-        string GenerateToken(User user);
+        JWTToken GenerateToken(User user);
 
         string? Validate(string token);
     }
@@ -22,6 +23,7 @@ namespace MeAgendaAi.Infra.JWT
         private readonly ILogger<JWTService> _logger;
         private static JwtSecurityTokenHandler Handler => new();
 
+        private const int MaxValue = 32;
         private const string ActionType = "JWTService";
 
         public JWTService(
@@ -30,12 +32,12 @@ namespace MeAgendaAi.Infra.JWT
             ILogger<JWTService> logger) =>
             (_tokenConfiguration, _signingConfiguration, _logger) = (optionsTokenConfiguration.Value, signingConfiguration, logger);
 
-        public string GenerateToken(User user)
+        public JWTToken GenerateToken(User user)
         {
             _logger.LogInformation("[{ActionType}/GenerateToken] Starting token generation process.", ActionType);
 
             var createdDate = DateTime.Now;
-            var expirationDate = createdDate.AddSeconds(_tokenConfiguration.Seconds);
+            var expirationDate = createdDate.AddSeconds(_tokenConfiguration.ExpirationTimeInSeconds);
 
             List<Claim> claims = new()
             {
@@ -45,7 +47,29 @@ namespace MeAgendaAi.Infra.JWT
             };
             var claimsIdentity = new ClaimsIdentity(new GenericIdentity(user.Id.ToString()), claims);
 
-            return CreateToken(claimsIdentity, createdDate, expirationDate);
+            return new()
+            {
+                Token = CreateToken(claimsIdentity, createdDate, expirationDate),
+                RefreshToken = CreateRefreshToken(createdDate)
+            };
+        }
+
+        private RefreshToken CreateRefreshToken(DateTime createdDate)
+        {
+            _logger.LogInformation("[{ActionType}/GenerateToken] Starting refresh token generation process.", ActionType);
+
+            string refreshToken;
+            var randomNumber = new byte[MaxValue];
+
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            refreshToken = Convert.ToBase64String(randomNumber).Replace("+", "");
+
+            return new()
+            {
+                Token = refreshToken,
+                ExpiresIn = createdDate.AddSeconds(_tokenConfiguration.RefreshTokenExpirationTimeInSeconds),
+            };
         }
 
         private string CreateToken(ClaimsIdentity claimsIdentity, DateTime createdDate, DateTime expirationDate)
