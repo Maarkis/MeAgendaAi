@@ -26,6 +26,11 @@ namespace MeAgendaAi.Common.Builder
 
     public static class PhysicalPersonBuilderExtensions
     {
+        public static PhysicalPersonBuilder WithId(this PhysicalPersonBuilder builder, Guid id)
+        {
+            builder.RuleFor(x => x.Id, () => id);
+            return builder;
+        }
         public static PhysicalPersonBuilder WithEmail(this PhysicalPersonBuilder builder, string email)
         {
             builder.RuleFor(x => x.Email, () => new EmailObjectBuilder().WithEmail(email).Generate());

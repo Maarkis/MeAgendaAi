@@ -7,6 +7,8 @@ namespace MeAgendaAi.Domains.Interfaces.Services
     {
         Task<AuthenticateResponse?> AuthenticateAsync(string email, string password);
 
+        Task<AuthenticateResponse?> AuthenticateByRefreshTokenAsync(string refreshToken);
+
         Task<User?> GetByEmailAsync(string email);
 
         Task<bool> HasUser(string email);

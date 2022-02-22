@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AutoBogus;
+using AutoMapper;
 using FluentAssertions;
 using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common;
@@ -153,10 +154,10 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var request = new AuthenticateRequestBuilder().Generate();
             var password = PasswordBuilder.Encrypt(request.Password, id);
             var user = new CompanyBuilder().WithId(id).WithPassword(password).Generate();
-            var tokenExpected = Guid.NewGuid().ToString();
+            var tokenExpected = new AutoFaker<JWTToken>().Generate();
             var authenticateResponse = new AuthenticateResponseBuilder()
                 .FromUser(user)
-                .WithToken(tokenExpected)
+                .WithToken(tokenExpected.Token)
                 .Generate();
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)))
@@ -181,10 +182,10 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var request = new AuthenticateRequestBuilder().Generate();
             var password = PasswordBuilder.Encrypt(request.Password, id);
             var user = new CompanyBuilder().WithId(id).WithPassword(password).Generate();
-            var tokenExpected = Guid.NewGuid().ToString();
+            var tokenExpected = new AutoFaker<JWTToken>().Generate();
             var authenticateResponse = new AuthenticateResponseBuilder()
                 .FromUser(user)
-                .WithToken(tokenExpected)
+                .WithToken(tokenExpected.Token)
                 .Generate();
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)))
@@ -209,10 +210,11 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var request = new AuthenticateRequestBuilder().Generate();
             var password = PasswordBuilder.Encrypt(request.Password, id);
             var user = new UserBuilder().WithId(id).WithPassword(password).Generate();
-            var tokenExpected = Guid.NewGuid().ToString();
+            var tokenExpected = new AutoFaker<JWTToken>().Generate();
             var authenticateResponse = new AuthenticateResponseBuilder()
                 .FromUser(user)
-                .WithToken(tokenExpected)
+                .WithToken(tokenExpected.Token)
+                .WithRefreshToken(tokenExpected.RefreshToken.Token)
                 .Generate();
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)))

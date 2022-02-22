@@ -13,6 +13,7 @@ namespace MeAgendaAi.Unit.Repositories.CompanyRepositoryTest
     {
         private readonly Mock<AppDbContext> _contextDb;
         private readonly Mock<DbSet<Company>> _dbSetCompany;
+
         public AddAsyncTest()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()

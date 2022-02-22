@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 
 namespace MeAgendaAi.Infra.CrossCutting
 {
-    public static class SwaggerConfiguration
+    public static class ConfigurationSwagger
     {
         public static IServiceCollection AddAndConfigureSwaggerGen(this IServiceCollection services)
         {

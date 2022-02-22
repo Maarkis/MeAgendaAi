@@ -13,7 +13,6 @@ namespace MeAgendaAi.Application.Controllers
         private readonly IPhysicalPersonService _physicalPersonService;
         private readonly ICompanyService _companyService;
         private readonly ILogger<AuthenticationController> _logger;
-
         private const string ActionType = "AuthenticationController";
 
         public AuthenticationController(
@@ -21,17 +20,41 @@ namespace MeAgendaAi.Application.Controllers
             IPhysicalPersonService physicalPersonService,
             ICompanyService companyService,
             ILogger<AuthenticationController> logger) =>
-            (_userService, _physicalPersonService, _companyService, _logger) = (userService, physicalPersonService, companyService, logger);
+            (_userService, _physicalPersonService, _companyService, _logger) =
+            (userService, physicalPersonService, companyService, logger);
 
         [HttpPost]
         [AllowAnonymous]
         [Route("Authenticate")]
-        public async Task<ActionResult> Authenticate(AuthenticateRequest request)
+        public async Task<ActionResult<SuccessMessage<AuthenticateResponse>>> Authenticate(AuthenticateRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _logger.LogInformation("[{ActionType}/Authenticate] Starting user {request.Email} authentication process.", ActionType, request.Email);
-            var response = await _userService.AuthenticateAsync(request.Email, request.Password);
+
+            var result = await _userService.AuthenticateAsync(request.Email, request.Password);
+
             _logger.LogInformation("[{ActionType}/Authenticate] Completing the authentication process.", ActionType);
-            return Ok(response);
+
+            return Ok(new SuccessMessage<AuthenticateResponse>(result!, "Successfully authenticated"));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("RefreshToken")]
+        public async Task<ActionResult<SuccessMessage<AuthenticateResponse>>> RefreshToken(string refreshToken)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _logger.LogInformation("[{ActionType}/RefreshToken] Starting refresh token authentication process.", ActionType);
+
+            var result = await _userService.AuthenticateByRefreshTokenAsync(refreshToken);
+
+            _logger.LogInformation("[{ActionType}/RefreshToken] Completing the authentication process.", ActionType);
+
+            return Ok(new SuccessMessage<AuthenticateResponse>(result!, "Successfully authenticated"));
         }
 
         [HttpPost]
@@ -44,11 +67,11 @@ namespace MeAgendaAi.Application.Controllers
 
             _logger.LogInformation("[{ActionType}/AddClient] Starting registration physical person process.", ActionType);
 
-            var response = await _physicalPersonService.AddAsync(request);
+            var result = await _physicalPersonService.AddAsync(request);
 
             _logger.LogInformation("[{ActionType}/AddClient] Completing the physical person registration process.", ActionType);
 
-            return Created("", new SuccessMessage<Guid>(response, "Cadastrado com sucesso"));
+            return Created("", new SuccessMessage<Guid>(result, "Cadastrado com sucesso"));
         }
 
         [HttpPost]
@@ -61,11 +84,11 @@ namespace MeAgendaAi.Application.Controllers
 
             _logger.LogInformation("[{ActionType}/AddCompany] Starting registration company process.", ActionType);
 
-            var response = await _companyService.AddAsync(request);
+            var result = await _companyService.AddAsync(request);
 
             _logger.LogInformation("[{ActionType}/AddCompany] Completing the company registration process.", ActionType);
 
-            return Created("", new SuccessMessage<Guid>(response, "Cadastrado com sucesso"));
+            return Created("", new SuccessMessage<Guid>(result, "Cadastrado com sucesso"));
         }
     }
 }

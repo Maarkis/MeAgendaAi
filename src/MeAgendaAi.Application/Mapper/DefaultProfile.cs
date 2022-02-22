@@ -13,7 +13,8 @@ namespace MeAgendaAi.Application.Mapper
                 .ForMember(dest => dest.Email, option => option.MapFrom(source => source.Email.Email))
                 .ForMember(dest => dest.CreatedAt, option => option.MapFrom(source => source.CreatedAt))
                 .ForMember(dest => dest.LastUpdatedAt, option => option.MapFrom(source => source.LastUpdatedAt))
-                .ForMember(dest => dest.Token, option => option.Ignore());
+                .ForMember(dest => dest.Token, option => option.Ignore())
+                .ForMember(dest => dest.RefreshToken, option => option.Ignore());
 
             CreateMap<PhysicalPerson, PhysicalPersonResponse>()
                 .ForMember(dest => dest.Id, option => option.MapFrom(origin => origin.Id))
