@@ -1,4 +1,5 @@
-﻿using MeAgendaAi.Infra.Data;
+﻿using MeAgendaAi.Infra.CrossCutting;
+using MeAgendaAi.Infra.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 
 namespace MeAgendaAi.Integration.SetUp
 {
@@ -44,9 +46,27 @@ namespace MeAgendaAi.Integration.SetUp
 
                     services.AddDbContext<AppDbContext>((options, context) =>
                     {
-                        context.UseNpgsql(_configuration.GetConnectionString(TestBase.CONNECTION_STRING_NAME));
+                        context.UseNpgsql(_configuration.GetConnectionString(TestBase.CONNECTION_STRING_DATABASE));
                     });
 
+                    var configurationRedis = new ConfigurationRedis();
+                    _configuration.GetSection(TestBase.NAME_SECTION_CACHE_DISTRIBUITED).Bind(configurationRedis);
+                    services.AddStackExchangeRedisCache(options =>
+                    {
+                        Enum.TryParse(configurationRedis.SslProtocols, ignoreCase: true, out SslProtocols sslProtocols);
+                        options.InstanceName = configurationRedis.InstanceName;                        
+                        options.ConfigurationOptions = new()
+                        {
+                            EndPoints = { configurationRedis.Host, configurationRedis.Port },
+                            ConnectRetry = configurationRedis.ConnectRetry,
+                            ConnectTimeout = configurationRedis.ConnectTimeout,
+                            KeepAlive = configurationRedis.KeepAlive,
+                            AbortOnConnectFail = configurationRedis.AbortConnect,
+                            Ssl = configurationRedis.Ssl,
+                            SslProtocols = sslProtocols,
+                            ResolveDns = configurationRedis.ResolveDns
+                        };
+                    });
                     var serviceProvider = services.BuildServiceProvider();
 
                     _serviceScope = serviceProvider.CreateScope();

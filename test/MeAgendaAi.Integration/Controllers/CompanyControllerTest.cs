@@ -20,10 +20,10 @@ namespace MeAgendaAi.Integration.Controllers
         public async Task ReportAsync_ShouldGenerateReportAndReturnStatusCode200Ok()
         {
             var companies = new CompanyBuilder().Generate(10);
-            await _dbContext.AddRangeAsync(companies);
-            await _dbContext.SaveChangesAsync();
+            await DbContext.AddRangeAsync(companies);
+            await DbContext.SaveChangesAsync();
 
-            var result = await _client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
+            var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
 
             result.Should().Be200Ok();
         }
@@ -31,7 +31,7 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_ShouldNotGenerateReportAndReturnStatusCode404NotFound()
         {
-            var result = await _client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
+            var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
 
             result.Should().Be404NotFound();
         }
@@ -39,12 +39,12 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_ShouldGenerateReportCorrectly()
         {
-            await _dbContext.AddRangeAsync(new CompanyBuilder().Generate(2));
-            await _dbContext.SaveChangesAsync();
-            var companies = await _dbContext.Companies.ToListAsync();
+            await DbContext.AddRangeAsync(new CompanyBuilder().Generate(2));
+            await DbContext.SaveChangesAsync();
+            var companies = await DbContext.Companies.ToListAsync();
             var csvExpected = CsvReport(companies);
 
-            var result = await _client.GetStreamAsync(RequisitionAssemblyFor("Company", "Report"));
+            var result = await Client.GetStreamAsync(RequisitionAssemblyFor("Company", "Report"));
 
             using var reader = new StreamReader(result);
             var csvFile = reader.ReadToEnd();            
@@ -54,12 +54,12 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_SpecificCSVSize()
         {
-            await _dbContext.AddRangeAsync(new CompanyBuilder().Generate(1));
-            await _dbContext.SaveChangesAsync();
-            var companies = await _dbContext.Companies.ToListAsync();
+            await DbContext.AddRangeAsync(new CompanyBuilder().Generate(1));
+            await DbContext.SaveChangesAsync();
+            var companies = await DbContext.Companies.ToListAsync();
             var csvExpected = CsvReport(companies);
 
-            var result = await _client.GetStreamAsync(RequisitionAssemblyFor("Company", "Report"));
+            var result = await Client.GetStreamAsync(RequisitionAssemblyFor("Company", "Report"));
 
             using var reader = new StreamReader(result);
             var csvFile = reader.ReadToEnd();
@@ -71,7 +71,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var responseExpected = new BaseMessage("Nenhuma companhia encotrada.");
 
-            var result = await _client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
+            var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
             var response = await result.Content.ReadFromJsonAsync<BaseMessage>();
 
             response.Should().BeEquivalentTo(responseExpected);
@@ -80,11 +80,11 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_ShouldGenerateReportWithNameCorrectly()
         {
-            await _dbContext.AddRangeAsync(new CompanyBuilder().Generate());
-            await _dbContext.SaveChangesAsync();            
+            await DbContext.AddRangeAsync(new CompanyBuilder().Generate());
+            await DbContext.SaveChangesAsync();            
             var nameArchiveExpected = $"\"Report_Company_{DateTime.Now.ToShortDateString()}.csv\"";
 
-            var result = await _client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
+            var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
 
             var headers = result.Content.Headers;
             headers.ContentDisposition?.FileName.Should().Be(nameArchiveExpected);            
