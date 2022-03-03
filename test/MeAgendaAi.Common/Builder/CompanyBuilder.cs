@@ -12,6 +12,7 @@ namespace MeAgendaAi.Common.Builder
     {
         public CompanyBuilder()
         {
+            RuleFor(prop => prop.Id, () => Guid.NewGuid());
             RuleFor(prop => prop.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(prop => prop.Password, faker => faker.Internet.Password());
 
@@ -31,6 +32,11 @@ namespace MeAgendaAi.Common.Builder
 
     public static class CompanyBuilderExtensions
     {
+        public static CompanyBuilder WithId(this CompanyBuilder builder, Guid id)
+        {
+            builder.RuleFor(prop => prop.Id, () => id);
+            return builder;
+        }
         public static CompanyBuilder WithName(this CompanyBuilder builder, string name)
         {
             builder.RuleFor(prop => prop.Name, () => new NameObjectBuilder().WithName(name).Generate());

@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Extensions;
 using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common.Builder;
+using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Integration.SetUp;
@@ -70,7 +72,7 @@ namespace MeAgendaAi.Integration.Controllers
             var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
 
             var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
-           
+
             response.Should().Be400BadRequest();
         }
 
@@ -104,7 +106,48 @@ namespace MeAgendaAi.Integration.Controllers
 
             content.Should().BeEquivalentTo(responseExpected);
         }
+
+        [Test]
+        public async Task Authenticate_ShouldReturn200Ok()
+        {
+            var id = Guid.NewGuid();
+            var request = new AuthenticateRequestBuilder().Generate();
+            var password = PasswordBuilder.Encrypt(request.Password, id);
+            var user = new UserBuilder().WithId(id).WithEmail(request.Email).WithPassword(password).Generate();
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "Authenticate"), request);
+
+            response.Should().Be200Ok();
+        }
+
+        [Test]
+        public async Task Authenticate_ShouldReturnAuthenticateResponseCorrectly()
+        {
+            var id = Guid.NewGuid();
+            var request = new AuthenticateRequestBuilder().Generate();
+            var password = PasswordBuilder.Encrypt(request.Password, id);
+            var user = new UserBuilder().WithId(id).WithEmail(request.Email).WithPassword(password).Generate();
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+            var authenticateResponse = new AuthenticateResponseBuilder()
+                .FromUser(user)
+                .Generate();
+
+            var response = await _client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "Authenticate"), request);
+            var result = await response.Content.ReadFromJsonAsync<AuthenticateResponse>();
+
+            result
+                .Should()
+                .BeEquivalentTo(authenticateResponse, option => option
+                    .Excluding(prop => prop.Token)
+                    .Using<DateTime>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, 1.Seconds()))
+                    .WhenTypeIs<DateTime>());
+            result?.Token.Should().NotBeNullOrEmpty();
+        }
     }
+
     public class AddCompanyAuthenticationControllerTest : TestBase
     {
         [Test]
@@ -139,7 +182,6 @@ namespace MeAgendaAi.Integration.Controllers
             var responseExpected = new SuccessMessage<Guid>(companyInDatabase.Id, "Cadastrado com sucesso");
             content.Should().BeEquivalentTo(responseExpected);
         }
-
 
         [Test]
         public async Task AuthenticationAddClient_ShouldReturnErrorMessageWhenTryToAddAPhysicalPersonWithAnInvalidRequest()

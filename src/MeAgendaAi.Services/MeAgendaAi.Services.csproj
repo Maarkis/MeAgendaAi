@@ -16,6 +16,7 @@
 		<ProjectReference Include="..\MeAgendaAi.Infra.Cryptography\MeAgendaAi.Infra.Cryptography.csproj" />
 		<ProjectReference Include="..\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj" />
 		<ProjectReference Include="..\MeAgendaAi.Infra.Extension\MeAgendaAi.Infra.Extension.csproj" />
+		<ProjectReference Include="..\MeAgendaAi.Infra.JWT\MeAgendaAi.Infra.JWT.csproj" />
 		<ProjectReference Include="..\MeAgendaAí.Infra.Notification\MeAgendaAí.Infra.Notification.csproj" />
 	</ItemGroup>
 
