@@ -8,11 +8,11 @@ namespace MeAgendaAi.Infra.JWT
         public SecurityKey Key { get; set; }
         public SigningCredentials SigningCredentials { get; set; }
 
-        private const int dwKeySize = 2048;
+        private const int DwKeySize = 2048;
 
         public SigningConfiguration()
         {
-            using (var provider = new RSACryptoServiceProvider(dwKeySize))
+            using (var provider = new RSACryptoServiceProvider(DwKeySize))
             {
                 Key = new RsaSecurityKey(provider.ExportParameters(true));
             }

@@ -30,7 +30,7 @@ namespace MeAgendaAi.Integration.Controllers
 
         [Test]
         public async Task ReportAsync_ShouldNotGenerateReportAndReturnStatusCode404NotFound()
-        {
+        {            
             var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
 
             result.Should().Be404NotFound();
@@ -69,7 +69,8 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_ShouldNotGenerateReport()
         {
-            var responseExpected = new BaseMessage("Nenhuma companhia encotrada.");
+            
+            var responseExpected = new BaseMessage("No companies found.");
 
             var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
             var response = await result.Content.ReadFromJsonAsync<BaseMessage>();

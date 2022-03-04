@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj" />
+    <ProjectReference Include="..\MeAgendaAi.Infra.Extension\MeAgendaAi.Infra.Extension.csproj" />
   </ItemGroup>
 
 </Project>

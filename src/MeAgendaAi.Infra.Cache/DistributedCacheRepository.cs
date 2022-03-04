@@ -1,4 +1,5 @@
 ﻿using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
+using MeAgendaAi.Infra.Extension.Newtonsoft;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
@@ -23,7 +24,7 @@ namespace MeAgendaAi.Infra.Cache.Repository
             if (source == null)
                 return default;
 
-            return  Deserialize<T>(source);
+            return Deserialize<T>(source);
         }
 
         public Task RemoveAsync(string key)
@@ -43,6 +44,7 @@ namespace MeAgendaAi.Infra.Cache.Repository
                 AbsoluteExpiration = expireIn,
             });
         }
+
         public async Task SetAsync<T>(string key, T value, double expireInSeconds)
         {
             await SetStringAsync(key, value, new DistributedCacheEntryOptions
@@ -74,7 +76,16 @@ namespace MeAgendaAi.Infra.Cache.Repository
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(nameof(value));
 
-            return JsonConvert.DeserializeObject<T>(value);
+            var settingsDeserializeObject = new JsonSerializerSettings()
+            {
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                ContractResolver = new CustomContractResolver()
+            };
+
+            return JsonConvert.DeserializeObject<T>(value, settingsDeserializeObject);
         }
     }
 }
