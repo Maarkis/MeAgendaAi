@@ -224,7 +224,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
                 .Verify(verify => verify.SetAsync(
                     It.Is<string>(key => key == keyExpected),
                     It.Is<IEnumerable<Company>>(companyList => companyList == companiesExpected),
-                    It.Is<double>(expireInSecond => expireInSecond == ExpireInSecondsReportCompany)), Times.Once());
+                    It.Is<double>(expireInSecond => expireInSecond == expireInSecondsExpected)), Times.Once());
         }
     }
 }
