@@ -19,8 +19,8 @@ namespace MeAgendaAi.Unit.Services.ReportTest
         [Test]
         public void ReportCompany_ShouldCorrectlyGenerateReport()
         {
-            const int quantityCompanies = 10;
-            var companies = new CompanyBuilder().Generate(quantityCompanies);
+            const int QuantityCompanies = 10;
+            var companies = new CompanyBuilder().Generate(QuantityCompanies);
             var csvExpected = CsvReport(companies);
 
             var result = _reportService.Generate<Company, CompanyMap>(companies);
@@ -48,8 +48,8 @@ namespace MeAgendaAi.Unit.Services.ReportTest
         public void ReportCompany_ShouldGenerateEmptyReportWhenListOfCompaniesZero()
         {
             var expectedCsv = "";
-            const int quantityCompanies = 0;
-            var companies = new CompanyBuilder().Generate(quantityCompanies);
+            const int QuantityCompanies = 0;
+            var companies = new CompanyBuilder().Generate(QuantityCompanies);
 
             var result = _reportService.Generate<Company, CompanyMap>(companies);
 

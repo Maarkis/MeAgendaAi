@@ -4,21 +4,21 @@ namespace MeAgendaAi.Domains.ValueObjects
 {
     public class NameObject : ValueObjects
     {
-        public string Name { get; private set; }
-        public string Surname { get; private set; } = default!;
+        public string Name { get; protected set; } = default!;
+        public string Surname { get; protected set; } = default!;
         public string FullName => $"{Name} {Surname}".Trim();
 
-        public NameObject(string name)
-        {
-            Name = name;
-            Validate(this, new NameValidator(includeSurname: false));
-        }
-
-        public NameObject(string name, string surname)
+        public NameObject(string name, string surname) : base()
         {
             Name = name;
             Surname = surname;
             Validate(this, new NameValidator(includeSurname: true));
+        }
+
+        public NameObject(string name) : base()
+        {
+            Name = name;
+            Validate(this, new NameValidator(includeSurname: false));
         }
     }
 }

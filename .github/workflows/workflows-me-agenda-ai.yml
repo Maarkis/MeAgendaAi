@@ -13,8 +13,7 @@ jobs:
       ASPNETCORE_ENVIRONMENT: Development
     strategy:
       matrix:
-        dotnet-version: ["6.0.x"]
-        redis-version: ["6"]
+        dotnet-version: ["6.0.x"]        
 
     steps:
         - name: Git checkout
@@ -37,12 +36,6 @@ jobs:
 
         - name: Initialize docker (Docker-compose)
           run: docker-compose up -d --build
-
-        - name: Start Redis
-          uses: supercharge/redis-github-action@1.4.0
-          with:
-            redis-version: ${{ matrix.redis-version }}
-            redis-container-name: "redis-meagendaai-test"
 
         - name: Test
           run: dotnet test MeAgendaAi.sln --no-restore --verbosity normal

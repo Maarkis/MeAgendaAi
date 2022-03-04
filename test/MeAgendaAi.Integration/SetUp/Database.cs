@@ -1,6 +1,7 @@
 ﻿using MeAgendaAi.Infra.Data;
 using Npgsql;
 using Respawn;
+using StackExchange.Redis;
 using System.Threading.Tasks;
 
 namespace MeAgendaAi.Integration.SetUp
@@ -22,6 +23,16 @@ namespace MeAgendaAi.Integration.SetUp
             await dbConnection.OpenAsync();
             await _checkpoint.Reset(dbConnection);
             await dbConnection.CloseAsync();
+        }
+    }
+
+    public static class DatabaseRedis
+    {
+        public static async Task CleanAsync(string host, string port)
+        {
+            var redis = ConnectionMultiplexer.Connect($"{host},{port},allowAdmin=true");
+            var server = redis.GetServer($"{host}:{port}");
+            await server.FlushDatabaseAsync();
         }
     }
 }
