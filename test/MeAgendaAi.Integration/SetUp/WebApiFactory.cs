@@ -17,24 +17,28 @@ namespace MeAgendaAi.Integration.SetUp
     [SetUpFixture]
     public class WebApiFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-        private readonly string _environment;
-        public IConfiguration _configuration = default!;
-        public IServiceScope _serviceScope = default!;
-        public IServiceProvider _serviceProvider = default!;
+        private readonly string Environment;
+        public IConfiguration Configuration = default!;
+        public IServiceScope ServiceScope = default!;
+        public IServiceProvider ServiceProvider = default!;
+        public ConfigurationRedis ConfigurationRedis = default!;
+        public string ConnectionString => Configuration.GetConnectionString(TestBase.CONNECTION_STRING_DATABASE);
 
-        public WebApiFactory(string environment = "Test") => (_environment) = (environment);
+        public WebApiFactory(string environment = "Test") => (Environment) = (environment);
+
+        
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder
-                .UseEnvironment(_environment)
+                .UseEnvironment(Environment)
                 .ConfigureAppConfiguration(config =>
                 {
-                    _configuration = new ConfigurationBuilder()
+                    Configuration = new ConfigurationBuilder()
                         .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Test.Integration.json"))
                         .Build();
 
-                    config.AddConfiguration(_configuration);
+                    config.AddConfiguration(Configuration);
                 })
                 .ConfigureServices(services =>
                 {
@@ -45,32 +49,32 @@ namespace MeAgendaAi.Integration.SetUp
                         services.Remove(descriptor);
 
                     services.AddDbContext<AppDbContext>((options, context) =>
-                    {
-                        context.UseNpgsql(_configuration.GetConnectionString(TestBase.CONNECTION_STRING_DATABASE));
+                    {   
+                        context.UseNpgsql(ConnectionString);
                     });
 
-                    var configurationRedis = new ConfigurationRedis();
-                    _configuration.GetSection(TestBase.NAME_SECTION_CACHE_DISTRIBUITED).Bind(configurationRedis);
+                    ConfigurationRedis = new ConfigurationRedis();
+                    Configuration.GetSection(TestBase.NAME_SECTION_CACHE_DISTRIBUITED).Bind(ConfigurationRedis);
                     services.AddStackExchangeRedisCache(options =>
                     {
-                        Enum.TryParse(configurationRedis.SslProtocols, ignoreCase: true, out SslProtocols sslProtocols);
-                        options.InstanceName = configurationRedis.InstanceName;                        
+                        Enum.TryParse(ConfigurationRedis.SslProtocols, ignoreCase: true, out SslProtocols sslProtocols);
+                        options.InstanceName = ConfigurationRedis.InstanceName;                        
                         options.ConfigurationOptions = new()
                         {
-                            EndPoints = { configurationRedis.Host, configurationRedis.Port },
-                            ConnectRetry = configurationRedis.ConnectRetry,
-                            ConnectTimeout = configurationRedis.ConnectTimeout,
-                            KeepAlive = configurationRedis.KeepAlive,
-                            AbortOnConnectFail = configurationRedis.AbortConnect,
-                            Ssl = configurationRedis.Ssl,
+                            EndPoints = { ConfigurationRedis.Host, ConfigurationRedis.Port },
+                            ConnectRetry = ConfigurationRedis.ConnectRetry,
+                            ConnectTimeout = ConfigurationRedis.ConnectTimeout,
+                            KeepAlive = ConfigurationRedis.KeepAlive,
+                            AbortOnConnectFail = ConfigurationRedis.AbortConnect,
+                            Ssl = ConfigurationRedis.Ssl,
                             SslProtocols = sslProtocols,
-                            ResolveDns = configurationRedis.ResolveDns
+                            ResolveDns = ConfigurationRedis.ResolveDns
                         };
                     });
                     var serviceProvider = services.BuildServiceProvider();
 
-                    _serviceScope = serviceProvider.CreateScope();
-                    _serviceProvider = _serviceScope.ServiceProvider;
+                    ServiceScope = serviceProvider.CreateScope();
+                    ServiceProvider = ServiceScope.ServiceProvider;
                 });
 
             base.ConfigureWebHost(builder);

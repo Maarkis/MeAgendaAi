@@ -1,6 +1,7 @@
 ﻿using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
+using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
@@ -16,6 +17,10 @@ namespace MeAgendaAi.Services
         private readonly NotificationContext _notificationContext;
         private readonly IReport _report;
         private readonly ILogger<CompanyService> _logger;
+        private readonly IDistributedCacheRepository _distributedCacheRepository;
+
+        private const string KeyReportCompany = "ReportCompany";
+        private const double ExpireInSecondsReportCompany = 1200;
 
         private const string ActionType = "CompanyService";
 
@@ -23,12 +28,14 @@ namespace MeAgendaAi.Services
             IUserService userService,
             ICompanyRepository companyRepository,
             NotificationContext notificationContext,
-            IReport report, ILogger<CompanyService> logger) : base(companyRepository)
+            IReport report, ILogger<CompanyService> logger,
+            IDistributedCacheRepository distributedCacheRepository) : base(companyRepository)
         {
             _userService = userService;
             _notificationContext = notificationContext;
             _report = report;
             _logger = logger;
+            _distributedCacheRepository = distributedCacheRepository;
         }
 
         public async Task<Guid> AddAsync(AddCompanyRequest request)
@@ -64,12 +71,23 @@ namespace MeAgendaAi.Services
 
         public async Task<byte[]?> ReportAsync()
         {
-            var companies = await GetAllAsync();
-            if (companies.IsEmpty())
-                return null;
+            var companies = await _distributedCacheRepository.GetAsync<IEnumerable<Company>>(KeyReportCompany);
+
+            if (companies == null)
+            {
+                companies = await GetAllAsync();
+
+                if (companies.IsEmpty())
+                    return null;
+
+                await _distributedCacheRepository.SetAsync(KeyReportCompany, companies, expireInSeconds: ExpireInSecondsReportCompany);
+            }
+
+            var report = _report.Generate<Company, CompanyMap>(companies);
 
             _logger.LogInformation("[{ActionType}/ReportAsync] Report generated successfully.", ActionType);
-            return _report.Generate<Company, CompanyMap>(companies);
+
+            return report;
         }
     }
 }
