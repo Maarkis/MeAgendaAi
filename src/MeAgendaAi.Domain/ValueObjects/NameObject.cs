@@ -8,6 +8,10 @@ namespace MeAgendaAi.Domains.ValueObjects
         public string Surname { get; protected set; } = default!;
         public string FullName => $"{Name} {Surname}".Trim();
 
+        protected NameObject()
+        {
+        }
+
         public NameObject(string name, string surname) : base()
         {
             Name = name;

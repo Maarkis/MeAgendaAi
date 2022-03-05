@@ -21,9 +21,7 @@ namespace MeAgendaAi.Services
         public Encoding Encoding => _encoding;
 
         private string _delimiter = ";";
-        public string Delimiter => _delimiter;
-
-        
+        public string Delimiter => _delimiter;        
 
         public byte[] Generate<T, EntityMap>(IEnumerable<T> entities)
             where T : Entity
