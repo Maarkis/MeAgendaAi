@@ -18,7 +18,7 @@ namespace MeAgendaAi.Application.Controllers
             (_companyService, _logger) = (companyService, logger);
 
         /// <summary>
-        ///     Method to generate company report
+        /// Generate company report.
         /// </summary>
         /// <returns>Return a company report in CSV format.</returns>
         [HttpGet]

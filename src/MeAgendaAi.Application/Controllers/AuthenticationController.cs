@@ -24,7 +24,7 @@ namespace MeAgendaAi.Application.Controllers
             (userService, physicalPersonService, companyService, logger);
 
         /// <summary>
-        ///     Method for user authentication in the system.
+        /// User authentication in the system.
         /// </summary>
         /// <param name="request">Object for authentication by email and password.</param>
         /// <returns>Return authentication object successfully.</returns>
@@ -46,7 +46,7 @@ namespace MeAgendaAi.Application.Controllers
         }
 
         /// <summary>
-        ///     Method for user authentication in the system.
+        /// User authentication in the system.
         /// </summary>
         /// <param name="refreshToken">Object for authentication by refresh token.</param>
         /// <returns>Return authentication object successfully.</returns>
@@ -68,7 +68,7 @@ namespace MeAgendaAi.Application.Controllers
         }
 
         /// <summary>
-        ///     Method for add a physical person.
+        /// Add a physical person.
         /// </summary>
         /// <param name="request">Object for add physical person</param>
         /// <returns>Return added physical id</returns>
@@ -90,7 +90,7 @@ namespace MeAgendaAi.Application.Controllers
         }
 
         /// <summary>
-        ///     Method for add a company.
+        /// Add a company.
         /// </summary>
         /// <param name="request">Object for add physical person</param>
         /// <returns>Return added company id</returns>

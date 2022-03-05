@@ -8,8 +8,9 @@ namespace MeAgendaAi.Application.Validators
     /// </summary>
     public class AddCompanyRequestValidator : AbstractValidator<AddCompanyRequest>
     {
-        const string ErrorMessageEmpty = "Can't be empty";
-        const string ErrorMessageNull = "Can't be null";
+        private const string ErrorMessageEmpty = "Can't be empty";
+        private const string ErrorMessageNull = "Can't be null";
+
         public AddCompanyRequestValidator()
         {
             RuleFor(prop => prop.Name).NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);

@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace MeAgendaAi.Infra.CrossCutting
 {
     public static class ConfigurationSwagger
     {
-        public static IServiceCollection AddAndConfigureSwaggerGen(this IServiceCollection services)
+        public static IServiceCollection AddAndConfigureSwaggerGen(this IServiceCollection services, string xmlFilename)
         {
             services.AddSwaggerGen(swaggerConfiguration =>
             {
@@ -24,7 +25,11 @@ namespace MeAgendaAi.Infra.CrossCutting
                         Name = "Use under LICX",
                         Url = new Uri("https://example.com/license"),
                     }
+
+
                 });
+
+                swaggerConfiguration.IncludeXmlComments(filePath: Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
                 swaggerConfiguration.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -47,6 +52,8 @@ namespace MeAgendaAi.Infra.CrossCutting
                     }
                 });
             });
+
+
 
             return services;
         }

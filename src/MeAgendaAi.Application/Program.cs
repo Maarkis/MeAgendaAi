@@ -1,5 +1,6 @@
 using MeAgendaAi.Application.Mapper;
 using MeAgendaAi.Infra.CrossCutting;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services
         .AddValidation<Program>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddAndConfigureSwaggerGen();
+builder.Services.AddAndConfigureSwaggerGen(xmlFilename: $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
 builder.Services.ConfigureDatabaseDependencies();
 builder.Services.ConfigureDatabase(builder.Configuration.GetConnectionString("AppDb"));
 builder.Services.ConfigureServicesDependecies();
