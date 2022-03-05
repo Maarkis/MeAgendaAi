@@ -1,5 +1,8 @@
 ﻿namespace MeAgendaAi.Domains.RequestAndResponse
 {
+    /// <summary>
+    /// Request to add a company.
+    /// </summary>
     public class AddCompanyRequest : AddUserRequest
     {
 

@@ -3,6 +3,10 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Domains.Validators.ValueObjects
 {
+
+    /// <summary>
+    /// Validation of <see cref="EmailObject"/>.
+    /// </summary>
     public class EmailValidator : AbstractValidator<EmailObject>
     {
         public EmailValidator()

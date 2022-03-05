@@ -1,6 +1,9 @@
 ﻿namespace MeAgendaAi.Domains.RequestAndResponse
 {
-    public class AddUserRequest
+    /// <summary>
+    /// Request to add a User  
+    /// </summary>
+    public abstract class AddUserRequest
     {
         public string Name { get; set; }
         public string Email { get; set; }

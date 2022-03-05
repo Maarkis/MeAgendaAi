@@ -1,5 +1,8 @@
 ﻿namespace MeAgendaAi.Domains.RequestAndResponse
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PhysicalPersonResponse
     {
         public Guid Id { get; set; } = default!;

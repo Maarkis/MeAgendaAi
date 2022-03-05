@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace MeAgendaAi.Domains.Validators.Common
 {
+    /// <summary>
+    /// Validation of Physical Person Taxpayer Registration (CPF).
+    /// </summary>
     internal class CPFValidator : AbstractValidator<string>
     {
         public CPFValidator()

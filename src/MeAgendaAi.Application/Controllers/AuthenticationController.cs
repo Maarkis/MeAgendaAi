@@ -23,6 +23,11 @@ namespace MeAgendaAi.Application.Controllers
             (_userService, _physicalPersonService, _companyService, _logger) =
             (userService, physicalPersonService, companyService, logger);
 
+        /// <summary>
+        ///     Method for user authentication in the system.
+        /// </summary>
+        /// <param name="request">Object for authentication by email and password.</param>
+        /// <returns>Return authentication object successfully.</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route("Authenticate")]
@@ -40,6 +45,11 @@ namespace MeAgendaAi.Application.Controllers
             return Ok(new SuccessMessage<AuthenticateResponse>(result!, "Successfully authenticated"));
         }
 
+        /// <summary>
+        ///     Method for user authentication in the system.
+        /// </summary>
+        /// <param name="refreshToken">Object for authentication by refresh token.</param>
+        /// <returns>Return authentication object successfully.</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route("RefreshToken")]
@@ -57,6 +67,11 @@ namespace MeAgendaAi.Application.Controllers
             return Ok(new SuccessMessage<AuthenticateResponse>(result!, "Successfully authenticated"));
         }
 
+        /// <summary>
+        ///     Method for add a physical person.
+        /// </summary>
+        /// <param name="request">Object for add physical person</param>
+        /// <returns>Return added physical id</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route("AddPhysicalPerson")]
@@ -74,6 +89,11 @@ namespace MeAgendaAi.Application.Controllers
             return Created("", new SuccessMessage<Guid>(result, "Cadastrado com sucesso"));
         }
 
+        /// <summary>
+        ///     Method for add a company.
+        /// </summary>
+        /// <param name="request">Object for add physical person</param>
+        /// <returns>Return added company id</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route("AddCompany")]

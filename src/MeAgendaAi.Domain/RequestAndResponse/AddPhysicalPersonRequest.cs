@@ -1,5 +1,8 @@
 ﻿namespace MeAgendaAi.Domains.RequestAndResponse
 {
+    /// <summary>
+    /// Request to add an physical person.
+    /// </summary>
     public class AddPhysicalPersonRequest : AddUserRequest
     {
         public string Surname { get; private set; }

@@ -3,6 +3,9 @@ using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Application.Validators
 {
+    /// <summary>
+    /// Class validator Add Company Request.
+    /// </summary>
     public class AddCompanyRequestValidator : AbstractValidator<AddCompanyRequest>
     {
         const string ErrorMessageEmpty = "Can't be empty";

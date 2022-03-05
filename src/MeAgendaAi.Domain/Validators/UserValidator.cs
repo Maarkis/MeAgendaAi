@@ -4,6 +4,10 @@ using MeAgendaAi.Domains.Validators.ValueObjects;
 
 namespace MeAgendaAi.Domains.Validators
 {
+    /// <summary>
+    /// Validation of <see cref="User"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the object being validated.</typeparam>
     public class UserValidator<T> : AbstractValidator<T> where T : User
     {
         const int LengthPasswordMinimum = 06;

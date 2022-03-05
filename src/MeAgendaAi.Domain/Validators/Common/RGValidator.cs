@@ -2,6 +2,9 @@
 
 namespace MeAgendaAi.Domains.Validators.Common
 {
+    /// <summary>
+    /// Validation of ID Card (RG).
+    /// </summary>
     public class RGValidator : AbstractValidator<string>
     {
         public RGValidator()

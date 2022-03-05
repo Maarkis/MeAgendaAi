@@ -4,6 +4,9 @@ using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Application.Mapper
 {
+    /// <summary>
+    /// Mapping profile default class
+    /// </summary>
     public class DefaultProfile : Profile
     {
         public DefaultProfile()

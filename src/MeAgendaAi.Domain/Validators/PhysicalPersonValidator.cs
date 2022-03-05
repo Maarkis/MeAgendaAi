@@ -3,6 +3,9 @@ using MeAgendaAi.Domains.Validators.Common;
 
 namespace MeAgendaAi.Domains.Validators
 {
+    /// <summary>
+    /// Validation of <see cref="PhysicalPerson"/>.
+    /// </summary>
     public class PhysicalPersonValidator : UserValidator<PhysicalPerson>
     {
         public PhysicalPersonValidator()

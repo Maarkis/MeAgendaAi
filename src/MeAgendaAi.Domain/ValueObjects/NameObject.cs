@@ -2,6 +2,9 @@
 
 namespace MeAgendaAi.Domains.ValueObjects
 {
+    /// <summary>
+    /// Represents name.
+    /// </summary>
     public class NameObject : ValueObjects
     {
         public string Name { get; protected set; } = default!;
@@ -12,6 +15,11 @@ namespace MeAgendaAi.Domains.ValueObjects
         {
         }
 
+        /// <summary>
+        /// Constructs a class that represents a name.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        /// <param name="surname">Surname.</param>
         public NameObject(string name, string surname) : base()
         {
             Name = name;
@@ -19,6 +27,10 @@ namespace MeAgendaAi.Domains.ValueObjects
             Validate(this, new NameValidator(includeSurname: true));
         }
 
+        /// <summary>
+        /// Constructs a class that represents a name.
+        /// </summary>
+        /// <param name="name">Name.</param>
         public NameObject(string name) : base()
         {
             Name = name;

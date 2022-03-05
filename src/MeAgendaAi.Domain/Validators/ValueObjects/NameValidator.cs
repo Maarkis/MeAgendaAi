@@ -3,6 +3,9 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Domains.Validators
 {
+    /// <summary>
+    /// Validation of <see cref="NameObject"/>.
+    /// </summary>
     public class NameValidator : AbstractValidator<NameObject>
     {
         public NameValidator(bool includeSurname = true)

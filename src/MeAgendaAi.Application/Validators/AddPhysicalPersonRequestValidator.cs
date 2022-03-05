@@ -3,6 +3,9 @@ using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Application.Validators
 {
+    /// <summary>
+    /// Class validator Add Physical PersonRequest.
+    /// </summary>
     public class AddPhysicalPersonRequestValidator : AbstractValidator<AddPhysicalPersonRequest>
     {
         const string ErrorMessageEmpty = "Can't be empty";
