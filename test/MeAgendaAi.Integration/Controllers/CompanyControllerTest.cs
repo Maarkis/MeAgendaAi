@@ -4,6 +4,8 @@ using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Integration.SetUp;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,8 @@ namespace MeAgendaAi.Integration.Controllers
 {
     public class CompanyControllerTest : TestBase
     {
+        private const string KeyReportCompany = "ReportCompany";
+
         [Test]
         public async Task ReportAsync_ShouldGenerateReportAndReturnStatusCode200Ok()
         {
@@ -30,7 +34,7 @@ namespace MeAgendaAi.Integration.Controllers
 
         [Test]
         public async Task ReportAsync_ShouldNotGenerateReportAndReturnStatusCode404NotFound()
-        {            
+        {
             var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
 
             result.Should().Be404NotFound();
@@ -47,7 +51,7 @@ namespace MeAgendaAi.Integration.Controllers
             var result = await Client.GetStreamAsync(RequisitionAssemblyFor("Company", "Report"));
 
             using var reader = new StreamReader(result);
-            var csvFile = reader.ReadToEnd();            
+            var csvFile = reader.ReadToEnd();
             csvFile.Should().Be(csvExpected);
         }
 
@@ -69,7 +73,6 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task ReportAsync_ShouldNotGenerateReport()
         {
-            
             var responseExpected = new BaseMessage("No companies found.");
 
             var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
@@ -82,13 +85,28 @@ namespace MeAgendaAi.Integration.Controllers
         public async Task ReportAsync_ShouldGenerateReportWithNameCorrectly()
         {
             await DbContext.AddRangeAsync(new CompanyBuilder().Generate());
-            await DbContext.SaveChangesAsync();            
+            await DbContext.SaveChangesAsync();
             var nameArchiveExpected = $"\"Report_Company_{DateTime.Now.ToShortDateString()}.csv\"";
 
             var result = await Client.GetAsync(RequisitionAssemblyFor("Company", "Report"));
 
             var headers = result.Content.Headers;
-            headers.ContentDisposition?.FileName.Should().Be(nameArchiveExpected);            
+            headers.ContentDisposition?.FileName.Should().Be(nameArchiveExpected);
+        }
+
+        [Test]
+        public async Task ReportAsync_ShouldGenerateReporCorrectlyGettingByCache()
+        {
+            var companies = new CompanyBuilder().Generate(1);
+            var companiesSerialized = JsonConvert.SerializeObject(companies);
+            await DbRedis.SetStringAsync(KeyReportCompany, companiesSerialized);
+            var csvExpected = CsvReport(companies);
+
+            var result = await Client.GetStreamAsync(RequisitionAssemblyFor("Company", "Report"));
+
+            using var reader = new StreamReader(result);
+            var csvFile = reader.ReadToEnd();
+            csvFile.Should().Be(csvExpected);
         }
 
         private string CsvReport(List<Company> companies)
@@ -97,11 +115,13 @@ namespace MeAgendaAi.Integration.Controllers
             var body = Body(header, companies);
             return body.ToString();
         }
+
         private StringBuilder Header()
         {
             var header = new StringBuilder();
             return header.Append("User Code;Name;Email;CNPJ;Description;Limit cancel hours").Append("\r\n");
         }
+
         private StringBuilder Body(StringBuilder header, List<Company> companies)
         {
             companies.ForEach(company =>
@@ -117,5 +137,5 @@ namespace MeAgendaAi.Integration.Controllers
             header.Append("\r\n");
             return header;
         }
-    }
+    } 
 }
