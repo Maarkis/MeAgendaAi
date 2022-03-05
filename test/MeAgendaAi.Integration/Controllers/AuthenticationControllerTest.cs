@@ -388,7 +388,7 @@ namespace MeAgendaAi.Integration.Controllers
             var refreshToken = Guid.NewGuid().ToString("N");
             var responseExpected = new ErrorMessage<List<Notification>>(new List<Notification>
             {
-                new Notification("Resfresh Token", "Refresh token found.")
+                new Notification("Refresh Token", "Refresh token found.")
             }, "Errors");
 
             var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RefreshToken", new Dictionary<string, string>()

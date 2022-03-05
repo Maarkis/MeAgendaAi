@@ -77,7 +77,7 @@ namespace MeAgendaAi.Services.UserServices
             if(Guid.Empty.Equals(userIdCached))
             {
                 _logger.LogError("[{ActionType}/AuthenticateByRefreshTokenAsync] Refresh token not found.", ActionType);
-                _notificationContext.AddNotification("Resfresh Token", "Refresh token found.");
+                _notificationContext.AddNotification("Refresh Token", "Refresh token found.");
                 return null;
             }
 

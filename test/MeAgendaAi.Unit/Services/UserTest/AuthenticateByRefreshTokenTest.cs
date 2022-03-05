@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace MeAgendaAi.Unit.Services.UserTest
 {
-    public class AuthenticateByRefreshToken
+    public class AuthenticateByRefreshTokenTest
     {
         private readonly Faker _faker;
         private readonly AutoMocker _mocker;
@@ -29,7 +29,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
 
         private const string ActionType = "UserService";
 
-        public AuthenticateByRefreshToken()
+        public AuthenticateByRefreshTokenTest()
         {
             _faker = new Faker();
             _mocker = new AutoMocker();
@@ -78,7 +78,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         {
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
-            var notification = new Notification("Resfresh Token", "Refresh token found.");
+            var notification = new Notification("Refresh Token", "Refresh token found.");
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)));
 
