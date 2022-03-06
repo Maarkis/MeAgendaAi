@@ -1,4 +1,4 @@
-﻿using MeAgendaAi.Infra.CrossCutting;
+﻿using MeAgendaAi.Infra.MailJet.Settings;
 using Microsoft.Extensions.Options;
 
 namespace MeAgendaAi.Infra.MailJet.Template
@@ -20,7 +20,7 @@ namespace MeAgendaAi.Infra.MailJet.Template
 
         protected int GetTemplate(string key) => Templates[key];
 
-        public string BuildUrl(string url, string id, string? token = null) =>
-            new Uri($"{url}/{id}/{token}").ToString();
+        public string BuildUrl(string url, string? token = null) =>
+            new Uri($"{url}/{token}").ToString();
     }
 }

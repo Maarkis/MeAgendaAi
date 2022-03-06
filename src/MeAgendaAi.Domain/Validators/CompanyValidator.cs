@@ -6,9 +6,8 @@ namespace MeAgendaAi.Domains.Validators
 {
     public class CompanyValidator : UserValidator<Company>
     {
-        public CompanyValidator()
+        public CompanyValidator() : base(includeSurname: false)
         {
-            RuleFor(prop => prop.Name).SetValidator(new NameValidator(includeSurname: false));
             RuleFor(prop => prop.CNPJ).SetValidator(new CNPJValidator());
             RuleFor(prop => prop.LimitCancelHours)
                 .NotEmpty().NotNull().WithMessage("Limit cancel hours cannot be empty");

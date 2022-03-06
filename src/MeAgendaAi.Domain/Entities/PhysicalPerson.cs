@@ -5,7 +5,6 @@ namespace MeAgendaAi.Domains.Entities
 {
     public class PhysicalPerson : User
     {
-        public NameObject Name { get; protected set; } = default!;
         public string CPF { get; protected set; } = default!;
         public string RG { get; protected set; } = default!;
 
@@ -13,7 +12,7 @@ namespace MeAgendaAi.Domains.Entities
         {
         }
 
-        public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(email, password)
+        public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(email, password, name)
         {
             Name = new NameObject(name, surname);
             CPF = cpf;
@@ -22,6 +21,6 @@ namespace MeAgendaAi.Domains.Entities
             Validate();
         }
 
-        public new bool Validate() => Validate(this, new PhysicalPersonValidator());
+        public bool Validate() => Validate(this, new PhysicalPersonValidator());
     }
 }

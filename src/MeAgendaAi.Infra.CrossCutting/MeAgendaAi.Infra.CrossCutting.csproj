@@ -22,7 +22,8 @@
 		<ProjectReference Include="..\MeAgendaAi.Infra.Cache\MeAgendaAi.Infra.Cache.csproj" />
 		<ProjectReference Include="..\MeAgendaAi.Infra.Data\MeAgendaAi.Infra.Data.csproj" />
 		<ProjectReference Include="..\MeAgendaAi.Infra.JWT\MeAgendaAi.Infra.JWT.csproj" />
-		<ProjectReference Include="..\MeAgendaAi.Services\MeAgendaAi.Services.csproj" />
+		<ProjectReference Include="..\MeAgendaAi.Infra.MailJet\MeAgendaAi.Infra.MailJet.csproj" />
+		<ProjectReference Include="..\MeAgendaAi.Services\MeAgendaAi.Services.csproj" />		
 		<ProjectReference Include="..\MeAgendaAí.Infra.Notification\MeAgendaAí.Infra.Notification.csproj" />
 	</ItemGroup>
 

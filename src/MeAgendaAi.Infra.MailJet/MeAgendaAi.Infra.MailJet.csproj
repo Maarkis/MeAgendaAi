@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,9 +10,4 @@
     <PackageReference Include="Mailjet.Api" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MeAgendaAi.Infra.CrossCutting\MeAgendaAi.Infra.CrossCutting.csproj" />
-  </ItemGroup>
-
 </Project>

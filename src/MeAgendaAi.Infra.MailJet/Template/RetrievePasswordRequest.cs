@@ -10,19 +10,27 @@ namespace MeAgendaAi.Infra.MailJet.Template
         private readonly string ToEmail;
         private readonly string Subject;
         private readonly string Url;
-        private readonly string ToUserId;
         private readonly string Token;
         private readonly int Expiration;
 
         private const string KeyTemplate = "reset-password";
 
-        public RetrievePasswordRequest(string toName, string toEmail, string subject, string url, string toUserId, string token, int expiration)
+        public RetrievePasswordRequest(string toName, string toEmail, string url, string token, int expiration)
+        {
+            ToName = toName;
+            ToEmail = toEmail;           
+            Url = url;
+            Token = token;
+            Expiration = expiration;
+            Subject = "Link para alteração da sua senha do Me Agenda Aí";
+        }
+
+        public RetrievePasswordRequest(string toName, string toEmail, string subject, string url, string token, int expiration)
         {
             ToName = toName;
             ToEmail = toEmail;
             Subject = subject;
             Url = url;
-            ToUserId = toUserId;
             Token = token;
             Expiration = expiration;
         }
@@ -53,7 +61,7 @@ namespace MeAgendaAi.Infra.MailJet.Template
                 {
                     {"user_name", ToName},
                     {"expiration",  Expiration},
-                    {"link_reset", BuildUrl(Url, ToUserId, Token)}
+                    {"link_reset", BuildUrl(Url, Token)}
                 });
 
             request.Property(Send.MjTemplateLanguage, true);

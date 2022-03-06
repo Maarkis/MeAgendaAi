@@ -10,12 +10,13 @@ namespace MeAgendaAi.Common.Builder
         {
             RuleFor(prop => prop.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(prop => prop.Password, faker => faker.Internet.Password());
+            RuleFor(prop => prop.Name, () => new NameObjectBuilder());
         }
 
         public override User Generate(string ruleSets = null!)
         {
             var entity = base.Generate(ruleSets);
-            entity.Validate();
+            entity.Validate(includeSurname: true);
             return entity;
         }
     }

@@ -16,5 +16,7 @@ namespace MeAgendaAi.Domains.Interfaces.Services
         bool NotSamePassword(string password, string confirmPassword);
 
         bool SamePassword(string password, string confirmPassword);
+
+        Task<string> RetrievePasswordAsync(string email);
     }
 }

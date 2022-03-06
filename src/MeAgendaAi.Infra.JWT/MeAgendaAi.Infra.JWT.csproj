@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeAgendaAi.Domain\MeAgendaAi.Domains.csproj" />
+    <ProjectReference Include="..\MeAgendaAi.Infra.Cryptography\MeAgendaAi.Infra.Cryptography.csproj" />
   </ItemGroup>
 
 </Project>

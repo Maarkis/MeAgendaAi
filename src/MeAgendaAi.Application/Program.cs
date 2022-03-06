@@ -25,7 +25,7 @@ builder.Services.AddLogging(logging =>
 });
 builder.Services.ConfigureCacheDistruitedService();
 builder.Services.ConfigureCacheDistribuited(builder.Configuration);
-builder.Services.ConfigureHttpClientMailJet(builder.Configuration);
+builder.Services.ConfigureServiceAndHttpClientMailJet(builder.Configuration);
 
 
 var app = builder.Build();
