@@ -121,9 +121,22 @@ namespace MeAgendaAi.Services.UserServices
             await _distributedCacheRepository
                 .SetAsync(identificationToken, user.Id.ToString(), expireInSeconds: PasswordResetTokenExpirationTimeInSeconds);
 
-            //var name = await GetNameUser(user.Id);
-            //var response = _emailService.SendPasswordRecoveryEmail()
+            var sended = await _emailService.SendPasswordRecoveryEmail(
+                name: user.Name.FullName,
+                email: user.Email.Email,
+                token: identificationToken,
+                expirationTime: PasswordResetTokenExpirationTimeInSeconds
+                );
 
+            var notSended = !sended;
+            if (notSended)
+            {
+                _logger.LogError("[{ActionType}/RetrievePasswordAsync] Email not sent to {email}.", ActionType, email);
+                _notificationContext.AddNotification("SendEmail", "Email not sent.");
+                return string.Empty;
+            }
+
+            _logger.LogInformation("[{ActionType}/RetrievePasswordAsync] Email successfully sent to {email}.", ActionType, email);
             return "Password recovery email sent.";
         }
     }

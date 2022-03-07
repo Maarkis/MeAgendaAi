@@ -1,4 +1,7 @@
 ﻿using Mailjet.Client;
+using MeAgendaAi.Infra.MailJet.Settings;
+using MeAgendaAi.Infra.MailJet.Template;
+using Microsoft.Extensions.Options;
 
 namespace MeAgendaAi.Infra.MailJet
 {
@@ -10,15 +13,21 @@ namespace MeAgendaAi.Infra.MailJet
     public class EmailService : IEmailService
     {
         public IMailjetClient MailjetClient { get; }
+        private readonly MailSender MailSender;
 
-        public EmailService(IMailjetClient mailjetClient)
+        public EmailService(IMailjetClient mailjetClient, IOptions<MailSender> optionsMailSender)
         {
             MailjetClient = mailjetClient;
+            MailSender = optionsMailSender.Value;
         }
 
         public Task<bool> SendPasswordRecoveryEmail(string name, string email, string token, int expirationTime)
         {
-            throw new NotImplementedException();
+            var retrievePasswordRequest = new RetrievePasswordRequest(name, email, token, expirationTime, MailSender);
+
+            var request = retrievePasswordRequest.Build();
+
+            return Send(request);
         }
 
         private async Task<bool> Send(MailjetRequest request)

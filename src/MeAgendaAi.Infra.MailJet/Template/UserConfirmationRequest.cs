@@ -1,26 +1,25 @@
 ﻿using Mailjet.Client;
 using Mailjet.Client.Resources;
+using MeAgendaAi.Infra.MailJet.Settings;
 using Newtonsoft.Json.Linq;
 
 namespace MeAgendaAi.Infra.MailJet.Template
 {
-    internal class UserConfirmationRequest : Template
+    public class UserConfirmationRequest : Template
     {
         private readonly string ToName;
         private readonly string ToEmail;
-        private readonly string Subject;
-        private readonly string Url;
         private readonly string ToUserId;
+        private readonly string Subject;
 
         private const string KeyTemplate = "user-confirmation";
 
-        public UserConfirmationRequest(string toName, string toEmail, string subject, string url, string toUserId)
+        public UserConfirmationRequest(string toName, string toEmail, string toUserId, MailSender mailSender) : base(mailSender)
         {
             ToName = toName;
             ToEmail = toEmail;
-            Subject = subject;
-            Url = url;
             ToUserId = toUserId;
+            Subject = "Confirmar meu e-mail no Me Agenda Aí";
         }
 
         public MailjetRequest Build()

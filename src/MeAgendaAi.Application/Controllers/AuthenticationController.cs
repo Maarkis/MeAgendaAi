@@ -59,6 +59,23 @@ namespace MeAgendaAi.Application.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("RetrievePassword")]
+        public async Task<ActionResult<BaseMessage>> RetrievePassword(string email)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _logger.LogInformation("[{ActionType}/RetrievePassword] Starting the password retrieve process.", ActionType);
+
+            var result = await _userService.RetrievePasswordAsync(email);
+
+            _logger.LogInformation("[{ActionType}/RetrievePassword] Completing the password retrieve process.", ActionType);
+
+            return Ok(new BaseMessage(result, true));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         [Route("AddPhysicalPerson")]
         public async Task<ActionResult<SuccessMessage<Guid>>> AddClient(AddPhysicalPersonRequest request)
         {

@@ -1,38 +1,27 @@
 ﻿using Mailjet.Client;
 using Mailjet.Client.Resources;
+using MeAgendaAi.Infra.MailJet.Settings;
 using Newtonsoft.Json.Linq;
 
 namespace MeAgendaAi.Infra.MailJet.Template
 {
-    internal class RetrievePasswordRequest : Template
+    public class RetrievePasswordRequest : Template
     {
         private readonly string ToName;
         private readonly string ToEmail;
         private readonly string Subject;
-        private readonly string Url;
         private readonly string Token;
         private readonly int Expiration;
 
         private const string KeyTemplate = "reset-password";
 
-        public RetrievePasswordRequest(string toName, string toEmail, string url, string token, int expiration)
-        {
-            ToName = toName;
-            ToEmail = toEmail;           
-            Url = url;
-            Token = token;
-            Expiration = expiration;
-            Subject = "Link para alteração da sua senha do Me Agenda Aí";
-        }
-
-        public RetrievePasswordRequest(string toName, string toEmail, string subject, string url, string token, int expiration)
+        public RetrievePasswordRequest(string toName, string toEmail, string token, int expiration, MailSender mailSender) : base(mailSender)
         {
             ToName = toName;
             ToEmail = toEmail;
-            Subject = subject;
-            Url = url;
             Token = token;
             Expiration = expiration;
+            Subject = "Link para alteração da sua senha do Me Agenda Aí";
         }
 
         public MailjetRequest Build()
@@ -60,11 +49,10 @@ namespace MeAgendaAi.Infra.MailJet.Template
                 new JObject
                 {
                     {"user_name", ToName},
-                    {"expiration",  Expiration},
+                    {"expiration",  ConvertSencondsInHour(Expiration)},
                     {"link_reset", BuildUrl(Url, Token)}
                 });
 
-            request.Property(Send.MjTemplateLanguage, true);
             return request;
         }
     }

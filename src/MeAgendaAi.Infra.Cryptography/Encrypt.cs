@@ -24,7 +24,7 @@ namespace MeAgendaAi.Infra.Cryptography
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
 
-            return ConvertBytes(randomNumber).Replace("+", "");
+            return ConvertBytes(randomNumber).Replace("+", "").Replace("/", "");
         }
 
         private static string ConvertBytes(byte[] bytes) => Convert.ToBase64String(bytes);

@@ -1,26 +1,27 @@
 ﻿using MeAgendaAi.Infra.MailJet.Settings;
-using Microsoft.Extensions.Options;
 
 namespace MeAgendaAi.Infra.MailJet.Template
 {
-    internal abstract class Template
+    public abstract class Template
     {
-        private readonly IOptions<MailSender> optionsMailSender = default!;
         protected readonly string FromEmail;
         protected readonly string FromName;
-        public Dictionary<string, int> Templates { get; }
+        protected readonly string Url;
+        protected Dictionary<string, int> Templates { get; }
 
-        public Template()
+        public Template(MailSender mailSender)
         {
-            var mailSender = optionsMailSender.Value;
             Templates = mailSender.Templates;
             FromEmail = mailSender.FromEmail;
             FromName = mailSender.FromName;
+            Url = mailSender.PortalUrl;
         }
 
         protected int GetTemplate(string key) => Templates[key];
 
-        public string BuildUrl(string url, string? token = null) =>
+        protected string BuildUrl(string url, string? token = null) =>
             new Uri($"{url}/{token}").ToString();
+
+        protected int ConvertSencondsInHour(int seconds) => TimeSpan.FromSeconds(seconds).Hours;
     }
 }

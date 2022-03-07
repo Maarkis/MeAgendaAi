@@ -20,7 +20,7 @@ namespace MeAgendaAi.Unit.Domain
             var password = PasswordBuilder.Generate();
             var name = _faker.Name.FirstName();
             var cnpj = _faker.Random.Int(15).ToString();
-            var description = _faker.Lorem.Paragraph(min: 1);
+            var description = _faker.Lorem.Word();
             var limitCancelHours = _faker.Random.Int();
 
             var company = new Company(email, password, name, cnpj, description, limitCancelHours);
