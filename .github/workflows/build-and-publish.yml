@@ -1,7 +1,7 @@
 name: Build and deploy a container to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: wep-app-meagendaai # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: meagendaai # set this to the name of your Azure Web App
 
 on:
   push:
@@ -24,16 +24,15 @@ jobs:
       - name: Log in to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          registry: ${{ secrets.REGISTRY_SERVER_URL }}
+          login-server: ${{ secrets.REGISTRY_SERVER_URL }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build and push container image to registry
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ secrets.REGISTRY_SERVER_URL }}/${{ env.AZURE_WEBAPP_NAME }}:${{ github.sha }}
-          file: ./Dockerfile
+      - name: Build container image to registry
+        run: docker build . -t ${{ secrets.REGISTRY_SERVER_URL }}/${{ env.AZURE_WEBAPP_NAME }}:${{ github.sha }}
+
+      - name: Push container image to registry
+        run: docker push ${{ secrets.REGISTRY_SERVER_URL }}/${{ env.AZURE_WEBAPP_NAME }}:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,7 +47,7 @@ jobs:
       - name: Log in to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          registry: ${{ secrets.REGISTRY_SERVER_URL }}
+          login-server: ${{ secrets.REGISTRY_SERVER_URL }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
