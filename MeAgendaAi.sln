@@ -33,6 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Integration", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0206A0E7-0C26-4255-854E-F2705AD4FA40}"
 	ProjectSection(SolutionItems) = preProject
+		CodeCoverage.runsettings.xml = CodeCoverage.runsettings.xml
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		README.md = README.md
@@ -69,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.Cache", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.6 - MailJet", "4.6 - MailJet", "{875C90F0-8B27-45A8-A35C-DC6132D58367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeAgendaAi.Infra.MailJet", "src\MeAgendaAi.Infra.MailJet\MeAgendaAi.Infra.MailJet.csproj", "{6C9843FF-D898-4A42-B3C0-74920314261D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.MailJet", "src\MeAgendaAi.Infra.MailJet\MeAgendaAi.Infra.MailJet.csproj", "{6C9843FF-D898-4A42-B3C0-74920314261D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
