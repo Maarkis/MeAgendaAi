@@ -38,7 +38,7 @@ namespace MeAgendaAi.Unit.Domain
                 Password = PasswordBuilder.Generate(),
                 Name = new NameObjectBuilder().WithoutSurname().Generate(validateSurname: false),
                 CNPJ = _faker.Random.Int(15).ToString(),
-                Description = _faker.Lorem.Paragraph(min: 1),
+                Description = _faker.Lorem.Word(),
                 LimitCancelHours = _faker.Random.Int()
             };
 
