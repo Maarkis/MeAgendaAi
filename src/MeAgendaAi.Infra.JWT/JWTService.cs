@@ -13,8 +13,6 @@ namespace MeAgendaAi.Infra.JWT
     public interface IJSONWebTokenService
     {
         JWTToken GenerateToken(User user);
-
-        string? Validate(string token);
     }
 
     public class JWTService : IJSONWebTokenService
@@ -84,23 +82,5 @@ namespace MeAgendaAi.Infra.JWT
             _logger.LogInformation("[{ActionType}/CreateToken] Token created successfully.", ActionType);
             return token;
         }
-
-        public string? Validate(string token)
-        {
-            _ = Handler.ValidateToken(token, ValidationParameters(), out SecurityToken validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            return jwtToken.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
-        }
-
-        private TokenValidationParameters ValidationParameters() => new()
-        {
-            ValidateLifetime = _tokenConfiguration.ValidateIssuer,
-            ValidateAudience = _tokenConfiguration.ValidateAudience,
-            ValidateIssuer = _tokenConfiguration.ValidateIssuer,
-            ValidIssuer = _tokenConfiguration.Issuer,
-            ValidAudience = _tokenConfiguration.Audience,
-            IssuerSigningKey = _signingConfiguration.Key
-        };
     }
 }
