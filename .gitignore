@@ -458,3 +458,9 @@ $RECYCLE.BIN/
 
 # Tools
 /tools
+
+# Starage
+/storage
+
+# Database
+/database
