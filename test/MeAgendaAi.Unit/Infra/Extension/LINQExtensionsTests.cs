@@ -6,7 +6,7 @@ using MeAgendaAi.Infra.Extension;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace MeAgendaAi.Unit.Infra
+namespace MeAgendaAi.Unit.Infra.Extension
 {
     [TestFixture]
     public class LINQExtensionsTests
