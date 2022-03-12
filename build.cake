@@ -2,9 +2,9 @@
 #tool "nuget:?package=ReportGenerator"
 #addin nuget:?package=Cake.Docker
 
-///////////////////////////////////////////////////
-///					Variables					///
-///////////////////////////////////////////////////
+
+/// Variables
+
 
 var target = Argument("target", "Report");
 var configuration = Argument("configuration", "Release");
@@ -12,11 +12,8 @@ var solution = "MeAgendaAi.sln";
 var dirTestResults = "testResults";
 var dirCoverage = $"{dirTestResults}\\coverage";
 
-///////////////////////////////////////////////////
-///					TASKS						///
-///////////////////////////////////////////////////
 
-
+/// TASKS
 Task("Docker")
 	.Description("Builds the docker image")
 	.Does(() => {
@@ -42,7 +39,7 @@ Task("Test")
 	.IsDependentOn("Build")
 	.Does(() =>
 	{
-		// Delete folder TestResults
+		// Delete folder TestResults		
 		if (System.IO.Directory.Exists(dirTestResults))		
 			System.IO.Directory.Delete(dirTestResults, true);
 
@@ -51,7 +48,7 @@ Task("Test")
 		{
 			NoRestore = true,
 			ArgumentCustomization = argument => argument.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=opencover"),
-			ResultsDirectory = "TestResults",
+			ResultsDirectory = $"./{dirTestResults}",
 			Verbosity = DotNetCoreVerbosity.Minimal
 		};
 

@@ -14,6 +14,7 @@ namespace MeAgendaAi.Common.Builder
             RuleFor(x => x.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(x => x.Password, PasswordBuilder.Generate());
             RuleFor(x => x.Name, () => new NameObjectBuilder().Generate());
+
             RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
             RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());
         }

@@ -1,5 +1,4 @@
-﻿using AutoBogus;
-using Bogus;
+﻿using Bogus;
 using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
@@ -7,18 +6,17 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder
 {
-    public class CompanyBuilder : AutoFaker<Company>
+    public class CompanyBuilder : BaseBuilderEntity<Company>
     {
         public CompanyBuilder()
         {
-            RuleFor(prop => prop.Id, () => Guid.NewGuid());
             RuleFor(prop => prop.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(prop => prop.Password, faker => faker.Internet.Password());
 
             RuleFor(prop => prop.Name, () => new NameObjectBuilder().WithoutSurname().Generate());
             RuleFor(prop => prop.CNPJ, faker => faker.Random.Int(14).ToString());
-            RuleFor(prop => prop.Description, faker => faker.Lorem.Sentences(1));
-            RuleFor(prop => prop.LimitCancelHours, faker => faker.Random.Int(1, 24));
+            RuleFor(prop => prop.Description, faker => faker.Lorem.Sentences(sentenceCount: 1));
+            RuleFor(prop => prop.LimitCancelHours, faker => faker.Random.Int(min: 1, max: 24));
         }
 
         public override Company Generate(string ruleSets = null!)
@@ -72,7 +70,6 @@ namespace MeAgendaAi.Common.Builder
             builder.RuleFor(prop => prop.CNPJ, () => cnpj);
             return builder;
         }
-
         public static CompanyBuilder WithDescription(this CompanyBuilder builder, string description)
         {
             builder.RuleFor(prop => prop.Description, () => description);

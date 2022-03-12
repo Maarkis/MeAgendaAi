@@ -8,64 +8,40 @@ using System.Collections.Generic;
 
 namespace MeAgendaAi.Unit.Infra.Extension
 {
-    [TestFixture]
-    public class LINQExtensionsTests
+    [TestFixture(typeof(string))]
+    [TestFixture(typeof(User))]
+    [TestFixture(typeof(PhysicalPerson))]
+    [TestFixture(typeof(Company))]
+    [TestFixture(typeof(NameObject))]
+    [TestFixture(typeof(EmailObject))]
+    public class LINQExtensionsTests<TType> where TType : class
     {
-        public static IEnumerable<IGenericTestCase> TypeCases()
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(100)]
+        public void IsEmpty_ShouldReturnFalseWhenTheListHasOneOrMoreItems(int quantity)
         {
-            yield return new GenericTestClass<string>();
-            yield return new GenericTestClass<User>();
-            yield return new GenericTestClass<PhysicalPerson>();
-            yield return new GenericTestClass<Company>();
-            yield return new GenericTestClass<EmailObject>();
-            yield return new GenericTestClass<NameObject>();
-        }
+            var source = CreateList(quantity);
 
-        [Test]
-        [TestCaseSource("TypeCases")]
-        public void ShouldReturnFasleWhenTheListHasOneOrMoreItems(IGenericTestCase genericTestCase) =>
-            genericTestCase.ShouldReturnFasleWhenTheListHasOneOrMoreItems();
-
-        [Test]
-        [TestCaseSource("TypeCases")]
-        public void ShouldReturnTrueWhenTheListIsEmpty(IGenericTestCase genericTestCase) =>
-            genericTestCase.ShouldReturnTrueWhenTheListIsEmpty();
-
-        [Test]
-        [TestCaseSource("TypeCases")]
-        public void ShouldReturnTrueWhenTheListIsNull(IGenericTestCase genericTestCase) =>
-            genericTestCase.ShouldReturnTrueWhenTheListIsNull();
-    }
-
-    public interface IGenericTestCase
-    {
-        void ShouldReturnFasleWhenTheListHasOneOrMoreItems();
-
-        void ShouldReturnTrueWhenTheListIsEmpty();
-
-        void ShouldReturnTrueWhenTheListIsNull();
-    }
-
-    public class GenericTestClass<TType> : IGenericTestCase where TType : class
-    {
-        public void ShouldReturnFasleWhenTheListHasOneOrMoreItems()
-        {
-            var source = CreateList(10);
             source.IsEmpty().Should().BeFalse();
         }
 
-        public void ShouldReturnTrueWhenTheListIsNull()
-        {
-            List<TType> source = null!;
-            source.IsEmpty().Should().BeTrue();
-        }
-
-        public void ShouldReturnTrueWhenTheListIsEmpty()
+        [Test]
+        public void IsEmpty_ShouldReturnTrueWhenTheListIsEmpty()
         {
             var source = CreateList(0);
+
             source.IsEmpty().Should().BeTrue();
         }
 
-        private List<TType> CreateList(int quantity) => new AutoFaker<TType>().Generate(quantity);
+        [Test]
+        public void IsEmpty_ShouldReturnTrueWhenTheListIsNull()
+        {
+            List<TType> source = null!;
+
+            source.IsEmpty().Should().BeTrue();
+        }
+
+        private static List<TType> CreateList(int quantity) => new AutoFaker<TType>().Generate(quantity);
     }
 }

@@ -28,9 +28,6 @@ namespace MeAgendaAi.Application.Controllers
         [Route("Authenticate")]
         public async Task<ActionResult<SuccessMessage<AuthenticateResponse>>> Authenticate(AuthenticateRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             _logger.LogInformation("[{ActionType}/Authenticate] Starting user {request.Email} authentication process.", ActionType, request.Email);
 
             var result = await _userService.AuthenticateAsync(request.Email, request.Password);
@@ -45,9 +42,6 @@ namespace MeAgendaAi.Application.Controllers
         [Route("RefreshToken")]
         public async Task<ActionResult<SuccessMessage<AuthenticateResponse>>> RefreshToken(string refreshToken)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             _logger.LogInformation("[{ActionType}/RefreshToken] Starting refresh token authentication process.", ActionType);
 
             var result = await _userService.AuthenticateByRefreshTokenAsync(refreshToken);
@@ -62,9 +56,6 @@ namespace MeAgendaAi.Application.Controllers
         [Route("RetrievePassword")]
         public async Task<ActionResult<BaseMessage>> RetrievePassword(string email)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             _logger.LogInformation("[{ActionType}/RetrievePassword] Starting the password retrieve process.", ActionType);
 
             var result = await _userService.RetrievePasswordAsync(email);
@@ -79,9 +70,6 @@ namespace MeAgendaAi.Application.Controllers
         [Route("AddPhysicalPerson")]
         public async Task<ActionResult<SuccessMessage<Guid>>> AddClient(AddPhysicalPersonRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             _logger.LogInformation("[{ActionType}/AddClient] Starting registration physical person process.", ActionType);
 
             var result = await _physicalPersonService.AddAsync(request);
@@ -96,9 +84,6 @@ namespace MeAgendaAi.Application.Controllers
         [Route("AddCompany")]
         public async Task<ActionResult<SuccessMessage<Guid>>> AddCompany(AddCompanyRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             _logger.LogInformation("[{ActionType}/AddCompany] Starting registration company process.", ActionType);
 
             var result = await _companyService.AddAsync(request);

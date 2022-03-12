@@ -56,19 +56,19 @@ namespace MeAgendaAi.Unit.Services.ReportTest
         }
 
         [TestCaseSource(nameof(EncondigCases))]
-        public void ReportCompany_ShouldDefineEncodeCorrectly(Encoding encoding, Encoding expectedEncondig)
+        public void ReportCompany_ShouldDefineEncodeCorrectly(Encoding encoding)
         {
             _reportService.SetEncoding(encoding);
 
-            _reportService.Encoding.Should().Be(expectedEncondig);
+            _reportService.Encoding.Should().Be(encoding);
         }
 
         private static readonly object[] EncondigCases =
         {
-            new object[] { Encoding.UTF8, Encoding.UTF8 },
-            new object[] { Encoding.UTF32, Encoding.UTF32 },
-            new object[] { Encoding.ASCII, Encoding.ASCII },
-            new object[] { Encoding.Latin1, Encoding.Latin1 }
+            new object[] { Encoding.UTF8 },
+            new object[] { Encoding.UTF32 },
+            new object[] { Encoding.ASCII },
+            new object[] { Encoding.Latin1 }
         };
     }
 

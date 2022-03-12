@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace MeAgendaAi.Infra.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class FieldNameAdjustedFromTIME_LIMITCANCELHOURSToTIME_LIMIT_CANCEL_HOURS : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

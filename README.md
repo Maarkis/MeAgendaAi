@@ -58,19 +58,7 @@ Ao acessar o _PgAdmin_ pela primeira vez o item **Servers** estará vazio, pois 
 
 ## Criando migration
 
-Antes de criar qualquer migrations, precisar instalar o tool do entity framework (ef). Pode ser instalado como uma ferramenta global ou local.
-
-**Ex. local**
-
-```bash
-dotnet tool install  dotnet-ef
-```
-
-**Ex. global**
-
-```bash
-dotnet tool install --global dotnet-ef
-```
+Antes de criar qualquer migrations, precisar instalar a ferramenta do entity framework (ef). Para mais informações consulte a instruções em [Ferramentas do .NET](#ferramentas-do-net).
 
 Para criar uma nova migration
 
@@ -99,11 +87,15 @@ Para gerar o relatório de cobertura de testes, precisamos executar o seguinte c
 
 Para abrir o relatório de cobertura de testes automaticamente:
 
-`dotnet cake`
+```bash
+dotnet cake
+```
 
 Ou
 
-`dotnet cake --target=Coverage` 
+```bash
+dotnet cake --target=Coverage
+```
 
 E navegar até a pasta **.\TestResults\coverage**.
 
@@ -120,8 +112,10 @@ Uma ferramenta .NET é um pacote NuGet que contém um aplicativo de console.
   As ferramentas da CLI (interface de linha de comando) para Entity Framework Core executar tarefas de desenvolvimento em tempo de design.
 
   - Instalação:
-
-    `dotnet tool install dotnet-ef `
+    
+    ```bash
+    dotnet tool install dotnet-ef 
+    ```
 
     Para adicionar global (para todos os projetos), coloque o argumento _--global_.
 
@@ -131,7 +125,9 @@ Uma ferramenta .NET é um pacote NuGet que contém um aplicativo de console.
 
   - Instalação:
 
-    `dotnet tool install Cake.Tool `
+    ```bash
+    dotnet tool install Cake.Tool 
+    ```
 
     Para adicionar global (para todos os projetos), coloque o argumento _--global_.
 
@@ -139,4 +135,7 @@ Uma ferramenta .NET é um pacote NuGet que contém um aplicativo de console.
 
 Para restaurar todas as ferramentas, basta executar o comando:
 
-`dotnet tool restore`
+
+```bash
+dotnet tool restore
+```

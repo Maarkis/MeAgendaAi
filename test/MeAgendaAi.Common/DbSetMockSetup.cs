@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Collections;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace MeAgendaAi.Common
 {
+    [ExcludeFromCodeCoverage]
     public static class DbSetMockSetup
     {
         public static Mock<DbSet<T>> MockIQueryable<T>(this Mock<DbSet<T>> dbMock, IEnumerable<T> dataToBeReturnedOnGet) where T : class
@@ -32,6 +34,7 @@ namespace MeAgendaAi.Common
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestOrderedQueryable<T> : IOrderedQueryable<T> where T : class
     {
         private IQueryable<T> _mocks;
@@ -52,6 +55,7 @@ namespace MeAgendaAi.Common
         IEnumerator IEnumerable.GetEnumerator() => _mocks.GetEnumerator();
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestAsyncQueryProvider<TEntity> : IAsyncQueryProvider
     {
         private readonly IQueryProvider _inner;
@@ -87,6 +91,7 @@ namespace MeAgendaAi.Common
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestAsyncEnumerator<T> : IAsyncEnumerator<T>
     {
         private readonly IEnumerator<T> _inner;
@@ -111,6 +116,7 @@ namespace MeAgendaAi.Common
             ValueTask.FromResult(_inner.MoveNext());
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDbAsyncQueryProvider<TEntity> : IDbAsyncQueryProvider
     {
         private readonly IQueryProvider _inner;
@@ -151,6 +157,7 @@ namespace MeAgendaAi.Common
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDbAsyncEnumerable<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable<T>
     {
         public TestDbAsyncEnumerable(IEnumerable<T> enumerable)
@@ -177,6 +184,7 @@ namespace MeAgendaAi.Common
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDbAsyncEnumerator<T> : IDbAsyncEnumerator<T>
     {
         private readonly IEnumerator<T> _inner;

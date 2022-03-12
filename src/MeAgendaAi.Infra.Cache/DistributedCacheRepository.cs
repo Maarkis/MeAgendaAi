@@ -1,7 +1,6 @@
 ﻿using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
-using MeAgendaAi.Infra.Extension.Newtonsoft;
+using MeAgendaAi.Infra.Extension;
 using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 
 namespace MeAgendaAi.Infra.Cache.Repository
 {
@@ -24,7 +23,7 @@ namespace MeAgendaAi.Infra.Cache.Repository
             if (source == null)
                 return default;
 
-            return Deserialize<T>(source);
+            return source.Deserialize<T>();
         }
 
         public Task RemoveAsync(string key)
@@ -58,34 +57,12 @@ namespace MeAgendaAi.Infra.Cache.Repository
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
 
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+
             options ??= new DistributedCacheEntryOptions();
 
-            await _distributedCache.SetStringAsync(key, Serialize(value), options);
-        }
-
-        private static string Serialize<T>(T value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            return JsonConvert.SerializeObject(value);
-        }
-
-        private static T? Deserialize<T>(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                throw new ArgumentNullException(nameof(value));
-
-            var settingsDeserializeObject = new JsonSerializerSettings()
-            {
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                ContractResolver = new CustomContractResolver()
-            };
-
-            return JsonConvert.DeserializeObject<T>(value, settingsDeserializeObject);
+            await _distributedCache.SetStringAsync(key, value.Serialize(), options);
         }
     }
 }
