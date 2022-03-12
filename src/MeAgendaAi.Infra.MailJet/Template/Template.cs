@@ -9,7 +9,7 @@ namespace MeAgendaAi.Infra.MailJet.Template
         protected readonly string Url;
         protected Dictionary<string, int> Templates { get; }
 
-        public Template(MailSender mailSender)
+        protected Template(MailSender mailSender)
         {
             Templates = mailSender.Templates;
             FromEmail = mailSender.FromEmail;
@@ -19,9 +19,9 @@ namespace MeAgendaAi.Infra.MailJet.Template
 
         protected int GetTemplate(string key) => Templates[key];
 
-        protected string BuildUrl(string url, string? token = null) =>
+        protected static string BuildUrl(string url, string? token = null) =>
             new Uri($"{url}/{token}").ToString();
 
-        protected int ConvertSencondsInHour(int seconds) => TimeSpan.FromSeconds(seconds).Hours;
+        protected static int ConvertSencondsInHour(int seconds) => TimeSpan.FromSeconds(seconds).Hours;
     }
 }

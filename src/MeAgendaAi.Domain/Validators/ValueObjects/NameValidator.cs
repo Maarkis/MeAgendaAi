@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MeAgendaAi.Domains.ValueObjects;
 
-namespace MeAgendaAi.Domains.Validators
+namespace MeAgendaAi.Domains.Validators.ValueObjects
 {
     public class NameValidator : AbstractValidator<NameObject>
     {
@@ -14,7 +14,7 @@ namespace MeAgendaAi.Domains.Validators
 
             if (includeSurname)
             {
-                RuleFor(prop => prop.Surname)                   
+                RuleFor(prop => prop.Surname)
                   .NotEmpty().WithMessage("Surname cannot be empty")
                   .MinimumLength(3).WithMessage("Surname must contain at least 3 characters")
                   .MaximumLength(80).WithMessage("Surname must contain a maximum of 80 characters");

@@ -2,7 +2,7 @@
 using MeAgendaAi.Infra.Extension;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace MeAgendaAi.Infra.Cache.Repository
+namespace MeAgendaAi.Infra.Cache
 {
     public class DistributedCacheRepository : IDistributedCacheRepository
     {
@@ -13,17 +13,12 @@ namespace MeAgendaAi.Infra.Cache.Repository
             _distributedCache = distributedCache;
         }
 
-        public async Task<T?> GetAsync<T>(string key)
+        public Task<T?> GetAsync<T>(string key)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
 
-            var source = await _distributedCache.GetStringAsync(key);
-
-            if (source == null)
-                return default;
-
-            return source.Deserialize<T>();
+            return GetStringAsync<T>(key);
         }
 
         public Task RemoveAsync(string key)
@@ -34,25 +29,7 @@ namespace MeAgendaAi.Infra.Cache.Repository
             return _distributedCache.RemoveAsync(key);
         }
 
-        public async Task SetAsync<T>(string key, T value) => await SetStringAsync(key, value);
-
-        public async Task SetAsync<T>(string key, T value, DateTime? expireIn = null)
-        {
-            await SetStringAsync(key, value, new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration = expireIn,
-            });
-        }
-
-        public async Task SetAsync<T>(string key, T value, double expireInSeconds)
-        {
-            await SetStringAsync(key, value, new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(expireInSeconds),
-            });
-        }
-
-        private async Task SetStringAsync<T>(string key, T value, DistributedCacheEntryOptions? options = null)
+        public Task SetAsync<T>(string key, T value, DateTime? expireIn = null)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -60,9 +37,41 @@ namespace MeAgendaAi.Infra.Cache.Repository
             if (value is null)
                 throw new ArgumentNullException(nameof(value));
 
+            return SetStringAsync(key, value, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = expireIn,
+            });
+        }
+
+        public Task SetAsync<T>(string key, T value, double expireInSeconds)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+
+            return SetStringAsync(key, value, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(expireInSeconds),
+            });
+        }
+
+        private async Task<T?> GetStringAsync<T>(string key)
+        {
+            var source = await _distributedCache.GetStringAsync(key);
+
+            if (source == null)
+                return default;
+
+            return source.Deserialize<T>();
+        }
+
+        private async Task SetStringAsync<T>(string key, T value, DistributedCacheEntryOptions? options = null)
+        {
             options ??= new DistributedCacheEntryOptions();
 
-            await _distributedCache.SetStringAsync(key, value.Serialize(), options);
+            await _distributedCache.SetStringAsync(key, value!.Serialize(), options);
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using FluentValidation.Results;
-using MeAgendaAi.Application.Notification;
+using MeAgendaAí.Infra.Notification;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Net;
-using Noti = MeAgendaAi.Application.Notification.Notification;
+using Noti = MeAgendaAí.Infra.Notification.Notification;
 
 namespace MeAgendaAi.Unit.Infra.Notification
 {

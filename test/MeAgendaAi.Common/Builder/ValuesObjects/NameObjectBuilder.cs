@@ -1,4 +1,4 @@
-﻿using MeAgendaAi.Domains.Validators;
+﻿using MeAgendaAi.Domains.Validators.ValueObjects;
 using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder.ValuesObjects

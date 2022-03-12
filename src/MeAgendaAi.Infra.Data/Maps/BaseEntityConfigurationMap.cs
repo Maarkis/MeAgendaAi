@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using MeAgendaAi.Domains.Entities.Base;
+﻿using MeAgendaAi.Domains.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Interfaces.Repositories;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAi.Services;
 using Moq;
 using Moq.AutoMock;
 using NUnit.Framework;

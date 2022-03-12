@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Results;
 using System.Net;
 
-namespace MeAgendaAi.Application.Notification
+namespace MeAgendaAí.Infra.Notification
 {
     public class NotificationContext
     {

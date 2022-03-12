@@ -6,7 +6,7 @@ using NUnit.Framework;
 using System;
 using System.Text;
 
-namespace MeAgendaAi.Unit.Segurity
+namespace MeAgendaAi.Unit.Infra.Security
 {
     public class DecryptTest
     {
@@ -18,7 +18,7 @@ namespace MeAgendaAi.Unit.Segurity
             var saltBytes = Encoding.ASCII.GetBytes(salt.ToString());
             var passwordHash = KeyDerivation.Pbkdf2(
                 password: password, salt: saltBytes,
-                prf: KeyDerivationPrf.HMACSHA256, iterationCount: 10000, numBytesRequested: (258 / 8));
+                prf: KeyDerivationPrf.HMACSHA256, iterationCount: 10000, numBytesRequested: 258 / 8);
             var passwordEncrypt = Convert.ToBase64String(passwordHash);
 
             var result = Decrypt.IsValidPassword(password, salt.ToString(), passwordEncrypt);
@@ -35,7 +35,7 @@ namespace MeAgendaAi.Unit.Segurity
             var saltBytes = Encoding.ASCII.GetBytes(salt.ToString());
             var passwordHash = KeyDerivation.Pbkdf2(
                 password: password, salt: saltBytes,
-                prf: KeyDerivationPrf.HMACSHA256, iterationCount: 10000, numBytesRequested: (258 / 8));
+                prf: KeyDerivationPrf.HMACSHA256, iterationCount: 10000, numBytesRequested: 258 / 8);
             var passwordEncrypt = new StringBuilder();
             foreach (byte bit in passwordHash)
                 passwordEncrypt.Append(bit);

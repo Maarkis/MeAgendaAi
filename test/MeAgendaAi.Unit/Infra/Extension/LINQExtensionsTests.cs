@@ -14,7 +14,7 @@ namespace MeAgendaAi.Unit.Infra.Extension
     [TestFixture(typeof(Company))]
     [TestFixture(typeof(NameObject))]
     [TestFixture(typeof(EmailObject))]
-    public class LINQExtensionsTests<TType> where TType : class
+    public class LinqExtensionsTests<TType> where TType : class
     {
         [TestCase(1)]
         [TestCase(10)]

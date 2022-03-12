@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Infra.MailJet;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
@@ -36,7 +36,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             _mocker.Get<NotificationContext>().Clear();
             _mocker.GetMock<ILogger<UserService>>().Reset();
             _mocker.GetMock<IDistributedCacheRepository>().Reset();
-            _mocker.GetMock<IEmailService>().Reset();            
+            _mocker.GetMock<IEmailService>().Reset();
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
                 .Verify(verify => verify.SetAsync(
                     It.IsAny<string>(),
                     It.Is<string>(value => value == id.ToString()),
-                    It.Is<double>(expireInSeconds => expireInSeconds == ExpirationTimeTokenInSeconds)), Times.Once()); ;
+                    It.Is<double>(expireInSeconds => expireInSeconds == ExpirationTimeTokenInSeconds)), Times.Once());
         }
 
         [Test]

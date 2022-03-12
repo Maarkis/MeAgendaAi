@@ -12,13 +12,14 @@ namespace MeAgendaAi.Domains.Entities.Base
         public bool Invalid => !Valid;
         public ValidationResult ValidationResult { get; protected set; }
 
-        public Entity()
+        protected Entity()
         {
             Id = Guid.NewGuid();
             CreatedAt = DateTime.Now;
             LastUpdatedAt = null;
             ValidationResult = new();
         }
+
         protected virtual bool Validate<T>(T entity, AbstractValidator<T> validationRules)
         {
             ValidationResult = validationRules.Validate(entity);

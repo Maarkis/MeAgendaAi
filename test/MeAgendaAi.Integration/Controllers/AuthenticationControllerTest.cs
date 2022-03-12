@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Extensions;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
 using MeAgendaAi.Domains.RequestAndResponse;
+using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Integration.SetUp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -70,8 +70,6 @@ namespace MeAgendaAi.Integration.Controllers
         public async Task AuthenticationAddClient_ShouldReturn400BadRequestWhenTryToAddAPhysicalPersonWithAnInvalidRequest()
         {
             var requestInvalid = new AddPhysicalPersonRequestBuilder().WithEmailInvalid().Generate();
-            var messageError = "Request: Email: Can't be empty";
-            var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
 
@@ -85,8 +83,10 @@ namespace MeAgendaAi.Integration.Controllers
             await DbContext.PhysicalPersons.AddAsync(physicalPerson);
             await DbContext.SaveChangesAsync();
             var request = new AddPhysicalPersonRequestBuilder().WithEmail(physicalPerson.Email.Email).Generate();
-            var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.Add(new("Email", "Email já cadastrado"));
+            var listErrorsExpected = new List<Notification>
+            {
+                new("Email", "Email já cadastrado")
+            };
             var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
@@ -99,8 +99,10 @@ namespace MeAgendaAi.Integration.Controllers
         public async Task AuthenticationAddClient_ShouldReturnErrorWhenTryToAddAPhysicalPersonWithPasswordAndConfirmPasswordNotEqual()
         {
             var request = new AddPhysicalPersonRequestBuilder().WithConfirmPassword("different-password").Generate();
-            var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
+            var listErrorsExpected = new List<Notification>
+            {
+                new("ConfirmPassword", "Senha de confirmação não é igual a senha")
+            };
             var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
@@ -182,8 +184,10 @@ namespace MeAgendaAi.Integration.Controllers
             await DbContext.Companies.AddAsync(company);
             await DbContext.SaveChangesAsync();
             var request = new AddCompanyRequestBuilder().WithEmail(company.Email.Email).Generate();
-            var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.Add(new("Email", "E-mail already registered."));
+            var listErrorsExpected = new List<Notification>
+            {
+                new("Email", "E-mail already registered.")
+            };
             var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
@@ -196,8 +200,10 @@ namespace MeAgendaAi.Integration.Controllers
         public async Task AuthenticationAddClient_ShouldReturnErrorWhenTryToAddACompanyWithPasswordAndConfirmPasswordNotEqual()
         {
             var request = new AddCompanyRequestBuilder().WithConfirmPassword("different-password").Generate();
-            var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.Add(new("ConfirmPassword", "Confirmation password is not the same as password."));
+            var listErrorsExpected = new List<Notification>
+            {
+                new("ConfirmPassword", "Confirmation password is not the same as password.")
+            };
             var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
@@ -210,8 +216,6 @@ namespace MeAgendaAi.Integration.Controllers
         public async Task AuthenticationAddClient_ShouldReturn400BadRequestWhenTryToAddACompanyWithAnInvalidRequest()
         {
             var requestInvalid = new AddPhysicalPersonRequestBuilder().WithEmailInvalid().Generate();
-            var messageError = "Request: Email: Can't be empty";
-            var responseExpected = new ErrorMessage<string>(messageError, "Invalid requisition");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), requestInvalid);
 
@@ -288,10 +292,6 @@ namespace MeAgendaAi.Integration.Controllers
             var user = new UserBuilder().WithId(id).WithEmail(request.Email).Generate();
             await DbContext.Users.AddAsync(user);
             await DbContext.SaveChangesAsync();
-            var responseExpected = new ErrorMessage<List<Notification>>(new List<Notification>()
-            {
-                new Notification("User", "Wrong password.")
-            }, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "Authenticate"), request);
 

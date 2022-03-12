@@ -66,8 +66,6 @@ namespace MeAgendaAi.Unit.ValueObjects
         public void ShouldCreatedAnInvalidInstanceOfNameObjectWithErrorsInNameProperty(string messageError, int lengthSurname)
         {
             var name = Faker.Random.String(lengthSurname);
-            var surname = Faker.Name.LastName();
-            var fullNameExpected = $"{name} {surname}";
 
             var nameObject = new NameObject(name);
 
@@ -85,7 +83,6 @@ namespace MeAgendaAi.Unit.ValueObjects
         {
             var name = Faker.Name.FirstName();
             var surname = Faker.Random.String2(lengthSurname);
-            var fullNameExpected = $"{name} {surname}";
 
             var nameObject = new NameObject(name, surname);
 

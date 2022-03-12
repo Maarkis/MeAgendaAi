@@ -10,13 +10,13 @@ using System;
 
 namespace MeAgendaAi.Unit.Infra.Jwt
 {
-    public class JWTServiceTest
+    public class JwtService
     {
         private readonly AutoMocker _mocker;
         private readonly TokenConfiguration _tokenConfiguration;
-        private readonly JWTService _jwtService;
+        private readonly MeAgendaAi.Infra.JWT.JwtService _jwtService;
 
-        public JWTServiceTest()
+        public JwtService()
         {
             _mocker = new AutoMocker();
             _tokenConfiguration = new AutoFaker<TokenConfiguration>()
@@ -26,7 +26,7 @@ namespace MeAgendaAi.Unit.Infra.Jwt
             _mocker.GetMock<IOptions<TokenConfiguration>>()
                 .Setup(setup => setup.Value)
                 .Returns(_tokenConfiguration);
-            _jwtService = _mocker.CreateInstance<JWTService>();
+            _jwtService = _mocker.CreateInstance<MeAgendaAi.Infra.JWT.JwtService>();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace MeAgendaAi.Unit.Infra.Jwt
 
             var token = _jwtService.GenerateToken(user);
 
-            token.Should().BeOfType<JWTToken>();
+            token.Should().BeOfType<JwtToken>();
         }
 
         [Test]
@@ -54,7 +54,6 @@ namespace MeAgendaAi.Unit.Infra.Jwt
         [Test]
         public void GenerateToken_ShouldRefreshTokenNotNull()
         {
-
             var id = Guid.NewGuid();
             var user = new UserBuilder().WithId(id).Generate();
 

@@ -2,7 +2,7 @@
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Interfaces.Repositories;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAi.Services;
 using Moq;
 using Moq.AutoMock;
 using NUnit.Framework;
@@ -56,7 +56,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
                 .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);
 
-            var response = await _userService.HasUser(email);
+            _ = await _userService.HasUser(email);
 
             _mocker.GetMock<IUserRepository>().Verify(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)), Times.Once());
         }

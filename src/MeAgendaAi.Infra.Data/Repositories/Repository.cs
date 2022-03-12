@@ -9,7 +9,7 @@ namespace MeAgendaAi.Infra.Data.Repositories
         private readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(AppDbContext context)
+        protected Repository(AppDbContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();
@@ -26,9 +26,15 @@ namespace MeAgendaAi.Infra.Data.Repositories
 
         public virtual async Task<T?> GetByIdAsync(Guid Id) => await _dbSet.FirstOrDefaultAsync(user => user.Id == Id);
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+                _context.Dispose();
+        }
+
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
     }

@@ -2,10 +2,10 @@
 {
     public class AddCompanyRequest : AddUserRequest
     {
-
         public string CNPJ { get; set; }
         public string Description { get; set; }
         public int LimitCancelHours { get; set; }
+
         public AddCompanyRequest(
             string name,
             string email,

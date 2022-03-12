@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using MeAgendaAi.Common.Builder.Common;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAi.Services;
 using Moq.AutoMock;
 using NUnit.Framework;
 

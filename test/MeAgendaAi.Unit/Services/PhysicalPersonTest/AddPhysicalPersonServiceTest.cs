@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Services;
+using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -56,7 +56,6 @@ namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
         public void AddPhysicalPerson_ShouldAddNotificationWhenHasUserReturnTrue()
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
-            var physicalPerson = new PhysicalPersonBuilder().ByRequest(request).Generate();
             var notification = new Notification("Email", "Email já cadastrado");
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
@@ -237,7 +236,7 @@ namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
                 .Setup(method => method.AddAsync(It.IsAny<PhysicalPerson>()))
                 .ReturnsAsync(physicalPerson.Id);
 
-            var response = await _physicalPersonService.AddAsync(request);
+            _ = await _physicalPersonService.AddAsync(request);
 
             _mocker.GetMock<ILogger<PhysicalPersonService>>().VerifyLog(LogLevel.Information, logMessageExpected);
         }

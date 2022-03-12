@@ -1,7 +1,6 @@
 ﻿using AutoBogus;
 using AutoMapper;
 using FluentAssertions;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.Common;
@@ -10,7 +9,8 @@ using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.JWT;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
@@ -154,22 +154,18 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var request = new AuthenticateRequestBuilder().Generate();
             var password = PasswordBuilder.Encrypt(request.Password, id);
             var user = new CompanyBuilder().WithId(id).WithPassword(password).Generate();
-            var tokenExpected = new AutoFaker<JWTToken>().Generate();
-            var authenticateResponse = new AuthenticateResponseBuilder()
-                .FromUser(user)
-                .WithToken(tokenExpected.Token)
-                .Generate();
+            var tokenExpected = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)))
                 .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenExpected);
 
-            var response = await _userService.AuthenticateAsync(request.Email, request.Password);
+            _ = await _userService.AuthenticateAsync(request.Email, request.Password);
 
             _mocker.GetMock<IMapper>()
                 .Verify(verify => verify.Map<AuthenticateResponse>(It.Is<User>(u => u == user)), Times.Once());
@@ -182,24 +178,20 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var request = new AuthenticateRequestBuilder().Generate();
             var password = PasswordBuilder.Encrypt(request.Password, id);
             var user = new CompanyBuilder().WithId(id).WithPassword(password).Generate();
-            var tokenExpected = new AutoFaker<JWTToken>().Generate();
-            var authenticateResponse = new AuthenticateResponseBuilder()
-                .FromUser(user)
-                .WithToken(tokenExpected.Token)
-                .Generate();
+            var tokenExpected = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)))
                 .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenExpected);
 
-            var response = await _userService.AuthenticateAsync(request.Email, request.Password);
+            _ = await _userService.AuthenticateAsync(request.Email, request.Password);
 
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Verify(verify => verify.GenerateToken(It.Is<User>(u => u == user)), Times.Once());
         }
 
@@ -210,7 +202,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var request = new AuthenticateRequestBuilder().Generate();
             var password = PasswordBuilder.Encrypt(request.Password, id);
             var user = new UserBuilder().WithId(id).WithPassword(password).Generate();
-            var tokenExpected = new AutoFaker<JWTToken>().Generate();
+            var tokenExpected = new AutoFaker<JwtToken>().Generate();
             var authenticateResponse = new AuthenticateResponseBuilder()
                 .FromUser(user)
                 .WithToken(tokenExpected.Token)
@@ -222,7 +214,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenExpected);
 

@@ -109,20 +109,20 @@ namespace MeAgendaAi.Integration.Controllers
             csvFile.Should().Be(csvExpected);
         }
 
-        private string CsvReport(List<Company> companies)
+        private static string CsvReport(List<Company> companies)
         {
             var header = Header();
             var body = Body(header, companies);
             return body.ToString();
         }
 
-        private StringBuilder Header()
+        private static StringBuilder Header()
         {
             var header = new StringBuilder();
             return header.Append("User Code;Name;Email;CNPJ;Description;Limit cancel hours").Append("\r\n");
         }
 
-        private StringBuilder Body(StringBuilder header, List<Company> companies)
+        private static StringBuilder Body(StringBuilder header, List<Company> companies)
         {
             companies.ForEach(company =>
             {
@@ -137,5 +137,5 @@ namespace MeAgendaAi.Integration.Controllers
             header.Append("\r\n");
             return header;
         }
-    } 
+    }
 }

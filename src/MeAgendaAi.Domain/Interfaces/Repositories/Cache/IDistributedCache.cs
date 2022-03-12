@@ -4,8 +4,6 @@
     {
         Task<T?> GetAsync<T>(string key);
 
-        Task SetAsync<T>(string key, T value);
-
         Task SetAsync<T>(string key, T value, DateTime? expireIn = null);
 
         Task SetAsync<T>(string key, T value, double expireInSeconds);

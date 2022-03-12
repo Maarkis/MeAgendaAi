@@ -32,9 +32,9 @@ namespace MeAgendaAi.Infra.Data.Maps
                 .Ignore(prop => prop.Valid)
                 .Ignore(prop => prop.Invalid);
 
-            builder.OwnsOne(prop => prop.Name)                
+            builder.OwnsOne(prop => prop.Name)
                 .Property(prop => prop.Name)
-                .IsRequired(true)                
+                .IsRequired(true)
                 .HasColumnType("varchar(60)")
                 .HasMaxLength(60)
                 .HasColumnName($"NM_FIRST_NAME");

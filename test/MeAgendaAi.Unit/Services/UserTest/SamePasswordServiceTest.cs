@@ -1,18 +1,13 @@
 ﻿using FluentAssertions;
 using MeAgendaAi.Common.Builder.Common;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAi.Services;
 using Moq.AutoMock;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeAgendaAi.Unit.Services.UserTest
 {
     public class SamePasswordServiceTest
-    {        
+    {
         private readonly UserService _userService;
 
         public SamePasswordServiceTest()
@@ -20,6 +15,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var _mocker = new AutoMocker();
             _userService = _mocker.CreateInstance<UserService>();
         }
+
         [Test]
         public void SamePassword_PasswordAndConfirmPasswordShouldTheSameAndReturnTrue()
         {

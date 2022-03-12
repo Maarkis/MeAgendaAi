@@ -8,20 +8,20 @@ namespace MeAgendaAi.Infra.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);            
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public virtual DbSet<User> Users { get; set; } = default!;
         public virtual DbSet<PhysicalPerson> PhysicalPersons { get; set; } = default!;
         public virtual DbSet<Company> Companies { get; set; } = default!;
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            builder.Entity<User>(new UserMap().Configure);
-            builder.Entity<PhysicalPerson>(new PhysicalPersonMap().Configure);
-            builder.Entity<Company>(new CompanyMap().Configure);
+            modelBuilder.Entity<User>(new UserMap().Configure);
+            modelBuilder.Entity<PhysicalPerson>(new PhysicalPersonMap().Configure);
+            modelBuilder.Entity<Company>(new CompanyMap().Configure);
         }
     }
 }

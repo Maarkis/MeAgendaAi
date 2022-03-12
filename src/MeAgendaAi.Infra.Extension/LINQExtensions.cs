@@ -1,6 +1,6 @@
 ﻿namespace MeAgendaAi.Infra.Extension
 {
-    public static class LINQExtensions
+    public static class LinqExtensions
     {
         public static bool IsEmpty<TSource>(this IEnumerable<TSource> source)
         {

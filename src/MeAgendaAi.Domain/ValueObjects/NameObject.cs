@@ -1,4 +1,4 @@
-﻿using MeAgendaAi.Domains.Validators;
+﻿using MeAgendaAi.Domains.Validators.ValueObjects;
 
 namespace MeAgendaAi.Domains.ValueObjects
 {
@@ -16,12 +16,14 @@ namespace MeAgendaAi.Domains.ValueObjects
         {
             Name = name;
             Surname = surname;
+
             Validate(this, new NameValidator(includeSurname: true));
         }
 
         public NameObject(string name) : base()
         {
             Name = name;
+
             Validate(this, new NameValidator(includeSurname: false));
         }
     }

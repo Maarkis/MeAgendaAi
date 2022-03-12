@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MeAgendaAi.Infra.Cryptography
 {
-    public class Encrypt
+    public static class Encrypt
     {
         private const int HasingInterationsCount = 10000;
         private const int BytesRequested = (256 / 8);

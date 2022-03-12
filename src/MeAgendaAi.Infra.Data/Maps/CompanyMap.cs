@@ -7,7 +7,7 @@ namespace MeAgendaAi.Infra.Data.Maps
     public class CompanyMap : IEntityTypeConfiguration<Company>
     {
         private const string ENTITY_NAME = "COMPANY";
-        private const string TABLE_NAME = $"TB_{ENTITY_NAME}";        
+        private const string TABLE_NAME = $"TB_{ENTITY_NAME}";
         private const string INDEX_TABLE_NAME = $"IN_{ENTITY_NAME}";
 
         public void Configure(EntityTypeBuilder<Company> builder)
