@@ -5,7 +5,7 @@
 - Versão .NET: [6.0](https://dotnet.microsoft.com/download/dotnet/6.0)
 - Banco de dados: [PostgreSQL](https://www.postgresql.org/).
 - Framework de manipulação de dados: [Entity Framework](https://entityframework.net/).
-- Framework de testes: [xUnit](https://docs.nunit.org/).
+- Framework de testes: [NUnit](https://docs.nunit.org/).
 - Framework de Mock: [Moq](https://documentation.help/Moq/).
 - Framework de Assert: [FluentAssertions](https://fluentassertions.com/).
 - Framework de Data Generator: [Bogus](https://www.nuget.org/packages/Bogus/).
