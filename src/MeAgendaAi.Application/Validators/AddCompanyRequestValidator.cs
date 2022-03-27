@@ -14,8 +14,8 @@ namespace MeAgendaAi.Application.Validators
             RuleFor(prop => prop.Password).NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
             RuleFor(prop => prop.ConfirmPassword).NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
             RuleFor(prop => prop.CNPJ).NotEmpty().NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
-            RuleFor(prop => prop.Description).NotEmpty().NotNull().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
-            RuleFor(prop => prop.LimitCancelHours).NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
+            RuleFor(prop => prop.Description).NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
+            RuleFor(prop => prop.LimitCancelHours).NotEmpty().WithMessage(ErrorMessageEmpty);
         }
     }
 }
