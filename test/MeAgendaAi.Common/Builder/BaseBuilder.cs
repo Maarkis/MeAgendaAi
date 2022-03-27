@@ -7,7 +7,7 @@ namespace MeAgendaAi.Common.Builder
 {
     public class BaseBuilderEntity<T> : AutoFaker<T> where T : Entity
     {
-        public BaseBuilderEntity()
+        public BaseBuilderEntity() : base("pt_BR")
         {
             RuleFor(prop => prop.Id, () => Guid.NewGuid());
             RuleFor(prop => prop.Valid, () => true);
@@ -21,16 +21,19 @@ namespace MeAgendaAi.Common.Builder
             RuleFor(prop => prop.Valid, () => valid);
             return this;
         }
+
         public BaseBuilderEntity<T> WithValidationResult(ValidationResult validationResult)
         {
             RuleFor(prop => prop.ValidationResult, () => validationResult);
             return this;
         }
+
         public BaseBuilderEntity<T> WithCreatedAt(DateTime createAt)
         {
             RuleFor(prop => prop.CreatedAt, () => createAt);
             return this;
         }
+
         public BaseBuilderEntity<T> WithLastUpdatedAt(DateTime lastUpdatedAt)
         {
             RuleFor(prop => prop.LastUpdatedAt, () => lastUpdatedAt);
@@ -51,6 +54,7 @@ namespace MeAgendaAi.Common.Builder
             RuleFor(prop => prop.Valid, () => valid);
             return this;
         }
+
         public BaseBuilderValueObject<T> WithValidationResult(ValidationResult validationResult)
         {
             RuleFor(prop => prop.ValidationResult, () => validationResult);
@@ -58,4 +62,3 @@ namespace MeAgendaAi.Common.Builder
         }
     }
 }
-

@@ -125,7 +125,34 @@ namespace MeAgendaAi.Infra.Data.Migrations
                                 .HasForeignKey("UserId");
                         });
 
+                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.NameObject", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("NM_FIRST_NAME");
+
+                            b1.Property<string>("Surname")
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("NM_LAST_NAME");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("TB_USERS");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.Navigation("Email")
+                        .IsRequired();
+
+                    b.Navigation("Name")
                         .IsRequired();
                 });
 
@@ -136,28 +163,6 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .HasForeignKey("MeAgendaAi.Domains.Entities.Company", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.NameObject", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("CompanyId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(60)
-                                .HasColumnType("varchar(60)")
-                                .HasColumnName("NM_NAME");
-
-                            b1.HasKey("CompanyId");
-
-                            b1.ToTable("TB_COMPANY");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CompanyId");
-                        });
-
-                    b.Navigation("Name")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MeAgendaAi.Domains.Entities.PhysicalPerson", b =>
@@ -166,34 +171,6 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .WithOne()
                         .HasForeignKey("MeAgendaAi.Domains.Entities.PhysicalPerson", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.NameObject", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("PhysicalPersonId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(60)
-                                .HasColumnType("varchar(60)")
-                                .HasColumnName("NM_NAME");
-
-                            b1.Property<string>("Surname")
-                                .IsRequired()
-                                .HasMaxLength(60)
-                                .HasColumnType("varchar(60)")
-                                .HasColumnName("NM_SURNAME");
-
-                            b1.HasKey("PhysicalPersonId");
-
-                            b1.ToTable("TB_PHYSICAL_PERSON");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PhysicalPersonId");
-                        });
-
-                    b.Navigation("Name")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

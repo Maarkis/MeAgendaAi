@@ -61,8 +61,8 @@ namespace MeAgendaAi.Unit.ValueObjects
         [TestCase("Name cannot be empty", 0)]
         [TestCase("Name must contain at least 3 characters", 1)]
         [TestCase("Name must contain at least 3 characters", 2)]
-        [TestCase("Name must contain a maximum  of 60 characters", 61)]
-        [TestCase("Name must contain a maximum  of 60 characters", 100)]
+        [TestCase("Name must contain a maximum of 60 characters", 61)]
+        [TestCase("Name must contain a maximum of 60 characters", 100)]
         public void ShouldCreatedAnInvalidInstanceOfNameObjectWithErrorsInNameProperty(string messageError, int lengthSurname)
         {
             var name = Faker.Random.String(lengthSurname);
@@ -79,8 +79,8 @@ namespace MeAgendaAi.Unit.ValueObjects
         [TestCase("Surname cannot be empty", 0)]
         [TestCase("Surname must contain at least 3 characters", 1)]
         [TestCase("Surname must contain at least 3 characters", 2)]
-        [TestCase("Surname must contain a maximum  of 80 characters", 81)]
-        [TestCase("Surname must contain a maximum  of 80 characters", 100)]
+        [TestCase("Surname must contain a maximum of 80 characters", 81)]
+        [TestCase("Surname must contain a maximum of 80 characters", 100)]
         public void ShouldCreatedAnInvalidInstanceOfNameObjectWithErrorsInSurnameProperty(string messageError, int lengthSurname)
         {
             var name = Faker.Name.FirstName();

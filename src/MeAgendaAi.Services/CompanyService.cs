@@ -42,14 +42,14 @@ namespace MeAgendaAi.Services
         {
             if (await _userService.HasUser(request.Email))
             {
-                _notificationContext.AddNotification("Email", "Email já cadastrado");
+                _notificationContext.AddNotification("Email", "E-mail already registered.");
                 _logger.LogError("[{ActionType}/AddAsync] A registered user for {Email} already exists.", ActionType, request.Email);
                 return Guid.Empty;
             }
 
             if (_userService.NotSamePassword(request.Password, request.ConfirmPassword))
             {
-                _notificationContext.AddNotification("ConfirmPassword", "Senha de confirmação não é igual a senha");
+                _notificationContext.AddNotification("ConfirmPassword", "Confirmation password is not the same as password.");
                 _logger.LogError("[{ActionType}/AddAsync] Confirmation password is not the same as password.", ActionType);
                 return Guid.Empty;
             }

@@ -15,7 +15,5 @@ namespace MeAgendaAi.Services
         public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
 
         public async Task<T?> GetByIdAsync(Guid id) => await _repository.GetByIdAsync(id);
-
-
     }
 }

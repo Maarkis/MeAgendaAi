@@ -1,13 +1,12 @@
 ﻿using MeAgendaAi.Infra.CrossCutting;
 using MeAgendaAi.Infra.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq.AutoMock;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -17,11 +16,12 @@ namespace MeAgendaAi.Integration.SetUp
 {
     public class TestBase : IAsyncDisposable
     {
-        public static string CONNECTION_STRING_DATABASE = "AppDb";
-        public static string NAME_SECTION_CACHE_DISTRIBUITED = "Redis";
-        public static string URL_API = "http://localhost:5000/";
+        public static string ConnectionStringDatabase = "AppDb";
+        public static string NameSectionCacheDistribuited = "Redis";
+        public static string UrlApi = "http://localhost:5000/";
         protected WebApiFactory<Program>? Server { get; private set; }
         protected HttpClient Client { get; private set; } = default!;
+        public AutoMocker Mocker { get; private set; } = default!;
         protected IServiceScope ServiceScope { get; private set; } = default!;
         protected IServiceProvider ServiceProvider { get; private set; } = default!;
         protected AppDbContext DbContext { get; private set; } = default!;
@@ -43,10 +43,11 @@ namespace MeAgendaAi.Integration.SetUp
             Server = new WebApiFactory<Program>();
             Client = Server.CreateClient(new WebApplicationFactoryClientOptions
             {
-                BaseAddress = new Uri(URL_API),
+                BaseAddress = new Uri(UrlApi),
                 AllowAutoRedirect = true
             });
 
+            Mocker = Server.Mocker;
             ConfigurationRedis = Server.ConfigurationRedis;
             ConnectionString = Server.ConnectionString;
             ServiceScope = Server.ServiceScope;
@@ -70,6 +71,7 @@ namespace MeAgendaAi.Integration.SetUp
                 else
                     ServiceScope.Dispose();
                 Server.Dispose();
+                Mocker.AsDisposable().Dispose();
                 GC.SuppressFinalize(this);
             }
         }

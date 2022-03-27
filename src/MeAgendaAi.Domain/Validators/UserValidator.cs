@@ -6,10 +6,12 @@ namespace MeAgendaAi.Domains.Validators
 {
     public class UserValidator<T> : AbstractValidator<T> where T : User
     {
-        const int LengthPasswordMinimum = 06;
-        const int LengthPasswordMaximum = 32;
-        public UserValidator()
+        private const int LengthPasswordMinimum = 06;
+        private const int LengthPasswordMaximum = 32;
+
+        public UserValidator(bool includeSurname)
         {
+            RuleFor(prop => prop.Name).SetValidator(new NameValidator(includeSurname));
             RuleFor(prop => prop.Email)
                 .SetValidator(new EmailValidator());
             RuleFor(prop => prop.Password)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MeAgendaAi.Infra.Cryptography
@@ -16,7 +17,17 @@ namespace MeAgendaAi.Infra.Cryptography
             return ConvertBytes(bytes);
         }
 
-        private static string ConvertBytes(byte[] passwordBytes) => Convert.ToBase64String(passwordBytes);
+        public static string GenerateToken(int bytesRequested = BytesRequested)
+        {
+            var randomNumber = new byte[bytesRequested];
+
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+
+            return ConvertBytes(randomNumber).Replace("+", "").Replace("/", "");
+        }
+
+        private static string ConvertBytes(byte[] bytes) => Convert.ToBase64String(bytes);
 
         private static byte[] ComputeHash(
             string str, byte[] salt,

@@ -183,7 +183,7 @@ namespace MeAgendaAi.Integration.Controllers
             await DbContext.SaveChangesAsync();
             var request = new AddCompanyRequestBuilder().WithEmail(company.Email.Email).Generate();
             var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.Add(new("Email", "Email já cadastrado"));
+            listErrorsExpected.Add(new("Email", "E-mail already registered."));
             var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
@@ -197,7 +197,7 @@ namespace MeAgendaAi.Integration.Controllers
         {
             var request = new AddCompanyRequestBuilder().WithConfirmPassword("different-password").Generate();
             var listErrorsExpected = new List<Notification>();
-            listErrorsExpected.Add(new("ConfirmPassword", "Senha de confirmação não é igual a senha"));
+            listErrorsExpected.Add(new("ConfirmPassword", "Confirmation password is not the same as password."));
             var responseExpected = new ErrorMessage<List<Notification>>(listErrorsExpected, "Errors");
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);

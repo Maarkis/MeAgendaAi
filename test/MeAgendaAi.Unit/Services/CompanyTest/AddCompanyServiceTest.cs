@@ -56,7 +56,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         public void AddCompany_ShouldAddNotificationWhenHasUserReturnTrue()
         {
             var request = new AddCompanyRequestBuilder().Generate();
-            var notification = new Notification("Email", "Email já cadastrado");
+            var notification = new Notification("Email", "E-mail already registered.");
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(true);
@@ -180,7 +180,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         public void AddCompany_ShouldAddNotificationWhenNotSamePasswordReturnTrue()
         {
             var request = new AddCompanyRequestBuilder().WithConfirmPassword("password-different").Generate();
-            var notification = new Notification("ConfirmPassword", "Senha de confirmação não é igual a senha");
+            var notification = new Notification("ConfirmPassword", "Confirmation password is not the same as password.");
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(false);

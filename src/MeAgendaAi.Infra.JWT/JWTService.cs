@@ -1,4 +1,5 @@
 ﻿using MeAgendaAi.Domains.Entities;
+using MeAgendaAi.Infra.Cryptography;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,7 +24,7 @@ namespace MeAgendaAi.Infra.JWT
         private readonly ILogger<JWTService> _logger;
         private static JwtSecurityTokenHandler Handler => new();
 
-        private const int MaxValue = 32;
+
         private const string ActionType = "JWTService";
 
         public JWTService(
@@ -58,16 +59,9 @@ namespace MeAgendaAi.Infra.JWT
         {
             _logger.LogInformation("[{ActionType}/GenerateToken] Starting refresh token generation process.", ActionType);
 
-            string refreshToken;
-            var randomNumber = new byte[MaxValue];
-
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            refreshToken = Convert.ToBase64String(randomNumber).Replace("+", "");
-
             return new()
             {
-                Token = refreshToken,
+                Token = Encrypt.GenerateToken(),
                 ExpiresIn = createdDate.AddSeconds(_tokenConfiguration.RefreshTokenExpirationTimeInSeconds),
             };
         }
