@@ -32,8 +32,6 @@ namespace MeAgendaAi.Unit.Domain
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypeCompanyWithCorrectValues()
         {
-            var description = _faker.Lorem.Paragraph(min: 1);
-            var limitHoursCancel = _faker.Random.Int();
             var companyExpected = new
             {
                 Email = new EmailObjectBuilder().Generate(),

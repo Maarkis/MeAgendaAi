@@ -1,4 +1,5 @@
-﻿using MeAgendaAi.Common.Builder.ValuesObjects;
+﻿using Bogus;
+using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.ValueObjects;
 
@@ -52,14 +53,67 @@ namespace MeAgendaAi.Common.Builder
             builder.RuleFor(x => x.Name, () => new NameObjectBuilder().WithName(name).Generate());
             return builder;
         }
-        public static UserBuilder WithName(this UserBuilder builder, NameObject name)
+
+        public static UserBuilder WithFullName(this UserBuilder builder, NameObject name)
         {
             builder.RuleFor(x => x.Name, () => name);
             return builder;
         }
+
         public static UserBuilder WithNameAndSurname(this UserBuilder builder, string name, string surname)
         {
-            builder.RuleFor(x => x.Name, () => new NameObjectBuilder().WithName(name).WithSurname(surname).Generate());
+            var fullName = new NameObjectBuilder().WithName(name).WithSurname(surname).Generate();
+            builder.WithFullName(fullName);
+            return builder;
+        }
+
+        public static UserBuilder WithNameInvalidByLength(this UserBuilder builder, int length = 0)
+        {
+            var name = new Faker().Random.String(length);
+            var fullName = new NameObjectBuilder().WithName(name).Generate();
+            builder.WithFullName(fullName);
+            return builder;
+        }
+
+        public static UserBuilder WithSurnameInvalidByLength(this UserBuilder builder, int length = 0)
+        {
+            var surname = new Faker().Random.String(length);
+            var fullName = new NameObjectBuilder().WithSurname(surname).Generate();
+            builder.WithFullName(fullName);
+            return builder;
+        }
+
+        public static UserBuilder WithNameAndSurnameInvalid(this UserBuilder builder, string name = "", string surname = "")
+        {
+            builder.WithNameAndSurname(name, surname);
+            return builder;
+        }
+
+        public static UserBuilder WithNameAndSurnameInvalidByLength(this UserBuilder builder, int length = 0)
+        {
+            var name = new Faker().Random.String(length);
+            var surname = new Faker().Random.String(length);
+            var fullName = new NameObjectBuilder().WithName(name).WithSurname(surname).Generate();
+            builder.WithFullName(fullName);
+            return builder;
+        }
+
+        public static UserBuilder WithEmailInvalid(this UserBuilder builder, string email = "")
+        {
+            builder.WithEmail(email);
+            return builder;
+        }
+
+        public static UserBuilder WithPasswordInvalid(this UserBuilder builder, string password = "")
+        {
+            builder.WithPassword(password);
+            return builder;
+        }
+
+        public static UserBuilder WithPasswordInvalidByLength(this UserBuilder builder, int length = 0)
+        {
+            var password = new Faker().Random.String(length);
+            builder.WithPassword(password);
             return builder;
         }
     }

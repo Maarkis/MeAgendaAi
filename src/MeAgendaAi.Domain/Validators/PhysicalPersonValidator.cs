@@ -1,5 +1,5 @@
-﻿using MeAgendaAi.Domains.Entities;
-using MeAgendaAi.Domains.Validators.Common;
+﻿using FluentValidation;
+using MeAgendaAi.Domains.Entities;
 
 namespace MeAgendaAi.Domains.Validators
 {
@@ -7,8 +7,16 @@ namespace MeAgendaAi.Domains.Validators
     {
         public PhysicalPersonValidator() : base(includeSurname: true)
         {
-            RuleFor(prop => prop.CPF).SetValidator(new CPFValidator());
-            RuleFor(prop => prop.RG).SetValidator(new RGValidator());                    
+            RuleFor(prop => prop.CPF)
+                .NotNull()
+                .WithMessage("CPF cannot be null")
+                .NotEmpty()
+                .WithMessage("CPF cannot be empty");
+            RuleFor(prop => prop.RG)
+                .NotNull()
+                .WithMessage("RG cannot be null")
+                .NotEmpty()
+                .WithMessage("RG cannot be empty");
         }
     }
 }
