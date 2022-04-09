@@ -114,7 +114,7 @@ namespace MeAgendaAi.Unit.Domain
         public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidName(int lengthName, string errorMessage)
         {
             var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();            
+            var password = Faker.Internet.Password();
             string charsAccepted = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%*()/*-+";
             var name = Faker.Random.String2(lengthName, charsAccepted);
 

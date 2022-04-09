@@ -4,7 +4,7 @@ namespace MeAgendaAi.Domains.ValueObjects
 {
     public class EmailObject : ValueObjects
     {
-        public string Email { get; protected set; } = default!;
+        public string Email { get; protected set; }
 
         public EmailObject(string email) : base()
         {

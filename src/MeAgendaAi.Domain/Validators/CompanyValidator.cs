@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MeAgendaAi.Domains.Entities;
-using MeAgendaAi.Domains.Validators.Common;
 
 namespace MeAgendaAi.Domains.Validators
 {
@@ -8,11 +7,16 @@ namespace MeAgendaAi.Domains.Validators
     {
         public CompanyValidator() : base(includeSurname: false)
         {
-            RuleFor(prop => prop.CNPJ).SetValidator(new CNPJValidator());
+            RuleFor(prop => prop.CNPJ)
+                .NotNull()
+                .WithMessage("CPNJ cannot be null")
+                .NotEmpty()
+                .WithMessage("CPNJ cannot be empty");
             RuleFor(prop => prop.LimitCancelHours)
-                .NotEmpty().NotNull().WithMessage("Limit cancel hours cannot be empty");
+                .NotEmpty().WithMessage("Limit cancel hours cannot be empty");
             RuleFor(prop => prop.Description)
-                .NotEmpty().NotNull().WithMessage("Description cannot be empty")
+                .NotEmpty().WithMessage("Description cannot be empty")
+                .NotNull().WithMessage("Description cannot be null")
                 .MinimumLength(3).WithMessage("Description must contain at least 3 characters")
                 .MaximumLength(160).WithMessage("Description must contain a maximum of 160 characters");
         }

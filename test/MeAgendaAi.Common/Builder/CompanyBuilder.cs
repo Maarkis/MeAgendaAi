@@ -3,7 +3,6 @@ using Bogus;
 using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
-using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder
@@ -37,57 +36,106 @@ namespace MeAgendaAi.Common.Builder
             builder.RuleFor(prop => prop.Id, () => id);
             return builder;
         }
+
         public static CompanyBuilder WithName(this CompanyBuilder builder, string name)
         {
             builder.RuleFor(prop => prop.Name, () => new NameObjectBuilder().WithName(name).Generate());
             return builder;
         }
+
         public static CompanyBuilder WithName(this CompanyBuilder builder, NameObject name)
         {
             builder.RuleFor(x => x.Name, () => name);
             return builder;
         }
+
         public static CompanyBuilder WithEmail(this CompanyBuilder builder, string email)
         {
             builder.RuleFor(prop => prop.Email, () => new EmailObjectBuilder().WithEmail(email).Generate());
             return builder;
         }
+
         public static CompanyBuilder WithEmail(this CompanyBuilder builder, EmailObject email)
         {
             builder.RuleFor(x => x.Email, () => email);
             return builder;
         }
+
         public static CompanyBuilder WithPassword(this CompanyBuilder builder, string password)
         {
             builder.RuleFor(x => x.Password, () => password);
             return builder;
         }
+
         public static CompanyBuilder WithCNPJ(this CompanyBuilder builder, string cnpj)
         {
             builder.RuleFor(prop => prop.CNPJ, () => cnpj);
             return builder;
         }
+
         public static CompanyBuilder WithDescription(this CompanyBuilder builder, string description)
         {
             builder.RuleFor(prop => prop.Description, () => description);
             return builder;
         }
+
         public static CompanyBuilder WithLimitCancelHours(this CompanyBuilder builder, int limitCancelHours)
         {
             builder.RuleFor(prop => prop.LimitCancelHours, () => limitCancelHours);
             return builder;
         }
-        public static CompanyBuilder WithNameInvalid(this CompanyBuilder builder, int length = 0)
+
+        public static CompanyBuilder WithNameInvalid(this CompanyBuilder builder, string name = "")
+        {
+            builder.WithName(name);
+            return builder;
+        }
+
+        public static CompanyBuilder WithNameInvalidByLength(this CompanyBuilder builder, int length = 0)
         {
             var name = new Faker().Random.String(length);
             builder.WithName(name);
             return builder;
         }
+
         public static CompanyBuilder WithEmailInvalid(this CompanyBuilder builder, string email = "")
         {
             builder.WithEmail(email);
             return builder;
         }
+
+        public static CompanyBuilder WithPasswordInvalid(this CompanyBuilder builder, string password = "")
+        {
+            builder.RuleFor(x => x.Password, () => password);
+            return builder;
+        }
+
+        public static CompanyBuilder WithPasswordInvalidByLength(this CompanyBuilder builder, int length = 0)
+        {
+            var password = new Faker().Random.String(length);
+            builder.WithPassword(password);
+            return builder;
+        }
+
+        public static CompanyBuilder WithCNPJInvalid(this CompanyBuilder builder, string cnpj = "")
+        {
+            builder.RuleFor(prop => prop.CNPJ, () => cnpj);
+            return builder;
+        }
+
+        public static CompanyBuilder WithDescriptionInvalid(this CompanyBuilder builder, string description = "")
+        {
+            builder.RuleFor(prop => prop.Description, () => description);
+            return builder;
+        }
+
+        public static CompanyBuilder WithDescriptionInvalidByLength(this CompanyBuilder builder, int length = 0)
+        {
+            var description = new Faker().Random.String(length);
+            builder.WithDescriptionInvalid(description);
+            return builder;
+        }
+
         public static CompanyBuilder ByRequest(this CompanyBuilder builder, AddCompanyRequest request)
         {
             builder.WithName(request.Name)
@@ -100,4 +148,3 @@ namespace MeAgendaAi.Common.Builder
         }
     }
 }
-
