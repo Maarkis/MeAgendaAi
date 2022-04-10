@@ -16,7 +16,7 @@ namespace MeAgendaAi.Common.Builder
         }
     }
 
-    public class BaseBuilderValueObject<T> : AutoFaker<T> where T : ValueObjects
+    public class BaseBuilderValueObject<T> : AutoFaker<T> where T : ValueObject
     {
         public BaseBuilderValueObject() : base("pt_BR")
         {

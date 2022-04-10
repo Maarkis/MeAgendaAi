@@ -13,8 +13,8 @@ namespace MeAgendaAi.Unit.Infra.Extension
     [TestFixture(typeof(User))]
     [TestFixture(typeof(PhysicalPerson))]
     [TestFixture(typeof(Company))]
-    [TestFixture(typeof(NameObject))]
-    [TestFixture(typeof(EmailObject))]
+    [TestFixture(typeof(Name))]
+    [TestFixture(typeof(Email))]
     public class ObjectExtensionsTests<TType> where TType : class
     {
         [TestCase()]

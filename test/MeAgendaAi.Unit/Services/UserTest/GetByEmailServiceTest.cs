@@ -30,7 +30,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task GetByEmailAsync_ShouldMethodGetByEmailInvokedOnlyOnce()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
-            var email = physicalPerson.Email.Email;
+            var email = physicalPerson.Email.Address;
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);
@@ -45,7 +45,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task GetByEmailAsync_ShouldGetByEmailReturnAUser()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
-            var email = physicalPerson.Email.Email;
+            var email = physicalPerson.Email.Address;
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);
@@ -59,7 +59,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task GetByEmailAsync_ShouldGetByEmailReturnNullWhenNotFindAUser()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
-            var email = physicalPerson.Email.Email;
+            var email = physicalPerson.Email.Address;
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)));
 

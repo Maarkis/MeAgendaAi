@@ -128,7 +128,7 @@ namespace MeAgendaAi.Integration.Controllers
             {
                 header.Append($"{company.Id};");
                 header.Append($"{company.Name.FullName};");
-                header.Append($"{company.Email.Email};");
+                header.Append($"{company.Email.Address};");
                 header.Append($"{company.CNPJ};");
                 header.Append($"{company.Description};");
                 header.Append($"{company.LimitCancelHours}");

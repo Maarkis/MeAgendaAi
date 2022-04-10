@@ -17,7 +17,7 @@ namespace MeAgendaAi.Unit.ValueObjects
             var name = Faker.Name.FirstName();
             var surname = Faker.Name.LastName();
 
-            var nameObject = new NameObject(name, surname);
+            var nameObject = new Name(name, surname);
 
             nameObject.Valid.Should().BeTrue();
             nameObject.ValidationResult.Errors.Should().BeEmpty();
@@ -29,9 +29,9 @@ namespace MeAgendaAi.Unit.ValueObjects
             var name = Faker.Name.FirstName();
             var surname = Faker.Name.LastName();
 
-            var nameObject = new NameObject(name, surname);
+            var nameObject = new Name(name, surname);
 
-            nameObject.Name.Should().Be(name);
+            nameObject.FirstName.Should().Be(name);
             nameObject.Surname.Should().Be(surname);
         }
 
@@ -42,7 +42,7 @@ namespace MeAgendaAi.Unit.ValueObjects
             var surname = Faker.Name.LastName();
             var fullNameExpected = $"{name} {surname}";
 
-            var nameObject = new NameObject(name, surname);
+            var nameObject = new Name(name, surname);
 
             nameObject.FullName.Should().Be(fullNameExpected);
         }
@@ -53,7 +53,7 @@ namespace MeAgendaAi.Unit.ValueObjects
             var name = Faker.Name.FirstName();
             var fullNameExpected = $"{name}";
 
-            var nameObject = new NameObject(name);
+            var nameObject = new Name(name);
 
             nameObject.FullName.Should().Be(fullNameExpected);
         }
@@ -67,7 +67,7 @@ namespace MeAgendaAi.Unit.ValueObjects
         {
             var name = Faker.Random.String(lengthSurname);
 
-            var nameObject = new NameObject(name);
+            var nameObject = new Name(name);
 
             nameObject.Valid.Should().BeFalse();
             var errors = nameObject.ValidationResult.Errors;
@@ -84,11 +84,49 @@ namespace MeAgendaAi.Unit.ValueObjects
             var name = Faker.Name.FirstName();
             var surname = Faker.Random.String2(lengthSurname);
 
-            var nameObject = new NameObject(name, surname);
+            var nameObject = new Name(name, surname);
 
             nameObject.Valid.Should().BeFalse();
             var errors = nameObject.ValidationResult.Errors;
             errors.Should().Contain(error => error.ErrorMessage == messageError);
+        }
+
+        [Test]
+        public void EqualsShouldBeTrueWhenTwoNameObjectWithSameName()
+        {
+            var firstName = Faker.Person.FirstName;
+            var lastName = Faker.Person.LastName;
+            var name = new Name(firstName, lastName);
+            var otherName = new Name(firstName, lastName);
+
+            name.Equals(otherName).Should().BeTrue();
+        }
+
+        [Test]
+        public void EqualsShouldBeFalseTwoEmailObjectWithDifferentEmail()
+        {
+            var name = new Name(Faker.Person.FirstName, Faker.Person.LastName);
+            var otherName = new Name("other name", "other lastName");
+
+            name.Equals(otherName).Should().BeFalse();
+        }
+
+        [Test]
+        public void EqualsShouldBeFalseWhenCheckObjectNameWithNullObjectName()
+        {
+            var name = new Name(Faker.Person.FirstName, Faker.Person.LastName);
+            Name otherName = null!;
+
+            name.Equals(otherName).Should().BeFalse();
+        }
+
+        [Test]
+        public void EqualsShouldBeFalseWhenCheckObjectNameWithOtherObjectType()
+        {
+            var name = new Name(Faker.Person.FirstName, Faker.Person.LastName);
+            var differentObject = new Email(Faker.Internet.Email());
+
+            name.Equals(differentObject).Should().BeFalse();
         }
     }
 }

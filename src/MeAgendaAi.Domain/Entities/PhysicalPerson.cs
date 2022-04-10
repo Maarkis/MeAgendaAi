@@ -14,7 +14,7 @@ namespace MeAgendaAi.Domains.Entities
 
         public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(email, password, name)
         {
-            Name = new NameObject(name, surname);
+            Name = new Name(name, surname);
             CPF = cpf;
             RG = rg;
 

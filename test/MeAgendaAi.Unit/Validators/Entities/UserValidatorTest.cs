@@ -48,7 +48,7 @@ namespace MeAgendaAi.Unit.Validators.Entities
             var result = Validator.TestValidate(requestInvalid);
 
             result
-                .ShouldHaveValidationErrorFor(field => field.Name.Name)
+                .ShouldHaveValidationErrorFor(field => field.Name.FirstName)
                 .WithErrorMessage(errorMessage);
         }
 
@@ -79,7 +79,7 @@ namespace MeAgendaAi.Unit.Validators.Entities
             var result = Validator.TestValidate(requestInvalid);
 
             result
-                .ShouldHaveValidationErrorFor(field => field.Email.Email)
+                .ShouldHaveValidationErrorFor(field => field.Email.Address)
                 .WithErrorMessage(errorMessage);
         }
 

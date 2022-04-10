@@ -3,11 +3,11 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Domains.Validators.ValueObjects
 {
-    public class NameValidator : AbstractValidator<NameObject>
+    public class NameValidator : AbstractValidator<Name>
     {
         public NameValidator(bool includeSurname = true)
         {
-            RuleFor(prop => prop.Name)
+            RuleFor(prop => prop.FirstName)
                 .NotEmpty().WithMessage("Name cannot be empty")
                 .MinimumLength(3).WithMessage("Name must contain at least 3 characters")
                 .MaximumLength(60).WithMessage("Name must contain a maximum of 60 characters");

@@ -11,6 +11,6 @@ namespace MeAgendaAi.Infra.Data.Repositories
         public UserRepository(AppDbContext context) : base(context) => _dbSet = context.Set<User>();
 
         public async Task<User?> GetEmailAsync(string email) =>
-            await _dbSet.Where(where => where.Email.Email == email).FirstOrDefaultAsync();
+            await _dbSet.Where(where => where.Email.Address == email).FirstOrDefaultAsync();
     }
 }

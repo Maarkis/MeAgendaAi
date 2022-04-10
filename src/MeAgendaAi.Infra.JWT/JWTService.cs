@@ -39,7 +39,7 @@ namespace MeAgendaAi.Infra.JWT
             List<Claim> claims = new()
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Email, user.Email.Email),
+                new Claim(ClaimTypes.Email, user.Email.Address),
                 new Claim(ClaimTypes.Expiration, expirationDate.ToString()),
             };
             var claimsIdentity = new ClaimsIdentity(new GenericIdentity(user.Id.ToString()), claims);

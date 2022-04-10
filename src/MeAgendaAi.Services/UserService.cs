@@ -123,7 +123,7 @@ namespace MeAgendaAi.Services
 
             var sended = await _emailService.SendPasswordRecoveryEmail(
                 name: user.Name.FullName,
-                email: user.Email.Email,
+                email: user.Email.Address,
                 token: identificationToken,
                 expirationTime: PasswordResetTokenExpirationTimeInSeconds
                 );

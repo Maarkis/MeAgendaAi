@@ -25,7 +25,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task HasUser_ShouldCheckIfUserExistsAndReturnTrue()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
-            var email = physicalPerson.Email.Email;
+            var email = physicalPerson.Email.Address;
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);
@@ -40,9 +40,9 @@ namespace MeAgendaAi.Unit.Services.UserTest
         {
             var email = new EmailObjectBuilder().Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email.Email)));
+                .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email.Address)));
 
-            var response = await _userService.HasUser(email.Email);
+            var response = await _userService.HasUser(email.Address);
 
             response.Should().BeFalse();
         }
@@ -51,7 +51,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task HasUser_ShouldCheckIfUserExistsAndCallMethodGetByEmailOfUserRepositoryOnce()
         {
             var physicalPerson = new PhysicalPersonBuilder().Generate();
-            var email = physicalPerson.Email.Email;
+            var email = physicalPerson.Email.Address;
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetEmailAsync(It.Is<string>(prop => prop == email)))
                 .ReturnsAsync(physicalPerson);

@@ -6,8 +6,8 @@ namespace MeAgendaAi.Domains.Entities
 {
     public class User : Entity
     {
-        public NameObject Name { get; protected set; } = default!;
-        public EmailObject Email { get; protected set; } = default!;
+        public Name Name { get; protected set; } = default!;
+        public Email Email { get; protected set; } = default!;
         public string Password { get; protected set; } = default!;
 
         protected User()
@@ -16,18 +16,18 @@ namespace MeAgendaAi.Domains.Entities
 
         public User(string email, string password, string name)
         {
-            Email = new EmailObject(email);
+            Email = new Email(email);
             Password = password;
-            Name = new NameObject(name);
+            Name = new Name(name);
 
             Validate(includeSurname: false);
         }
 
         public User(string email, string password, string name, string surname)
         {
-            Email = new EmailObject(email);
+            Email = new Email(email);
             Password = password;
-            Name = new NameObject(name, surname);
+            Name = new Name(name, surname);
 
             Validate(includeSurname: true);
         }

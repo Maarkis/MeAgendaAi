@@ -31,7 +31,7 @@ namespace MeAgendaAi.Unit.Domain
 
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypeCompanyWithCorrectValues()
-        {
+        {            
             var companyExpected = new
             {
                 Email = new EmailObjectBuilder().Generate(),
@@ -43,9 +43,9 @@ namespace MeAgendaAi.Unit.Domain
             };
 
             var company = new Company(
-                companyExpected.Email.Email,
+                companyExpected.Email.Address,
                 companyExpected.Password,
-                companyExpected.Name.Name,
+                companyExpected.Name.FirstName,
                 companyExpected.CNPJ,
                 companyExpected.Description,
                 companyExpected.LimitCancelHours);

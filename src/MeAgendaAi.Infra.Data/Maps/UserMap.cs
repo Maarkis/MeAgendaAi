@@ -19,12 +19,12 @@ namespace MeAgendaAi.Infra.Data.Maps
             builder.HasKey(prop => prop.Id);
 
             builder.OwnsOne(prop => prop.Email)
-                   .HasIndex(prop => prop.Email)
+                   .HasIndex(prop => prop.Address)
                    .HasDatabaseName(INDEX_TABLE_NAME)
                    .IsUnique();
 
             builder.OwnsOne(prop => prop.Email)
-                   .Property(prop => prop.Email)
+                   .Property(prop => prop.Address)
                    .HasColumnName("EMAIL");
 
             builder.OwnsOne(prop => prop.Email)
@@ -33,7 +33,7 @@ namespace MeAgendaAi.Infra.Data.Maps
                 .Ignore(prop => prop.Invalid);
 
             builder.OwnsOne(prop => prop.Name)
-                .Property(prop => prop.Name)
+                .Property(prop => prop.FirstName)
                 .IsRequired(true)
                 .HasColumnType("varchar(60)")
                 .HasMaxLength(60)

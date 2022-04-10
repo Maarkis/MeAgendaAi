@@ -41,7 +41,7 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
-        public static CompanyBuilder WithName(this CompanyBuilder builder, NameObject name)
+        public static CompanyBuilder WithName(this CompanyBuilder builder, Name name)
         {
             builder.RuleFor(x => x.Name, () => name);
             return builder;
@@ -53,7 +53,7 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
-        public static CompanyBuilder WithEmail(this CompanyBuilder builder, EmailObject email)
+        public static CompanyBuilder WithEmail(this CompanyBuilder builder, Email email)
         {
             builder.RuleFor(x => x.Email, () => email);
             return builder;

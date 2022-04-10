@@ -3,22 +3,22 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder.ValuesObjects
 {
-    public class NameObjectBuilder : BaseBuilderValueObject<NameObject>
+    public class NameObjectBuilder : BaseBuilderValueObject<Name>
     {
         public NameObjectBuilder() : base()
         {
-            RuleFor(prop => prop.Name, faker => faker.Name.FirstName());
+            RuleFor(prop => prop.FirstName, faker => faker.Name.FirstName());
             RuleFor(prop => prop.Surname, faker => faker.Name.LastName());
         }
 
-        public NameObject Generate(bool validateSurname = true, string ruleSets = null!)
+        public Name Generate(bool validateSurname = true, string ruleSets = null!)
         {
             var valueObjets = base.Generate(ruleSets);
             valueObjets.Validate(valueObjets, new NameValidator(validateSurname));
             return valueObjets;
         }
 
-        public override NameObject Generate(string ruleSets = null!)
+        public override Name Generate(string ruleSets = null!)
         {
             var valueObjets = base.Generate(ruleSets);
             valueObjets.Validate(valueObjets, new NameValidator());
@@ -30,7 +30,7 @@ namespace MeAgendaAi.Common.Builder.ValuesObjects
     {
         public static NameObjectBuilder WithName(this NameObjectBuilder builder, string name)
         {
-            builder.RuleFor(prop => prop.Name, () => name);
+            builder.RuleFor(prop => prop.FirstName, () => name);
             return builder;
         }
 
@@ -48,7 +48,7 @@ namespace MeAgendaAi.Common.Builder.ValuesObjects
 
         public static NameObjectBuilder WithoutSurname(this NameObjectBuilder builder)
         {
-            builder.RuleFor(prop => prop.Surname, () => null!);
+            builder.RuleFor(prop => prop.Surname, string.Empty);
             return builder;
         }
     }

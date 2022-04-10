@@ -48,7 +48,7 @@ namespace MeAgendaAi.Integration.Controllers
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
             var content = await response.Content.ReadFromJsonAsync<SuccessMessage<Guid>>();
 
-            var physicalPersonInDatabase = await DbContext.PhysicalPersons.FirstAsync(f => f.Email.Email == request.Email);
+            var physicalPersonInDatabase = await DbContext.PhysicalPersons.FirstAsync(f => f.Email.Address == request.Email);
             var responseExpected = new SuccessMessage<Guid>(physicalPersonInDatabase.Id, "Cadastrado com sucesso");
             content.Should().BeEquivalentTo(responseExpected);
         }
@@ -82,7 +82,7 @@ namespace MeAgendaAi.Integration.Controllers
             var physicalPerson = new PhysicalPersonBuilder().Generate();
             await DbContext.PhysicalPersons.AddAsync(physicalPerson);
             await DbContext.SaveChangesAsync();
-            var request = new AddPhysicalPersonRequestBuilder().WithEmail(physicalPerson.Email.Email).Generate();
+            var request = new AddPhysicalPersonRequestBuilder().WithEmail(physicalPerson.Email.Address).Generate();
             var listErrorsExpected = new List<Notification>
             {
                 new("Email", "Email já cadastrado")
@@ -142,7 +142,7 @@ namespace MeAgendaAi.Integration.Controllers
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
             var content = await response.Content.ReadFromJsonAsync<SuccessMessage<Guid>>();
 
-            var companyInDatabase = await DbContext.Companies.FirstAsync(f => f.Email.Email == request.Email);
+            var companyInDatabase = await DbContext.Companies.FirstAsync(f => f.Email.Address == request.Email);
             var responseExpected = new SuccessMessage<Guid>(companyInDatabase.Id, "Cadastrado com sucesso");
             content.Should().BeEquivalentTo(responseExpected);
         }
@@ -183,7 +183,7 @@ namespace MeAgendaAi.Integration.Controllers
             var company = new CompanyBuilder().Generate();
             await DbContext.Companies.AddAsync(company);
             await DbContext.SaveChangesAsync();
-            var request = new AddCompanyRequestBuilder().WithEmail(company.Email.Email).Generate();
+            var request = new AddCompanyRequestBuilder().WithEmail(company.Email.Address).Generate();
             var listErrorsExpected = new List<Notification>
             {
                 new("Email", "E-mail already registered.")

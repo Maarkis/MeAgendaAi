@@ -3,15 +3,15 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder.ValuesObjects
 {
-    public class EmailObjectBuilder : BaseBuilderValueObject<EmailObject>
+    public class EmailObjectBuilder : BaseBuilderValueObject<Email>
     {
         public EmailObjectBuilder()
         {
-            RuleFor(prop => prop.Email, faker => faker.Internet.Email());
+            RuleFor(prop => prop.Address, faker => faker.Internet.Email());
             RuleFor(prop => prop.Valid, () => true);
         }
 
-        public override EmailObject Generate(string ruleSets = null!)
+        public override Email Generate(string ruleSets = null!)
         {
             var valueObjets = base.Generate(ruleSets);
             valueObjets.Validate(valueObjets, new EmailValidator());
@@ -23,7 +23,7 @@ namespace MeAgendaAi.Common.Builder.ValuesObjects
     {
         public static EmailObjectBuilder WithEmail(this EmailObjectBuilder builder, string email)
         {
-            builder.RuleFor(prop => prop.Email, () => email);
+            builder.RuleFor(prop => prop.Address, () => email);
             return builder;
         }
     }
