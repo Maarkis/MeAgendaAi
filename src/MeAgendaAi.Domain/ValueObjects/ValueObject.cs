@@ -28,7 +28,7 @@ namespace MeAgendaAi.Domains.ValueObjects
             if (obj is not ValueObject valueObject)
                 return false;
 
-            return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());            
+            return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
         }
 
         public override int GetHashCode()
@@ -38,7 +38,7 @@ namespace MeAgendaAi.Domains.ValueObjects
             {
                 unchecked
                 {
-                    return (current * 23) + (obj?.GetHashCode() ?? 0);
+                    return current + (obj?.GetHashCode() ?? 0);
                 }
             });
         }
