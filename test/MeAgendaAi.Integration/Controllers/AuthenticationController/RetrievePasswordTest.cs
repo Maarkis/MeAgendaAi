@@ -1,9 +1,9 @@
 ﻿using Bogus;
 using FluentAssertions;
 using Mailjet.Client;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.RequestAndResponse;
+using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Integration.SetUp;
 using Moq;
 using Newtonsoft.Json.Linq;

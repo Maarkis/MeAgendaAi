@@ -5,35 +5,31 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Security.Principal;
 
 namespace MeAgendaAi.Infra.JWT
 {
-    public interface IJSONWebTokenService
+    public interface IJsonWebTokenService
     {
-        JWTToken GenerateToken(User user);
-
-        string? Validate(string token);
+        JwtToken GenerateToken(User user);
     }
 
-    public class JWTService : IJSONWebTokenService
+    public class JwtService : IJsonWebTokenService
     {
         private readonly SigningConfiguration _signingConfiguration = default!;
         private readonly TokenConfiguration _tokenConfiguration = default!;
-        private readonly ILogger<JWTService> _logger;
+        private readonly ILogger<JwtService> _logger;
         private static JwtSecurityTokenHandler Handler => new();
-
 
         private const string ActionType = "JWTService";
 
-        public JWTService(
+        public JwtService(
             IOptions<TokenConfiguration> optionsTokenConfiguration,
             SigningConfiguration signingConfiguration,
-            ILogger<JWTService> logger) =>
+            ILogger<JwtService> logger) =>
             (_tokenConfiguration, _signingConfiguration, _logger) = (optionsTokenConfiguration.Value, signingConfiguration, logger);
 
-        public JWTToken GenerateToken(User user)
+        public JwtToken GenerateToken(User user)
         {
             _logger.LogInformation("[{ActionType}/GenerateToken] Starting token generation process.", ActionType);
 
@@ -43,7 +39,7 @@ namespace MeAgendaAi.Infra.JWT
             List<Claim> claims = new()
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Email, user.Email.Email),
+                new Claim(ClaimTypes.Email, user.Email.Address),
                 new Claim(ClaimTypes.Expiration, expirationDate.ToString()),
             };
             var claimsIdentity = new ClaimsIdentity(new GenericIdentity(user.Id.ToString()), claims);
@@ -84,23 +80,5 @@ namespace MeAgendaAi.Infra.JWT
             _logger.LogInformation("[{ActionType}/CreateToken] Token created successfully.", ActionType);
             return token;
         }
-
-        public string? Validate(string token)
-        {
-            _ = Handler.ValidateToken(token, ValidationParameters(), out SecurityToken validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            return jwtToken.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
-        }
-
-        private TokenValidationParameters ValidationParameters() => new()
-        {
-            ValidateLifetime = _tokenConfiguration.ValidateIssuer,
-            ValidateAudience = _tokenConfiguration.ValidateAudience,
-            ValidateIssuer = _tokenConfiguration.ValidateIssuer,
-            ValidIssuer = _tokenConfiguration.Issuer,
-            ValidAudience = _tokenConfiguration.Audience,
-            IssuerSigningKey = _signingConfiguration.Key
-        };
     }
 }

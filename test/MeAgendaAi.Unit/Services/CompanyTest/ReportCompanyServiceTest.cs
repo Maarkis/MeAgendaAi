@@ -1,10 +1,10 @@
-﻿using MeAgendaAi.Application.Notification;
-using MeAgendaAi.Common;
+﻿using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Domains.Interfaces.Services;
+using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Services;
 using MeAgendaAi.Services.CSVMaps;
 using Microsoft.Extensions.Logging;
@@ -13,7 +13,6 @@ using Moq.AutoMock;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MeAgendaAi.Unit.Services.CompanyTest
@@ -49,7 +48,6 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         public async Task ReportAsync_ShouldCallGetAllAsyncMethod()
         {
             var companies = new CompanyBuilder().Generate(10);
-            var csvExpected = Array.Empty<byte>();
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<IEnumerable<Company>>(It.IsAny<string>()))
                 .ReturnsAsync((IEnumerable<Company>)null!);
@@ -157,6 +155,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
             _mocker.GetMock<ICompanyRepository>()
                 .Verify(verify => verify.GetAllAsync(), Times.Never());
         }
+
         [Test]
         public async Task ReportAsync_ShouldNotCallSetAsyncMethodWhenReturningCachedCompanyList()
         {
@@ -168,7 +167,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
             _ = await _companyService.ReportAsync();
 
             _mocker.GetMock<IDistributedCacheRepository>()
-                .Verify(verify => verify.SetAsync(It.IsAny<string>(), companies), Times.Never());
+                .Verify(verify => verify.SetAsync(It.IsAny<string>(), companies, It.IsAny<double>()), Times.Never());
         }
 
         [Test]
@@ -195,7 +194,6 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         public async Task ReportAsync_ShouldCallGetAsyncMethodWithExpectedKey()
         {
             var keyExpected = NameKeyReport;
-            var companies = new CompanyBuilder().Generate(10);
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<IEnumerable<Company>>(NameKeyReport));
 

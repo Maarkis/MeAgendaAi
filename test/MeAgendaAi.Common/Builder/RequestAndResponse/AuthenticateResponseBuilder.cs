@@ -56,7 +56,7 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
         public static AuthenticateResponseBuilder FromUser(this AuthenticateResponseBuilder builder, User user)
         {
             builder.RuleFor(prop => prop.Id, () => user.Id);
-            builder.RuleFor(prop => prop.Email, () => user.Email.Email);
+            builder.RuleFor(prop => prop.Email, () => user.Email.Address);
             builder.RuleFor(prop => prop.CreatedAt, () => user.CreatedAt);
             builder.RuleFor(prop => prop.LastUpdatedAt, () => user.LastUpdatedAt);
 

@@ -7,11 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MeAgendaAi.Infra.CrossCutting
 {
-    public static class ConfigurationJWT
+    public static class ConfigurationJwt
     {
         public static IServiceCollection ConfigureJWT(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddSingleton<IJSONWebTokenService, JWTService>();
+            services.AddSingleton<IJsonWebTokenService, JwtService>();
 
             var tokenConfiguration = CreateTokenCofiguration(services, configuration);
             var signingConfiguration = CreateSigningConfiguration(services);

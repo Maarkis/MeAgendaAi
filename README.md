@@ -58,19 +58,7 @@ Ao acessar o _PgAdmin_ pela primeira vez o item **Servers** estará vazio, pois 
 
 ## Criando migration
 
-Antes de criar qualquer migrations, precisar instalar o tool do entity framework (ef). Pode ser instalado como uma ferramenta global ou local.
-
-**Ex. local**
-
-```bash
-dotnet tool install  dotnet-ef
-```
-
-**Ex. global**
-
-```bash
-dotnet tool install --global dotnet-ef
-```
+Antes de criar qualquer migrations, precisar instalar a ferramenta do entity framework (ef). Para mais informações consulte a instruções em [Ferramentas do .NET](#ferramentas-do-net).
 
 Para criar uma nova migration
 
@@ -92,3 +80,62 @@ dotnet ef database update -s ./src/MeAgendaAi.Application/
 Redis-Commander é um aplicativo web node.js usado para visualizar, editar e gerenciar um banco de dados Redis.
 
 Para manipular e visualizar o banco de dados Redis, utilizaremos o _Redis Commander_ em container Docker (Criado anteriormente) e acessaremos via o endereço [http://localhost:8091/](http://localhost:8091/).
+
+## Relatório de cobertura de testes
+
+Para gerar o relatório de cobertura de testes, precisamos executar o seguinte comando.
+
+Para abrir o relatório de cobertura de testes automaticamente:
+
+```bash
+dotnet cake
+```
+
+Ou
+
+```bash
+dotnet cake --target=Coverage
+```
+
+E navegar até a pasta **.\TestResults\coverage**.
+
+Mas antes, instale a ferramenta _Cake_, instruções para instalar a ferramenta podem ser encontradas em [Ferramentas do .NET](#ferramentas-do-net).
+
+## Ferramentas do .NET
+
+Uma ferramenta .NET é um pacote NuGet que contém um aplicativo de console.
+
+### **Ferramentas utilizada no projeto**
+
+- dotnet-ef
+
+  As ferramentas da CLI (interface de linha de comando) para Entity Framework Core executar tarefas de desenvolvimento em tempo de design.
+
+  - Instalação:
+    
+    ```bash
+    dotnet tool install dotnet-ef 
+    ```
+
+    Para adicionar global (para todos os projetos), coloque o argumento _--global_.
+
+- dotnet-cake
+
+  O [Cake (C# Make)](https://cakebuild.net/) é um sistema de automação de compilação de plataforma cruzada gratuito e de código aberto para tarefas como compilar código, copiar arquivos e pastas, executar testes de unidade, compactar arquivos e criar pacotes NuGet.
+
+  - Instalação:
+
+    ```bash
+    dotnet tool install Cake.Tool 
+    ```
+
+    Para adicionar global (para todos os projetos), coloque o argumento _--global_.
+
+### **Instalar todas as ferramentas**
+
+Para restaurar todas as ferramentas, basta executar o comando:
+
+
+```bash
+dotnet tool restore
+```

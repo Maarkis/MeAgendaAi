@@ -6,9 +6,9 @@ namespace MeAgendaAi.Services
 {
     public abstract class Service<T> : IService<T> where T : Entity
     {
-        private IRepository<T> _repository;
+        private readonly IRepository<T> _repository;
 
-        public Service(IRepository<T> repository) => _repository = repository;
+        protected Service(IRepository<T> repository) => _repository = repository;
 
         public async Task<Guid> AddAsync(T entity) => await _repository.AddAsync(entity);
 

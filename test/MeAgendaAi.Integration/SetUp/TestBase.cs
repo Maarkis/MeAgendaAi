@@ -16,9 +16,9 @@ namespace MeAgendaAi.Integration.SetUp
 {
     public class TestBase : IAsyncDisposable
     {
-        public static string ConnectionStringDatabase = "AppDb";
-        public static string NameSectionCacheDistribuited = "Redis";
-        public static string UrlApi = "http://localhost:5000/";
+        public const string ConnectionStringDatabase = "AppDb";
+        public const string NameSectionCacheDistribuited = "Redis";
+        public const string UrlApi = "http://localhost:5000/";
         protected WebApiFactory<Program>? Server { get; private set; }
         protected HttpClient Client { get; private set; } = default!;
         public AutoMocker Mocker { get; private set; } = default!;

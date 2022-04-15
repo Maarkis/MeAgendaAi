@@ -1,5 +1,5 @@
 ﻿using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
-using MeAgendaAi.Infra.Cache.Repository;
+using MeAgendaAi.Infra.Cache;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Authentication;

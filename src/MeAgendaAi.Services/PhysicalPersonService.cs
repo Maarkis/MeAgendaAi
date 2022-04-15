@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using MeAgendaAi.Application.Notification;
-using MeAgendaAi.Domains.Entities;
+﻿using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
+using MeAgendaAí.Infra.Notification;
 using Microsoft.Extensions.Logging;
 
 namespace MeAgendaAi.Services
@@ -14,20 +13,17 @@ namespace MeAgendaAi.Services
         private readonly IUserService _userService;
         private readonly NotificationContext _notificationContext;
         private readonly ILogger<PhysicalPersonService> _logger;
-        private readonly IMapper _mapper;
         private const string ActionType = "PhysicalPersonService";
 
         public PhysicalPersonService(
             IUserService userService,
             IPhysicalPersonRepository physicalPersonRepository,
             NotificationContext notificationContext,
-            ILogger<PhysicalPersonService> logger,
-            IMapper mapper) : base(physicalPersonRepository)
+            ILogger<PhysicalPersonService> logger) : base(physicalPersonRepository)
         {
             _userService = userService;
             _notificationContext = notificationContext;
             _logger = logger;
-            _mapper = mapper;
         }
 
         public async Task<Guid> AddAsync(AddPhysicalPersonRequest request)
@@ -46,7 +42,7 @@ namespace MeAgendaAi.Services
                 return Guid.Empty;
             }
 
-            var physicalPerson = new PhysicalPerson(request.Email, request.Password, request.Name, request.Surname, request.CPF, request.RG);            
+            var physicalPerson = new PhysicalPerson(request.Email, request.Password, request.Name, request.Surname, request.CPF, request.RG);
             if (physicalPerson.Invalid)
             {
                 _notificationContext.AddNotifications(physicalPerson.ValidationResult);

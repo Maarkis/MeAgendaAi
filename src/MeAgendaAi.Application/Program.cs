@@ -27,7 +27,6 @@ builder.Services.ConfigureCacheDistruitedService();
 builder.Services.ConfigureCacheDistribuited(builder.Configuration);
 builder.Services.ConfigureServiceAndHttpClientMailJet(builder.Configuration);
 
-
 var app = builder.Build();
 
 app.UseHttpLogging();
@@ -39,10 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllers();
 

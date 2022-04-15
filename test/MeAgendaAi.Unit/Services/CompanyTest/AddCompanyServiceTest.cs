@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Services;
+using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -155,7 +155,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
                     .Setup(method => method.AddAsync(It.IsAny<Company>()))
                     .ReturnsAsync(company.Id);
 
-            var response = await _companyService.AddAsync(request);
+            _ = await _companyService.AddAsync(request);
 
             _mocker.GetMock<ILogger<CompanyService>>().VerifyLog(LogLevel.Information, logMessageExpected);
         }

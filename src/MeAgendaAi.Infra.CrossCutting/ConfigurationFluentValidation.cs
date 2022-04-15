@@ -9,7 +9,7 @@ namespace MeAgendaAi.Infra.CrossCutting
     public static class ConfigurationFluentValidation
     {
         public static IMvcBuilder AddValidation<TStartup>(this IMvcBuilder services)
-        {            
+        {
             services.AddFluentValidation(fluentValidationOptions =>
             {
                 fluentValidationOptions.RegisterValidatorsFromAssemblyContaining<TStartup>();

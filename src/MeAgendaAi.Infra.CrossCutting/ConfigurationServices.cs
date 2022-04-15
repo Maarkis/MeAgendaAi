@@ -1,6 +1,5 @@
 ﻿using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Services;
-using MeAgendaAi.Services.UserServices;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MeAgendaAi.Infra.CrossCutting

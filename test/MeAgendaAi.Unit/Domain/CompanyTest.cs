@@ -20,7 +20,7 @@ namespace MeAgendaAi.Unit.Domain
             var password = PasswordBuilder.Generate();
             var name = _faker.Name.FirstName();
             var cnpj = _faker.Random.Int(15).ToString();
-            var description = _faker.Lorem.Word();
+            var description = _faker.Random.String2(length: _faker.Random.Int(min: 1, max: 160));
             var limitCancelHours = _faker.Random.Int();
 
             var company = new Company(email, password, name, cnpj, description, limitCancelHours);
@@ -31,21 +31,21 @@ namespace MeAgendaAi.Unit.Domain
 
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypeCompanyWithCorrectValues()
-        {
+        {            
             var companyExpected = new
             {
                 Email = new EmailObjectBuilder().Generate(),
                 Password = PasswordBuilder.Generate(),
                 Name = new NameObjectBuilder().WithoutSurname().Generate(validateSurname: false),
                 CNPJ = _faker.Random.Int(15).ToString(),
-                Description = _faker.Lorem.Paragraph(min: 1),
+                Description = _faker.Random.String2(length: _faker.Random.Int(min: 1, max: 160)),
                 LimitCancelHours = _faker.Random.Int()
             };
 
             var company = new Company(
-                companyExpected.Email.Email,
+                companyExpected.Email.Address,
                 companyExpected.Password,
-                companyExpected.Name.Name,
+                companyExpected.Name.FirstName,
                 companyExpected.CNPJ,
                 companyExpected.Description,
                 companyExpected.LimitCancelHours);

@@ -70,8 +70,7 @@ namespace MeAgendaAi.Unit.Infra.MailJet
             var name = _faker.Name.FullName();
             var email = _faker.Internet.Email();
             var token = _faker.Lorem.Word();
-            var expirationTime = _faker.Random.Int(min: 1, max: 24);
-            var requestExpected = new RetrievePasswordRequest(name, email, token, expirationTime, _mailSender).Build();
+            var expirationTime = _faker.Random.Int(min: 1, max: 24);            
             _mocker.GetMock<IMailjetClient>()
                 .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
                 .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: true, statusCode: (int)HttpStatusCode.OK, It.IsAny<JObject>()));

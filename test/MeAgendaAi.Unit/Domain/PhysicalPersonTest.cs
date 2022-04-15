@@ -42,9 +42,9 @@ namespace MeAgendaAi.Unit.Domain
             };
 
             var physicalPerson = new PhysicalPerson(
-                physicalPersonExpected.Email.Email,
+                physicalPersonExpected.Email.Address,
                 physicalPersonExpected.Password,
-                physicalPersonExpected.Name.Name,
+                physicalPersonExpected.Name.FirstName,
                 physicalPersonExpected.Name.Surname,
                 physicalPersonExpected.CPF,
                 physicalPersonExpected.RG);

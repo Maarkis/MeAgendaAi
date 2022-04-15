@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
@@ -8,16 +7,17 @@ using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
 using MeAgendaAi.Infra.JWT;
 using MeAgendaAi.Infra.MailJet;
+using MeAgendaAí.Infra.Notification;
 using Microsoft.Extensions.Logging;
 
-namespace MeAgendaAi.Services.UserServices
+namespace MeAgendaAi.Services
 {
     public class UserService : Service<User>, IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly NotificationContext _notificationContext;
         private readonly ILogger<UserService> _logger;
-        private readonly IJSONWebTokenService _jsonWebTokenService;
+        private readonly IJsonWebTokenService _jsonWebTokenService;
         private readonly IMapper _mapper;
         private readonly IDistributedCacheRepository _distributedCacheRepository;
         private readonly IEmailService _emailService;
@@ -27,7 +27,7 @@ namespace MeAgendaAi.Services.UserServices
 
         public UserService(
             IUserRepository userRepository, NotificationContext notificationContext,
-            ILogger<UserService> logger, IJSONWebTokenService jsonWebTokenService,
+            ILogger<UserService> logger, IJsonWebTokenService jsonWebTokenService,
             IMapper mapper, IDistributedCacheRepository distributedCacheRepository, IEmailService emailService) : base(userRepository)
         {
             _userRepository = userRepository;
@@ -123,7 +123,7 @@ namespace MeAgendaAi.Services.UserServices
 
             var sended = await _emailService.SendPasswordRecoveryEmail(
                 name: user.Name.FullName,
-                email: user.Email.Email,
+                email: user.Email.Address,
                 token: identificationToken,
                 expirationTime: PasswordResetTokenExpirationTimeInSeconds
                 );

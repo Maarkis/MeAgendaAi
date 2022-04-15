@@ -1,4 +1,4 @@
-﻿using MeAgendaAi.Application.Notification;
+﻿using MeAgendaAí.Infra.Notification;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MeAgendaAi.Infra.CrossCutting

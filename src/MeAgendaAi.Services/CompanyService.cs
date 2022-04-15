@@ -1,11 +1,11 @@
-﻿using MeAgendaAi.Application.Notification;
-using MeAgendaAi.Domains.Entities;
+﻿using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
 using MeAgendaAi.Infra.Extension;
+using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Services.CSVMaps;
 using Microsoft.Extensions.Logging;
 

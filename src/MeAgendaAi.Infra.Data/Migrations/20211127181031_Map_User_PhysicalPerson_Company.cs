@@ -1,10 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace MeAgendaAi.Infra.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class Map_User_PhysicalPerson_Company : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

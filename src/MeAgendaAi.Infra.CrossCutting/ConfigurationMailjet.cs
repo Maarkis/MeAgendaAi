@@ -10,7 +10,6 @@ namespace MeAgendaAi.Infra.CrossCutting
     {
         public static IServiceCollection ConfigureServiceAndHttpClientMailJet(this IServiceCollection services, ConfigurationManager configuration)
         {
-            ConfigureMailSender(services, configuration);
             services
                 .ConfigureEmailService()
                 .ConfigureMailSender(configuration);

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MeAgendaAi.Common
 {
+    [ExcludeFromCodeCoverage]
     public static class LoggerMockExtensions
     {
         public static void VerifyLog<T>(

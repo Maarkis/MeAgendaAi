@@ -36,7 +36,7 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
-        public static UserBuilder WithEmail(this UserBuilder builder, EmailObject email)
+        public static UserBuilder WithEmail(this UserBuilder builder, Email email)
         {
             builder.RuleFor(prop => prop.Email, () => email);
             return builder;
@@ -54,7 +54,7 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
-        public static UserBuilder WithFullName(this UserBuilder builder, NameObject name)
+        public static UserBuilder WithFullName(this UserBuilder builder, Name name)
         {
             builder.RuleFor(x => x.Name, () => name);
             return builder;

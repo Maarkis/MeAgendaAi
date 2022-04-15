@@ -53,7 +53,7 @@ namespace MeAgendaAi.Unit.Mapping
             var authenticateResponseExpected = new AuthenticateResponse()
             {
                 Id = user.Id,
-                Email = user.Email.Email,
+                Email = user.Email.Address,
                 CreatedAt = user.CreatedAt,
                 LastUpdatedAt = user.LastUpdatedAt
             };

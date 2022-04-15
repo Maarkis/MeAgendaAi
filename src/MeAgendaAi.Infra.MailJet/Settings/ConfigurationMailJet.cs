@@ -6,5 +6,5 @@
         public string KeyApiPublic { get; set; } = default!;
         public string KeyApiSecret { get; set; } = default!;
         public string Version { get; set; } = default!;
-    }   
+    }
 }

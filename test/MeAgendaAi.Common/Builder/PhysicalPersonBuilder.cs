@@ -14,6 +14,7 @@ namespace MeAgendaAi.Common.Builder
             RuleFor(x => x.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(x => x.Password, PasswordBuilder.Generate());
             RuleFor(x => x.Name, () => new NameObjectBuilder().Generate());
+
             RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
             RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());
         }
@@ -40,7 +41,7 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
-        public static PhysicalPersonBuilder WithEmail(this PhysicalPersonBuilder builder, EmailObject email)
+        public static PhysicalPersonBuilder WithEmail(this PhysicalPersonBuilder builder, Email email)
         {
             builder.RuleFor(x => x.Email, () => email);
             return builder;
@@ -64,7 +65,7 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
-        public static PhysicalPersonBuilder WithFullName(this PhysicalPersonBuilder builder, NameObject name)
+        public static PhysicalPersonBuilder WithFullName(this PhysicalPersonBuilder builder, Name name)
         {
             builder.RuleFor(x => x.Name, () => name);
             return builder;

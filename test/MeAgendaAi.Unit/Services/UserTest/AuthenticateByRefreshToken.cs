@@ -1,8 +1,6 @@
 ﻿using AutoBogus;
 using AutoMapper;
-using Bogus;
 using FluentAssertions;
-using MeAgendaAi.Application.Notification;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
@@ -11,7 +9,8 @@ using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.JWT;
-using MeAgendaAi.Services.UserServices;
+using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
@@ -23,7 +22,6 @@ namespace MeAgendaAi.Unit.Services.UserTest
 {
     public class AuthenticateByRefreshToken
     {
-        private readonly Faker _faker;
         private readonly AutoMocker _mocker;
         private readonly UserService _userService;
 
@@ -31,7 +29,6 @@ namespace MeAgendaAi.Unit.Services.UserTest
 
         public AuthenticateByRefreshToken()
         {
-            _faker = new Faker();
             _mocker = new AutoMocker();
             _userService = _mocker.CreateInstance<UserService>();
         }
@@ -63,7 +60,6 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task AuthenticateByRefreshTokenAsync_ShouldGenerateAnErrorLogWhenNotFindRefreshToken()
         {
             var refreshToken = Guid.NewGuid().ToString("N");
-            var userId = Guid.NewGuid();
             var logMessageExpected = $"[{ActionType}/AuthenticateByRefreshTokenAsync] Refresh token not found.";
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)));
@@ -77,7 +73,6 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task AuthenticateByRefreshTokenAsync_ShouldAddNotificationWhenNotFindRefreshToken()
         {
             var refreshToken = Guid.NewGuid().ToString("N");
-            var userId = Guid.NewGuid();
             var notification = new Notification("Resfresh Token", "Refresh token found.");
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)));
@@ -93,7 +88,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
                 .ReturnsAsync(userId);
@@ -103,7 +98,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
@@ -119,7 +114,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             var logMessageExpected = $"[{ActionType}/AuthenticateByRefreshTokenAsync] User {userId} not found.";
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
@@ -129,7 +124,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
@@ -144,7 +139,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             var notification = new Notification("User", "User not found.");
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
@@ -154,7 +149,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
@@ -169,23 +164,23 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
                 .ReturnsAsync(userId);
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByIdAsync(It.Is<Guid>(key => key == userId)))
-                .ReturnsAsync(user); ;
+                .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
             _ = await _userService.AuthenticateByRefreshTokenAsync(refreshToken);
 
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Verify(verify => verify.GenerateToken(It.Is<User>(u => u == user)), Times.Once());
         }
 
@@ -195,17 +190,17 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
                 .ReturnsAsync(userId);
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByIdAsync(It.Is<Guid>(key => key == userId)))
-                .ReturnsAsync(user); ;
+                .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
@@ -221,17 +216,17 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
                 .ReturnsAsync(userId);
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByIdAsync(It.Is<Guid>(key => key == userId)))
-                .ReturnsAsync(user); ;
+                .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
@@ -247,17 +242,17 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Setup(method => method.GetAsync<Guid>(It.Is<string>(key => key == refreshToken)))
                 .ReturnsAsync(userId);
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByIdAsync(It.Is<Guid>(key => key == userId)))
-                .ReturnsAsync(user); ;
+                .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 
@@ -276,7 +271,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
             var refreshToken = Guid.NewGuid().ToString("N");
             var userId = Guid.NewGuid();
             var user = new UserBuilder().WithId(userId).Generate();
-            var tokenJWT = new AutoFaker<JWTToken>().Generate();
+            var tokenJWT = new AutoFaker<JwtToken>().Generate();
             var authenticateResponse = new AuthenticateResponseBuilder()
                 .FromUser(user)
                 .WithToken(tokenJWT.Token)
@@ -287,11 +282,11 @@ namespace MeAgendaAi.Unit.Services.UserTest
                 .ReturnsAsync(userId);
             _mocker.GetMock<IUserRepository>()
                 .Setup(method => method.GetByIdAsync(It.Is<Guid>(key => key == userId)))
-                .ReturnsAsync(user); ;
+                .ReturnsAsync(user);
             _mocker.GetMock<IMapper>()
                 .Setup(setup => setup.Map<AuthenticateResponse>(It.Is<User>(u => u == user)))
                 .Returns(new AuthenticateResponseBuilder().FromUser(user).Generate());
-            _mocker.GetMock<IJSONWebTokenService>()
+            _mocker.GetMock<IJsonWebTokenService>()
                 .Setup(setup => setup.GenerateToken(It.Is<User>(u => u == user)))
                 .Returns(tokenJWT);
 

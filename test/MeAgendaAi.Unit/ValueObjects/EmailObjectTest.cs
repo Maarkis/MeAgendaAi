@@ -16,7 +16,7 @@ namespace MeAgendaAi.Unit.ValueObjects
         {
             var email = Faker.Internet.Email();
 
-            var emailObject = new EmailObject(email);
+            var emailObject = new Email(email);
 
             emailObject.Valid.Should().BeTrue();
             emailObject.ValidationResult.Errors.Should().BeEmpty();
@@ -27,9 +27,9 @@ namespace MeAgendaAi.Unit.ValueObjects
         {
             var emailExpected = Faker.Internet.Email();
 
-            var nameObject = new EmailObject(emailExpected);
+            var nameObject = new Email(emailExpected);
 
-            nameObject.Email.Should().Be(emailExpected);
+            nameObject.Address.Should().Be(emailExpected);
         }
 
         [TestCase("E-mail cannot be empty", null)]
@@ -38,11 +38,48 @@ namespace MeAgendaAi.Unit.ValueObjects
         [TestCase("Invalid e-mail", "teste.email")]
         public void ShouldCreatedAnInvalidInstanceOfNameObjectWithErrorsInNameProperty(string messageError, string email)
         {
-            var nameObject = new EmailObject(email);
+            var nameObject = new Email(email);
 
             nameObject.Valid.Should().BeFalse();
             var errors = nameObject.ValidationResult.Errors;
             errors.Should().Contain(error => error.ErrorMessage == messageError);
+        }
+
+        [Test]
+        public void EqualsShouldBeTrueWhenTwoEmailObjectWithSameEmail()
+        {
+            var address = Faker.Internet.Email();
+            var email = new Email(address);
+            var otherEmail = new Email(address);
+
+            email.Equals(otherEmail).Should().BeTrue();
+        }
+
+        [Test]
+        public void EqualsShouldBeFalseTwoEmailObjectWithDifferentEmail()
+        {
+            var email = new Email(Faker.Internet.Email());
+            var otherEmail = new Email(Faker.Internet.Email());
+
+            email.Equals(otherEmail).Should().BeFalse();
+        }
+
+        [Test]
+        public void EqualsShouldBeFalseWhenCheckObjectEmailWithNullObjectEmail()
+        {
+            var email = new Email(Faker.Internet.Email());
+            Email otherEmail = null!;
+
+            email.Equals(otherEmail).Should().BeFalse();
+        }
+
+        [Test]
+        public void EqualsShouldBeFalseWhenCheckObjectEmailWithOtherObjectType()
+        {
+            var email = new Email(Faker.Internet.Email());
+            var differentObject = new Name("", "");
+
+            email.Equals(differentObject).Should().BeFalse();
         }
     }
 }

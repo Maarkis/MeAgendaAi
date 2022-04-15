@@ -9,9 +9,12 @@ namespace MeAgendaAi.Services
     public interface IReport
     {
         Encoding Encoding { get; }
-        string Delimiter { get; }        
+        string Delimiter { get; }
+
         byte[] Generate<T, EntityMap>(IEnumerable<T> entities) where T : Entity where EntityMap : ClassMap<T>;
+
         void SetEncoding(Encoding encoding);
+
         void SetDelimiter(string delimiter);
     }
 
@@ -21,7 +24,7 @@ namespace MeAgendaAi.Services
         public Encoding Encoding => _encoding;
 
         private string _delimiter = ";";
-        public string Delimiter => _delimiter;        
+        public string Delimiter => _delimiter;
 
         public byte[] Generate<T, EntityMap>(IEnumerable<T> entities)
             where T : Entity
@@ -41,6 +44,7 @@ namespace MeAgendaAi.Services
         }
 
         public void SetDelimiter(string delimiter) => _delimiter = delimiter;
-        public void SetEncoding(Encoding enconding) => _encoding = enconding;
+
+        public void SetEncoding(Encoding encoding) => _encoding = encoding;
     }
 }
