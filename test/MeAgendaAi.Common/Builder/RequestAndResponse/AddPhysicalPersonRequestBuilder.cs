@@ -5,7 +5,7 @@ using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Common.Builder.RequestAndResponse
 {
-    public class AddPhysicalPersonRequestBuilder : AutoFaker<AddPhysicalPersonRequest>
+    public sealed class AddPhysicalPersonRequestBuilder : AutoFaker<AddPhysicalPersonRequest>
     {
         public AddPhysicalPersonRequestBuilder()
         {

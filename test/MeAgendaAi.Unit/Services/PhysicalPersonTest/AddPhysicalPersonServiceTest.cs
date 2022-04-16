@@ -13,6 +13,7 @@ using Moq.AutoMock;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using MeAgendaAi.Infra.MailJet;
 
 namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
 {
@@ -174,7 +175,7 @@ namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
         public void AddPhysicalPerson_ShouldGenerateAnErrorLogWhenUserAlreadyExists()
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
-            var logMessageExpected = $"[{ActionType}/AddAsync] A registered user for {request.Email} already exists.";
+            var logMessageExpected = $"[{ActionType}/AddAsync] A registered user for {request.Email} already exists";
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(true);
@@ -188,7 +189,7 @@ namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
         public void AddPhysicalPerson_ShouldGenerateAnErrorLogWhenNotSamePassword()
         {
             var request = new AddPhysicalPersonRequestBuilder().WithConfirmPassword("password-different").Generate();
-            var logMessageExpected = $"[{ActionType}/AddAsync] Confirmation password is not the same as password.";
+            var logMessageExpected = $"[{ActionType}/AddAsync] Confirmation password is not the same as password";
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(false);
@@ -228,7 +229,7 @@ namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
             var physicalPerson = new PhysicalPersonBuilder().ByRequest(request).Generate();
-            var logMessageExpected = $"[{ActionType}/AddAsync] User {physicalPerson.Id} registered successfully.";
+            var logMessageExpected = $"[{ActionType}/AddAsync] User {physicalPerson.Id} registered successfully";
             _mocker.GetMock<IUserService>()
                 .Setup(setup => setup.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(false);
@@ -239,6 +240,58 @@ namespace MeAgendaAi.Unit.Services.PhysicalPersonTest
             _ = await _physicalPersonService.AddAsync(request);
 
             _mocker.GetMock<ILogger<PhysicalPersonService>>().VerifyLog(LogLevel.Information, logMessageExpected);
+        }
+
+        [Test]
+        public void AddPhysicalPerson_ShouldAddNotificationWhenWhenNotSendEmailConfirmation()
+        {
+            var request = new AddPhysicalPersonRequestBuilder().Generate();
+            var physicalPerson = new PhysicalPersonBuilder().ByRequest(request).Generate();
+            var notification = new Notification("Email", "Confirmation email not sent");
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
+                .ReturnsAsync(false);
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+                .Returns(false);
+            _mocker.GetMock<IEmailService>()
+                .Setup(method => method.SendConfirmationEmail(physicalPerson.Name.FullName,
+                    physicalPerson.Email.Address, physicalPerson.Id.ToString()))
+                .ReturnsAsync(false);
+
+            _ = _physicalPersonService.AddAsync(request);
+            
+            
+            _mocker.Get<NotificationContext>().Notifications.Should().ContainEquivalentOf(notification);
+        }
+        
+        [Test]
+        public void AddPhysicalPerson_ShouldGenerateAnErrorLogWhenNotSendEmailConfirmation()
+        {
+            var request = new AddPhysicalPersonRequestBuilder().Generate();
+            var physicalPerson = new PhysicalPersonBuilder().ByRequest(request).Generate();
+            var logMessageExpected = $"[{ActionType}/AddAsync] User {physicalPerson.Id} confirmation email not sent";
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
+                .ReturnsAsync(false);
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+                .Returns(false);
+            _mocker.GetMock<IPhysicalPersonRepository>()
+                .Setup(method => method.AddAsync(It.IsAny<PhysicalPerson>()))
+                .ReturnsAsync(physicalPerson.Id);
+            _mocker.GetMock<IEmailService>()
+                .Setup(method => method.SendConfirmationEmail(physicalPerson.Name.FullName,
+                    physicalPerson.Email.Address, physicalPerson.Id.ToString()))
+                .ReturnsAsync(false);
+
+            _ = _physicalPersonService.AddAsync(request);
+            
+            _mocker.GetMock<ILogger<PhysicalPersonService>>().VerifyLog(LogLevel.Error, logMessageExpected);
         }
     }
 }

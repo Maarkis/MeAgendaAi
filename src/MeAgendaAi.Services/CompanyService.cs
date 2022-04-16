@@ -5,6 +5,7 @@ using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
 using MeAgendaAi.Infra.Extension;
+using MeAgendaAi.Infra.MailJet;
 using MeAgendaAí.Infra.Notification;
 using MeAgendaAi.Services.CSVMaps;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,7 @@ namespace MeAgendaAi.Services
         private readonly IReport _report;
         private readonly ILogger<CompanyService> _logger;
         private readonly IDistributedCacheRepository _distributedCacheRepository;
+        private readonly IEmailService _emailService;
 
         private const string KeyReportCompany = "ReportCompany";
         private const double ExpireInSecondsReportCompany = 1200;
@@ -29,13 +31,15 @@ namespace MeAgendaAi.Services
             ICompanyRepository companyRepository,
             NotificationContext notificationContext,
             IReport report, ILogger<CompanyService> logger,
-            IDistributedCacheRepository distributedCacheRepository) : base(companyRepository)
+            IDistributedCacheRepository distributedCacheRepository,
+            IEmailService emailService) : base(companyRepository)
         {
             _userService = userService;
             _notificationContext = notificationContext;
             _report = report;
             _logger = logger;
             _distributedCacheRepository = distributedCacheRepository;
+            _emailService = emailService;
         }
 
         public async Task<Guid> AddAsync(AddCompanyRequest request)
@@ -43,14 +47,14 @@ namespace MeAgendaAi.Services
             if (await _userService.HasUser(request.Email))
             {
                 _notificationContext.AddNotification("Email", "E-mail already registered.");
-                _logger.LogError("[{ActionType}/AddAsync] A registered user for {Email} already exists.", ActionType, request.Email);
+                _logger.LogError("[{ActionType}/AddAsync] A registered user for {Email} already exists", ActionType, request.Email);
                 return Guid.Empty;
             }
 
             if (_userService.NotSamePassword(request.Password, request.ConfirmPassword))
             {
                 _notificationContext.AddNotification("ConfirmPassword", "Confirmation password is not the same as password.");
-                _logger.LogError("[{ActionType}/AddAsync] Confirmation password is not the same as password.", ActionType);
+                _logger.LogError("[{ActionType}/AddAsync] Confirmation password is not the same as password", ActionType);
                 return Guid.Empty;
             }
 
@@ -62,22 +66,34 @@ namespace MeAgendaAi.Services
                 return Guid.Empty;
             }
 
-            company.Encript(Encrypt.EncryptString(company.Password, company.Id.ToString()));
+            company.Encrypt(Encrypt.EncryptString(company.Password, company.Id.ToString()));
 
             var companyId = await AddAsync(company);
-            _logger.LogInformation("[{ActionType}/AddAsync] User {companyId} registered successfully.", ActionType, companyId);
+            _logger.LogInformation("[{ActionType}/AddAsync] User {CompanyId} registered successfully", ActionType, companyId);
+            
+            
+            var sended = await _emailService.SendConfirmationEmail(company.Name.FullName, company.Email.Address, companyId.ToString());
+            var notSended = !sended;
+
+            if (notSended)
+            {
+                _notificationContext.AddNotification("Email", "Confirmation email not sent");
+                _logger.LogError("[{ActionType}/AddAsync] User {Id} confirmation email not sent", ActionType,
+                    companyId);
+            }
+            
             return companyId;
         }
 
         public async Task<byte[]?> ReportAsync()
         {
             var companies = await _distributedCacheRepository.GetAsync<IEnumerable<Company>>(KeyReportCompany);
-
+            
             if (companies == null)
             {
                 companies = await GetAllAsync();
-
-                if (companies.IsEmpty())
+                
+                if (companies.IsEmpty()) 
                     return null;
 
                 await _distributedCacheRepository.SetAsync(KeyReportCompany, companies, expireInSeconds: ExpireInSecondsReportCompany);
@@ -85,7 +101,7 @@ namespace MeAgendaAi.Services
 
             var report = _report.Generate<Company, CompanyMap>(companies);
 
-            _logger.LogInformation("[{ActionType}/ReportAsync] Report generated successfully.", ActionType);
+            _logger.LogInformation("[{ActionType}/ReportAsync] Report generated successfully", ActionType);
 
             return report;
         }

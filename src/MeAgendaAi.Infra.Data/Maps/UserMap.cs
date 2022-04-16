@@ -1,26 +1,27 @@
 ﻿using MeAgendaAi.Domains.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MeAgendaAi.Infra.Data.Maps
 {
     public class UserMap : BaseEntityConfigurationMap<User>
     {
-        private const string ENTITY_NAME = "USERS";
-        private const string TABLE_NAME = $"TB_{ENTITY_NAME}";
-        private const string INDEX_TABLE_NAME = $"IN_{ENTITY_NAME}_EMAIL";
-
+        private const string EntityName = "USERS";
+        private const string TableName = $"TB_{EntityName}";
+        private const string IndexTableName = $"IN_{EntityName}_EMAIL";
+        
         public new void Configure(EntityTypeBuilder<User> builder)
         {
             base.Configure(builder);
 
-            builder.ToTable(TABLE_NAME);
+            builder.ToTable(TableName);
 
             builder.HasKey(prop => prop.Id);
 
             builder.OwnsOne(prop => prop.Email)
                    .HasIndex(prop => prop.Address)
-                   .HasDatabaseName(INDEX_TABLE_NAME)
+                   .HasDatabaseName(IndexTableName)
                    .IsUnique();
 
             builder.OwnsOne(prop => prop.Email)
@@ -40,11 +41,11 @@ namespace MeAgendaAi.Infra.Data.Maps
                 .HasColumnName($"NM_FIRST_NAME");
 
             builder.OwnsOne(prop => prop.Name)
-                   .Property(prop => prop.Surname)
-                   .IsRequired(false)
-                   .HasColumnType("varchar(80)")
-                   .HasMaxLength(80)
-                   .HasColumnName($"NM_LAST_NAME");
+                .Property(prop => prop.Surname)
+                .IsRequired(false)
+                .HasColumnType("varchar(80)")
+                .HasMaxLength(80)
+                .HasColumnName($"NM_LAST_NAME");
 
             builder.OwnsOne(prop => prop.Name)
                 .Ignore(prop => prop.Valid)
@@ -52,8 +53,14 @@ namespace MeAgendaAi.Infra.Data.Maps
                 .Ignore(prop => prop.ValidationResult);
 
             builder.Property(prop => prop.Password)
-                   .HasColumnName("PASS_PASSWORD")
-                   .IsRequired();
+                .HasColumnName("PASS_PASSWORD")
+                .IsRequired();
+
+            builder.Property(prop => prop.IsActive)
+                .IsRequired()
+                .HasConversion<int>()
+                .HasDefaultValue(false)
+                .HasColumnName("ACTIVE");
         }
     }
 }

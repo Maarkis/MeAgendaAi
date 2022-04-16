@@ -121,7 +121,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
                 .ReturnsAsync((IEnumerable<Company>)null!);
             _mocker.GetMock<ICompanyRepository>()
                 .Setup(method => method.GetAllAsync()).ReturnsAsync(companies);
-            var logMessageexpected = $"[{ActionType}/ReportAsync] Report generated successfully.";
+            var logMessageexpected = $"[{ActionType}/ReportAsync] Report generated successfully";
 
             _ = await _companyService.ReportAsync();
 

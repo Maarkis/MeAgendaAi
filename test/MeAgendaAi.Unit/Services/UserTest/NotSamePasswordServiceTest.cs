@@ -12,8 +12,8 @@ namespace MeAgendaAi.Unit.Services.UserTest
 
         public NotSamePasswordServiceTest()
         {
-            var _mocker = new AutoMocker();
-            _userService = _mocker.CreateInstance<UserService>();
+            var mocker = new AutoMocker();
+            _userService = mocker.CreateInstance<UserService>();
         }
 
         [Test]

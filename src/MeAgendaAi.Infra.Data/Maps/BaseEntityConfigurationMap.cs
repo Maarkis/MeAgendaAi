@@ -11,16 +11,12 @@ namespace MeAgendaAi.Infra.Data.Maps
             builder.HasKey(prop => prop.Id);
 
             builder.Property(prop => prop.CreatedAt)
-                    .IsRequired()
-                    .HasColumnName("DT_CREATED_AT")
-                    .HasDefaultValueSql("NOW()")
-                    .ValueGeneratedOnAdd();
+                .IsRequired()
+                .HasColumnName("DT_CREATED_AT");
 
             builder.Property(prop => prop.LastUpdatedAt)
-                   .HasColumnName("DT_LAST_UPDATED_AT")
-                   .IsRequired(false)
-                   .HasDefaultValueSql("NOW()")
-                   .ValueGeneratedOnUpdate();
+                .HasColumnName("DT_LAST_UPDATED_AT")
+                .IsRequired(false);
 
             builder.Ignore(prop => prop.Valid);
             builder.Ignore(prop => prop.Invalid);

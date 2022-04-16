@@ -49,7 +49,7 @@ namespace MeAgendaAi.Infra.MailJet.Template
                 new JObject
                 {
                     {"user_name", ToName},
-                    {"expiration",  ConvertSencondsInHour(Expiration)},
+                    {"expiration", ConvertSecondsInHour(Expiration)},
                     {"link_reset", BuildUrl(Url, Token)}
                 });
 

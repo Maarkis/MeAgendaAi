@@ -11,7 +11,7 @@ namespace MeAgendaAi.Services
         Encoding Encoding { get; }
         string Delimiter { get; }
 
-        byte[] Generate<T, EntityMap>(IEnumerable<T> entities) where T : Entity where EntityMap : ClassMap<T>;
+        byte[] Generate<T, TEntityMap>(IEnumerable<T> entities) where T : Entity where TEntityMap : ClassMap<T>;
 
         void SetEncoding(Encoding encoding);
 
@@ -20,15 +20,12 @@ namespace MeAgendaAi.Services
 
     public class ReportService : IReport
     {
-        private Encoding _encoding = Encoding.UTF8;
-        public Encoding Encoding => _encoding;
+        public Encoding Encoding { get; private set; } = Encoding.UTF8;
+        public string Delimiter { get; private set; } = ";";
 
-        private string _delimiter = ";";
-        public string Delimiter => _delimiter;
-
-        public byte[] Generate<T, EntityMap>(IEnumerable<T> entities)
+        public byte[] Generate<T, TEntityMap>(IEnumerable<T> entities)
             where T : Entity
-            where EntityMap : ClassMap<T>
+            where TEntityMap : ClassMap<T>
         {
             if (entities.IsEmpty())
                 return Array.Empty<byte>();
@@ -37,14 +34,14 @@ namespace MeAgendaAi.Services
             using var writer = new StreamWriter(stream) { AutoFlush = true };
             var config = new CsvConfiguration(Thread.CurrentThread.CurrentCulture) { Delimiter = Delimiter, Encoding = Encoding };
             using var csv = new CsvWriter(writer, config);
-            csv.Context.RegisterClassMap<EntityMap>();
+            csv.Context.RegisterClassMap<TEntityMap>();
             csv.WriteRecords(entities);
             csv.NextRecord();
             return stream.ToArray();
         }
 
-        public void SetDelimiter(string delimiter) => _delimiter = delimiter;
+        public void SetDelimiter(string delimiter) => Delimiter = delimiter;
 
-        public void SetEncoding(Encoding encoding) => _encoding = encoding;
+        public void SetEncoding(Encoding encoding) => Encoding = encoding;
     }
 }

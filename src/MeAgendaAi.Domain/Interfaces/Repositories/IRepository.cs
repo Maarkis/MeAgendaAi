@@ -8,6 +8,8 @@ namespace MeAgendaAi.Domains.Interfaces.Repositories
 
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<T?> GetByIdAsync(Guid Id);
+        Task<T?> GetByIdAsync(Guid id);
+
+        Task<T?> UpdateAsync(T entity);
     }
 }

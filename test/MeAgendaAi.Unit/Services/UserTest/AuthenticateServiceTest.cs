@@ -82,7 +82,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task AuthenticateAsync_ShouldGenerateAnErrorLogWhenNotFindUser()
         {
             var request = new AuthenticateRequestBuilder().Generate();
-            var logMessageExpected = $"[{ActionType}/AuthenticateAsync] User {request.Email} not found.";
+            var logMessageExpected = $"[{ActionType}/AuthenticateAsync] User {request.Email} not found";
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)));
 
@@ -137,7 +137,7 @@ namespace MeAgendaAi.Unit.Services.UserTest
                 .WithId(id)
                 .WithPassword("wrong-password")
                 .Generate();
-            var logMessageExpected = $"[{ActionType}/AuthenticateAsync] User {user.Id} Wrong your password.";
+            var logMessageExpected = $"[{ActionType}/AuthenticateAsync] User {user.Id} Wrong your password";
             _mocker.GetMock<IUserRepository>()
                 .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == request.Email)))
                 .ReturnsAsync(user);

@@ -5,9 +5,9 @@ namespace MeAgendaAi.Domains.ValueObjects
 {
     public abstract class ValueObject
     {
-        public bool Valid { get; protected set; }
+        public bool Valid { get; private set; }
         public bool Invalid => !Valid;
-        public ValidationResult ValidationResult { get; protected set; } = new();
+        public ValidationResult ValidationResult { get; private set; } = new();
 
         public virtual bool Validate<T>(T valueObjects, AbstractValidator<T> validationRules)
         {
@@ -25,10 +25,7 @@ namespace MeAgendaAi.Domains.ValueObjects
             if (GetType() != obj.GetType())
                 return false;
 
-            if (obj is not ValueObject valueObject)
-                return false;
-
-            return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
+            return obj is ValueObject valueObject && GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
         }
 
         public override int GetHashCode()

@@ -24,7 +24,13 @@ namespace MeAgendaAi.Infra.Data.Repositories
 
         public virtual async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
 
-        public virtual async Task<T?> GetByIdAsync(Guid Id) => await _dbSet.FirstOrDefaultAsync(user => user.Id == Id);
+        public virtual async Task<T?> GetByIdAsync(Guid id) => await _dbSet.FirstOrDefaultAsync(user => user.Id == id);
+        public async Task<T?> UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
 
         protected virtual void Dispose(bool disposing)
         {
