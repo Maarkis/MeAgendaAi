@@ -3,6 +3,7 @@ using System;
 using MeAgendaAi.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeAgendaAi.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220416010853_ActiveProperty")]
+    partial class ActiveProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,8 +31,10 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DT_CREATED_AT");
+                        .HasColumnName("DT_CREATED_AT")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -39,8 +43,10 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .HasColumnName("ACTIVE");
 
                     b.Property<DateTime?>("LastUpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DT_LAST_UPDATED_AT");
+                        .HasColumnName("DT_LAST_UPDATED_AT")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Password")
                         .IsRequired()

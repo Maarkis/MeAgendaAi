@@ -31,7 +31,8 @@ namespace MeAgendaAi.Application.Mapper
                 .ForPath(dest => dest.Valid, option => option.Ignore())
                 .ForPath(dest => dest.ValidationResult, option => option.Ignore())
                 .ForPath(dest => dest.CreatedAt, option => option.Ignore())
-                .ForPath(dest => dest.LastUpdatedAt, option => option.Ignore());
+                .ForPath(dest => dest.LastUpdatedAt, option => option.Ignore())
+                .ForPath(dest => dest.IsActive, option => option.Ignore());
         }
     }
 }

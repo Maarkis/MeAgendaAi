@@ -7,14 +7,14 @@ namespace MeAgendaAi.Unit.ValueObjects
 {
     public class EmailObjectTest
     {
-        private readonly Faker Faker;
+        private readonly Faker _faker;
 
-        public EmailObjectTest() => Faker = new Faker();
+        public EmailObjectTest() => _faker = new Faker();
 
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypeEmailObject()
         {
-            var email = Faker.Internet.Email();
+            var email = _faker.Internet.Email();
 
             var emailObject = new Email(email);
 
@@ -25,7 +25,7 @@ namespace MeAgendaAi.Unit.ValueObjects
         [Test]
         public void ShouldCreatedAnInstanceValidOfTypeEmailObjectWithCorrectValues()
         {
-            var emailExpected = Faker.Internet.Email();
+            var emailExpected = _faker.Internet.Email();
 
             var nameObject = new Email(emailExpected);
 
@@ -48,7 +48,7 @@ namespace MeAgendaAi.Unit.ValueObjects
         [Test]
         public void EqualsShouldBeTrueWhenTwoEmailObjectWithSameEmail()
         {
-            var address = Faker.Internet.Email();
+            var address = _faker.Internet.Email();
             var email = new Email(address);
             var otherEmail = new Email(address);
 
@@ -58,8 +58,8 @@ namespace MeAgendaAi.Unit.ValueObjects
         [Test]
         public void EqualsShouldBeFalseTwoEmailObjectWithDifferentEmail()
         {
-            var email = new Email(Faker.Internet.Email());
-            var otherEmail = new Email(Faker.Internet.Email());
+            var email = new Email(_faker.Internet.Email());
+            var otherEmail = new Email(_faker.Internet.Email());
 
             email.Equals(otherEmail).Should().BeFalse();
         }
@@ -67,7 +67,7 @@ namespace MeAgendaAi.Unit.ValueObjects
         [Test]
         public void EqualsShouldBeFalseWhenCheckObjectEmailWithNullObjectEmail()
         {
-            var email = new Email(Faker.Internet.Email());
+            var email = new Email(_faker.Internet.Email());
             Email otherEmail = null!;
 
             email.Equals(otherEmail).Should().BeFalse();
@@ -76,10 +76,56 @@ namespace MeAgendaAi.Unit.ValueObjects
         [Test]
         public void EqualsShouldBeFalseWhenCheckObjectEmailWithOtherObjectType()
         {
-            var email = new Email(Faker.Internet.Email());
+            var email = new Email(_faker.Internet.Email());
             var differentObject = new Name("", "");
 
             email.Equals(differentObject).Should().BeFalse();
+        }
+
+        [Test]
+        public void EqualityOperatorShouldBeTrueWhenCheckObjectEmailIsSame()
+        {
+            var address = _faker.Internet.Email();
+            var oneEmail = new Email(address);
+            var twoEmail = new Email(address);
+
+            (oneEmail == twoEmail).Should().BeTrue();
+        }
+        
+        [Test]
+        public void EqualityOperatorShouldBeFalseWhenCheckObjectEmailIsNotSame()
+        {
+            var oneEmail = new Email(_faker.Internet.Email());
+            var twoEmail = new Email(_faker.Internet.Email());
+
+            (oneEmail == twoEmail).Should().BeFalse();
+        }
+        
+        [Test]
+        public void EqualityOperatorShouldBeFalseWhenCheckObjectEmailOneIsNull()
+        {
+            Email oneEmail = null!;
+            var twoEmail = new Email(_faker.Internet.Email());
+
+            (oneEmail == twoEmail).Should().BeFalse();
+        }
+        
+        [Test]
+        public void EqualityOperatorShouldBeFalseWhenCheckObjectEmailTwoIsNull()
+        {
+            var oneEmail = new Email(_faker.Internet.Email());
+            Email twoEmail = null!;
+
+            (oneEmail == twoEmail).Should().BeFalse();
+        }
+        
+        [Test]
+        public void EqualityOperatorShouldBeTrueWhenCheckObjectEmailOneAndTwoIsNull()
+        {
+            Email oneEmail = null!;
+            Email twoEmail = null!;
+
+            (oneEmail == twoEmail).Should().BeTrue();
         }
     }
 }

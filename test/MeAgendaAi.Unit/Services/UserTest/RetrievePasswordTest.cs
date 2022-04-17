@@ -42,27 +42,27 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldCallMethodGetByEmailOnce()
         {
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithEmail(EmailRequest).Generate();
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithEmail(emailRequest).Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<IUserRepository>()
-                .Verify(verify => verify.GetEmailAsync(It.Is<string>(email => email == EmailRequest)), Times.Once);
+                .Verify(verify => verify.GetEmailAsync(It.Is<string>(email => email == emailRequest)), Times.Once);
         }
 
         [Test]
         public async Task RetrievePasswordAsync_ShouldAddNotificationWhenNotFindUser()
         {
-            const string EmailRequest = "test-email@hotmail.com";
-            var notification = new Notification("User", "User not found.");
+            const string emailRequest = "test-email@hotmail.com";
+            var notification = new Notification("User", "User not found");
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)));
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)));
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.Get<NotificationContext>().Notifications.Should().ContainEquivalentOf(notification);
         }
@@ -70,12 +70,12 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldGenerateAnErrorLogWhenNotFindUser()
         {
-            const string EmailRequest = "test-email@hotmail.com";
-            var logMessageExpected = $"[{ActionType}/RetrievePasswordAsync] User {EmailRequest} not found.";
+            const string emailRequest = "test-email@hotmail.com";
+            var logMessageExpected = $"[{ActionType}/RetrievePasswordAsync] User {emailRequest} not found";
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)));
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)));
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<ILogger<UserService>>().VerifyLog(LogLevel.Error, logMessageExpected);
         }
@@ -83,13 +83,13 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldCallMethodSetAsyncOnce()
         {
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithEmail(EmailRequest).Generate();
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithEmail(emailRequest).Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Verify(verify => verify.SetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()), Times.Once());
@@ -99,13 +99,13 @@ namespace MeAgendaAi.Unit.Services.UserTest
         public async Task RetrievePasswordAsync_ShouldMethodSetAsyncWithValuesCorrectly()
         {
             var id = Guid.NewGuid();
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithId(id).WithEmail(EmailRequest).Generate();
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithId(id).WithEmail(emailRequest).Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<IDistributedCacheRepository>()
                 .Verify(verify => verify.SetAsync(
@@ -117,13 +117,13 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldCallMethodSendPasswordRecoveryEmailOnce()
         {
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithEmail(EmailRequest).Generate();
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithEmail(emailRequest).Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<IEmailService>()
                 .Verify(verify => verify.SendPasswordRecoveryEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once());
@@ -132,21 +132,21 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldMethodSendPasswordRecoveryEmailWithExactyData()
         {
-            const string Name = "name-expected";
-            const string Surname = "surname-expected";
-            const string FullNameExpected = $"{Name} {Surname}";
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithNameAndSurname(Name, Surname).WithEmail(EmailRequest).Generate();
+            const string name = "name-expected";
+            const string surname = "surname-expected";
+            const string fullNameExpected = $"{name} {surname}";
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithNameAndSurname(name, surname).WithEmail(emailRequest).Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<IEmailService>()
                 .Verify(verify => verify.SendPasswordRecoveryEmail(
-                    It.Is<string>(fullName => fullName == FullNameExpected),
-                    It.Is<string>(email => email == EmailRequest),
+                    It.Is<string>(fullName => fullName == fullNameExpected),
+                    It.Is<string>(email => email == emailRequest),
                     It.IsAny<string>(),
                     It.Is<int>(expirationInSeconds => expirationInSeconds == ExpirationTimeTokenInSeconds)), Times.Once());
         }
@@ -154,18 +154,18 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldGenerateAnInformationLogWhenTheEmailWasSuccessfullySent()
         {
-            const bool Sent = true;
-            const string EmailRequest = "test-email@hotmail.com";
-            var logMessageExpected = $"[{ActionType}/RetrievePasswordAsync] Email successfully sent to {EmailRequest}.";
-            var user = new UserBuilder().WithEmail(EmailRequest).Generate();
+            const bool sent = true;
+            const string emailRequest = "test-email@hotmail.com";
+            var logMessageExpected = $"[{ActionType}/RetrievePasswordAsync] Email successfully sent to {emailRequest}";
+            var user = new UserBuilder().WithEmail(emailRequest).Generate();
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
             _mocker.GetMock<IEmailService>()
                 .Setup(setup => setup.SendPasswordRecoveryEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .ReturnsAsync(Sent);
+                .ReturnsAsync(sent);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<ILogger<UserService>>().VerifyLog(LogLevel.Information, logMessageExpected);
         }
@@ -173,18 +173,18 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldAddNotificationWhenTheEmailIsNotSend()
         {
-            const bool NotSend = false;
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithEmail(EmailRequest).Generate();
-            var notificationExpected = new Notification("SendEmail", "Email not sent.");
+            const bool notSend = false;
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithEmail(emailRequest).Generate();
+            var notificationExpected = new Notification("SendEmail", "Email not sent");
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
             _mocker.GetMock<IEmailService>()
                 .Setup(setup => setup.SendPasswordRecoveryEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .ReturnsAsync(NotSend);
+                .ReturnsAsync(notSend);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.Get<NotificationContext>().Notifications.Should().ContainEquivalentOf(notificationExpected);
         }
@@ -192,18 +192,18 @@ namespace MeAgendaAi.Unit.Services.UserTest
         [Test]
         public async Task RetrievePasswordAsync_ShouldGenerateAnErrorLogWhenTheEmailNotWasSuccessfullySent()
         {
-            const bool NotSend = false;
-            const string EmailRequest = "test-email@hotmail.com";
-            var user = new UserBuilder().WithEmail(EmailRequest).Generate();
-            var logMessageExpected = $"[{ActionType}/RetrievePasswordAsync] Email not sent to {EmailRequest}.";
+            const bool notSend = false;
+            const string emailRequest = "test-email@hotmail.com";
+            var user = new UserBuilder().WithEmail(emailRequest).Generate();
+            var logMessageExpected = $"[{ActionType}/RetrievePasswordAsync] Email not sent to {emailRequest}";
             _mocker.GetMock<IUserRepository>()
-                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == EmailRequest)))
+                .Setup(setup => setup.GetEmailAsync(It.Is<string>(email => email == emailRequest)))
                 .ReturnsAsync(user);
             _mocker.GetMock<IEmailService>()
                 .Setup(setup => setup.SendPasswordRecoveryEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .ReturnsAsync(NotSend);
+                .ReturnsAsync(notSend);
 
-            _ = await _userService.RetrievePasswordAsync(EmailRequest);
+            _ = await _userService.RetrievePasswordAsync(emailRequest);
 
             _mocker.GetMock<ILogger<UserService>>().VerifyLog(LogLevel.Error, logMessageExpected);
         }

@@ -3,7 +3,7 @@ using MeAgendaAi.Domains.Entities;
 
 namespace MeAgendaAi.Services.CSVMaps
 {
-    public class CompanyMap : ClassMap<Company>
+    public sealed class CompanyMap : ClassMap<Company>
     {
         public CompanyMap()
         {

@@ -80,12 +80,12 @@ namespace MeAgendaAi.Integration.SetUp
         {
             var url = new StringBuilder($"{Client.BaseAddress}api/{entrypoint}/{method}");
 
-            if (parameters != null)
-            {
-                var keys = parameters.Keys;
-                foreach (var key in keys)
-                    url.AppendFormat($"?{key}={parameters[key]}");
-            }
+            if (parameters == null) 
+                return new(url.ToString());
+            
+            var keys = parameters.Keys;
+            foreach (var key in keys)
+                url.AppendFormat($"?{key}={parameters[key]}");
             return new(url.ToString());
         }
     }

@@ -5,19 +5,20 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder
 {
-    public class UserBuilder : BaseBuilderEntity<User>
+    public sealed class UserBuilder : BaseBuilderEntity<User>
     {
         public UserBuilder() : base()
         {
             RuleFor(prop => prop.Email, () => new EmailObjectBuilder().Generate());
             RuleFor(prop => prop.Password, faker => faker.Internet.Password());
             RuleFor(prop => prop.Name, () => new NameObjectBuilder().Generate());
+            RuleFor(prop => prop.IsActive, () => true);
         }
 
         public override User Generate(string ruleSets = null!)
         {
             var entity = base.Generate(ruleSets);
-            entity.Validate(includeSurname: true);
+            entity.Validate(true);
             return entity;
         }
     }
@@ -114,6 +115,18 @@ namespace MeAgendaAi.Common.Builder
         {
             var password = new Faker().Random.String(length);
             builder.WithPassword(password);
+            return builder;
+        }
+
+        public static UserBuilder WithActive(this UserBuilder builder)
+        {
+            builder.RuleFor(prop => prop.IsActive, () => true);
+            return builder;
+        }
+
+        public static UserBuilder WithDeactivate(this UserBuilder builder)
+        {
+            builder.RuleFor(prop => prop.IsActive, () => false);
             return builder;
         }
     }

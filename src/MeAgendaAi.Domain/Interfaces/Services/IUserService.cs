@@ -18,5 +18,7 @@ namespace MeAgendaAi.Domains.Interfaces.Services
         bool SamePassword(string password, string confirmPassword);
 
         Task<string> RetrievePasswordAsync(string email);
+        
+        Task Activate(Guid id);
     }
 }

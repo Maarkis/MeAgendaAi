@@ -6,9 +6,9 @@ namespace MeAgendaAi.Common.Builder
 {
     public class BaseBuilderEntity<T> : AutoFaker<T> where T : Entity
     {
-        public BaseBuilderEntity() : base("pt_BR")
+        protected BaseBuilderEntity() : base("pt_BR")
         {
-            RuleFor(prop => prop.Id, () => Guid.NewGuid());
+            RuleFor(prop => prop.Id, Guid.NewGuid);
             RuleFor(prop => prop.Valid, () => true);
             RuleFor(prop => prop.ValidationResult, () => new());
             RuleFor(prop => prop.CreatedAt, () => DateTime.Now);
@@ -18,7 +18,7 @@ namespace MeAgendaAi.Common.Builder
 
     public class BaseBuilderValueObject<T> : AutoFaker<T> where T : ValueObject
     {
-        public BaseBuilderValueObject() : base("pt_BR")
+        protected BaseBuilderValueObject() : base("pt_BR")
         {
             RuleFor(prop => prop.Valid, () => true);
             RuleFor(prop => prop.ValidationResult, () => new());

@@ -13,8 +13,12 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Mailjet.Client;
+using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace MeAgendaAi.Integration.Controllers
 {
@@ -23,6 +27,9 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task AuthenticationAddClient_ShouldAddAPhysicalPersonTypeUserAndReturn201Created()
         {
+            Mocker.GetMock<IMailjetClient>()
+                       .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
+                       .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: true, statusCode: (int)HttpStatusCode.OK, It.IsAny<JObject>()));
             var request = new AddPhysicalPersonRequestBuilder().Generate();
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
@@ -43,8 +50,11 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task AuthenticationAddClient_ShouldAddAPhysicalPersonTypeUserAndReturnBaseResponseWithGuid()
         {
+            Mocker.GetMock<IMailjetClient>()
+                    .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
+                    .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: true, statusCode: (int)HttpStatusCode.OK, It.IsAny<JObject>()));        
             var request = new AddPhysicalPersonRequestBuilder().Generate();
-
+            
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddPhysicalPerson"), request);
             var content = await response.Content.ReadFromJsonAsync<SuccessMessage<Guid>>();
 
@@ -117,6 +127,9 @@ namespace MeAgendaAi.Integration.Controllers
         [Test]
         public async Task AuthenticaitonAddCompany_ShouldAddCompanyTypeUserAndReturn201Created()
         {
+            Mocker.GetMock<IMailjetClient>()
+                .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
+                .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: true, statusCode: (int)HttpStatusCode.OK, It.IsAny<JObject>()));        
             var request = new AddCompanyRequestBuilder().Generate();
 
             var response = await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), request);
@@ -388,7 +401,7 @@ namespace MeAgendaAi.Integration.Controllers
             var refreshToken = Guid.NewGuid().ToString("N");
             var responseExpected = new ErrorMessage<List<Notification>>(new List<Notification>
             {
-                new Notification("Resfresh Token", "Refresh token found.")
+                new Notification("Refresh Token", "Refresh token found")
             }, "Errors");
 
             var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RefreshToken", new Dictionary<string, string>()
@@ -412,7 +425,7 @@ namespace MeAgendaAi.Integration.Controllers
             await DbRedis.SetStringAsync(refreshToken, JsonConvert.SerializeObject(user.Id));
             var responseExpected = new ErrorMessage<List<Notification>>(new List<Notification>
             {
-                new Notification("User", "User not found.")
+                new Notification("User", "User not found")
             }, "Errors");
 
             var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RefreshToken", new Dictionary<string, string>()

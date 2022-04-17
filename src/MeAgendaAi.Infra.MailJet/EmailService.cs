@@ -8,24 +8,34 @@ namespace MeAgendaAi.Infra.MailJet
     public interface IEmailService
     {
         Task<bool> SendPasswordRecoveryEmail(string name, string email, string token, int expirationTime);
+        Task<bool> SendConfirmationEmail(string name, string email, string userId);
     }
 
     public class EmailService : IEmailService
     {
-        public IMailjetClient MailjetClient { get; }
-        private readonly MailSender MailSender;
+        private IMailjetClient MailjetClient { get; }
+        private readonly MailSender _mailSender;
 
         public EmailService(IMailjetClient mailjetClient, IOptions<MailSender> optionsMailSender)
         {
             MailjetClient = mailjetClient;
-            MailSender = optionsMailSender.Value;
+            _mailSender = optionsMailSender.Value;
         }
 
         public Task<bool> SendPasswordRecoveryEmail(string name, string email, string token, int expirationTime)
         {
-            var retrievePasswordRequest = new RetrievePasswordRequest(name, email, token, expirationTime, MailSender);
+            var retrievePasswordRequest = new RetrievePasswordRequest(name, email, token, expirationTime, _mailSender);
 
             var request = retrievePasswordRequest.Build();
+
+            return Send(request);
+        }
+
+        public Task<bool> SendConfirmationEmail(string name, string email,  string userId)
+        {
+            var confirmationEmailRequest = new UserConfirmationRequest(name, email, userId, _mailSender);
+            
+            var request = confirmationEmailRequest.Build();
 
             return Send(request);
         }

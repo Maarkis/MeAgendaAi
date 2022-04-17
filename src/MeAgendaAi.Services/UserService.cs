@@ -52,7 +52,7 @@ namespace MeAgendaAi.Services
             var user = await GetByEmailAsync(email);
             if (user is null)
             {
-                _logger.LogError("[{ActionType}/AuthenticateAsync] User {email} not found.", ActionType, email);
+                _logger.LogError("[{ActionType}/AuthenticateAsync] User {Email} not found", ActionType, email);
                 _notificationContext.AddNotification("User", "User not found!");
                 return null;
             }
@@ -60,18 +60,18 @@ namespace MeAgendaAi.Services
             var isValid = Decrypt.IsValidPassword(password, user.Id.ToString(), user.Password);
             if (!isValid)
             {
-                _logger.LogError("[{ActionType}/AuthenticateAsync] User {Id} Wrong your password.", ActionType, user.Id);
+                _logger.LogError("[{ActionType}/AuthenticateAsync] User {Id} Wrong your password", ActionType, user.Id);
                 _notificationContext.AddNotification("User", "Wrong password.");
                 return null;
             }
 
-            var tokenJWT = _jsonWebTokenService.GenerateToken(user);
+            var tokenJwt = _jsonWebTokenService.GenerateToken(user);
 
             var response = _mapper.Map<AuthenticateResponse>(user);
-            response.IncludeTokenAndRefreshToken(tokenJWT.Token, tokenJWT.RefreshToken.Token);
+            response.IncludeTokenAndRefreshToken(tokenJwt.Token, tokenJwt.RefreshToken.Token);
 
             await _distributedCacheRepository
-                .SetAsync(tokenJWT.RefreshToken.Token, user.Id.ToString(), expireIn: tokenJWT.RefreshToken.ExpiresIn);
+                .SetAsync(tokenJwt.RefreshToken.Token, user.Id.ToString(), expireIn: tokenJwt.RefreshToken.ExpiresIn);
 
             return response;
         }
@@ -81,27 +81,27 @@ namespace MeAgendaAi.Services
             var userIdCached = await _distributedCacheRepository.GetAsync<Guid>(refreshToken);
             if (Guid.Empty.Equals(userIdCached))
             {
-                _logger.LogError("[{ActionType}/AuthenticateByRefreshTokenAsync] Refresh token not found.", ActionType);
-                _notificationContext.AddNotification("Resfresh Token", "Refresh token found.");
+                _logger.LogError("[{ActionType}/AuthenticateByRefreshTokenAsync] Refresh token not found", ActionType);
+                _notificationContext.AddNotification("Refresh Token", "Refresh token found");
                 return null;
             }
 
             var user = await GetByIdAsync(userIdCached);
             if (user == null)
             {
-                _logger.LogError("[{ActionType}/AuthenticateByRefreshTokenAsync] User {userIdCached} not found.", ActionType, userIdCached);
-                _notificationContext.AddNotification("User", "User not found.");
+                _logger.LogError("[{ActionType}/AuthenticateByRefreshTokenAsync] User {UserIdCached} not found", ActionType, userIdCached);
+                _notificationContext.AddNotification("User", "User not found");
                 return null;
             }
 
-            var tokenJWT = _jsonWebTokenService.GenerateToken(user);
+            var tokenJwt = _jsonWebTokenService.GenerateToken(user);
 
             var response = _mapper.Map<AuthenticateResponse>(user);
-            response.IncludeTokenAndRefreshToken(tokenJWT.Token, tokenJWT.RefreshToken.Token);
+            response.IncludeTokenAndRefreshToken(tokenJwt.Token, tokenJwt.RefreshToken.Token);
 
             await _distributedCacheRepository.RemoveAsync(refreshToken);
             await _distributedCacheRepository
-                .SetAsync(tokenJWT.RefreshToken.Token, user.Id.ToString(), expireIn: tokenJWT.RefreshToken.ExpiresIn);
+                .SetAsync(tokenJwt.RefreshToken.Token, user.Id.ToString(), expireIn: tokenJwt.RefreshToken.ExpiresIn);
 
             return response;
         }
@@ -111,8 +111,8 @@ namespace MeAgendaAi.Services
             var user = await GetByEmailAsync(email);
             if (user is null)
             {
-                _logger.LogError("[{ActionType}/RetrievePasswordAsync] User {email} not found.", ActionType, email);
-                _notificationContext.AddNotification("User", "User not found.");
+                _logger.LogError("[{ActionType}/RetrievePasswordAsync] User {Email} not found", ActionType, email);
+                _notificationContext.AddNotification("User", "User not found");
                 return string.Empty;
             }
 
@@ -131,13 +131,38 @@ namespace MeAgendaAi.Services
             var notSended = !sended;
             if (notSended)
             {
-                _logger.LogError("[{ActionType}/RetrievePasswordAsync] Email not sent to {email}.", ActionType, email);
-                _notificationContext.AddNotification("SendEmail", "Email not sent.");
+                _logger.LogError("[{ActionType}/RetrievePasswordAsync] Email not sent to {Email}", ActionType, email);
+                _notificationContext.AddNotification("SendEmail", "Email not sent");
                 return string.Empty;
             }
 
-            _logger.LogInformation("[{ActionType}/RetrievePasswordAsync] Email successfully sent to {email}.", ActionType, email);
+            _logger.LogInformation("[{ActionType}/RetrievePasswordAsync] Email successfully sent to {Email}", ActionType, email);
             return "Password recovery email sent.";
+        }
+
+        public async Task Activate(Guid id)
+        {
+            var user = await GetByIdAsync(id);
+            if (user is null)
+            {
+                _logger.LogError("[{ActionType}/Activate] User {Id} not found", ActionType, id);
+                _notificationContext.AddNotification("User", "User not found");
+                return;
+            }
+
+            if (user.IsActive)
+            {
+                _logger.LogError("[{ActionType}/Activate] User {Id} is already active", ActionType, id);
+                _notificationContext.AddNotification("User", "User is already active");
+                return;
+            }
+
+            _logger.LogInformation("[{ActionType}/Activate] Updating user {Id}", ActionType, id);
+            
+            user.Active();
+            await _userRepository.UpdateAsync(user);
+            
+            _logger.LogInformation("[{ActionType}/Activate] Updated successfully user {Id}", ActionType, id);
         }
     }
 }

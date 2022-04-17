@@ -25,5 +25,8 @@ namespace MeAgendaAi.Domains.Entities.Base
             ValidationResult = validationRules.Validate(entity);
             return Valid = ValidationResult.IsValid;
         }
+
+        protected virtual void UpdatedAt() => LastUpdatedAt = DateTime.Now;
+        
     }
 }

@@ -21,6 +21,7 @@ services:
         depends_on:
             - postgresdb
             - redis
+        restart: always
     postgresdb:
         image: postgres
         container_name: postgres-meagendaai-db

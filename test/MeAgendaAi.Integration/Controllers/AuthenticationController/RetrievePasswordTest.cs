@@ -97,7 +97,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
             var user = new UserBuilder().WithEmail(email).Generate();
             var notification = new List<Notification>
             {
-                new("SendEmail", "Email not sent." )
+                new("SendEmail", "Email not sent" )
             };
             var responseExpected = new ErrorMessage<List<Notification>>(notification, "Errors");
             await DbContext.Users.AddAsync(user);
@@ -124,7 +124,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
             var email = _faker.Internet.Email();
             var notification = new List<Notification>
             {
-                new("User", "User not found.")
+                new("User", "User not found")
             };
             var responseExpected = new ErrorMessage<List<Notification>>(notification, "Errors");
 

@@ -13,6 +13,7 @@ using Moq.AutoMock;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using MeAgendaAi.Infra.MailJet;
 
 namespace MeAgendaAi.Unit.Services.CompanyTest
 {
@@ -70,7 +71,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         public void AddCompany_ShouldGenerateAnErrorLogWhenUserAlreadyExists()
         {
             var request = new AddCompanyRequestBuilder().Generate();
-            var logMessageExpected = $"[{ActionType}/AddAsync] A registered user for {request.Email} already exists.";
+            var logMessageExpected = $"[{ActionType}/AddAsync] A registered user for {request.Email} already exists";
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(true);
@@ -147,7 +148,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         {
             var request = new AddCompanyRequestBuilder().Generate();
             var company = new CompanyBuilder().ByRequest(request).Generate();
-            var logMessageExpected = $"[{ActionType}/AddAsync] User {company.Id} registered successfully.";
+            var logMessageExpected = $"[{ActionType}/AddAsync] User {company.Id} registered successfully";
             _mocker.GetMock<IUserService>()
                 .Setup(setup => setup.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(false);
@@ -199,7 +200,7 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
         public void AddCompany_ShouldGenerateAnErrorLogWhenNotSamePassword()
         {
             var request = new AddCompanyRequestBuilder().WithConfirmPassword("password-different").Generate();
-            var logMessageExpected = $"[{ActionType}/AddAsync] Confirmation password is not the same as password.";
+            var logMessageExpected = $"[{ActionType}/AddAsync] Confirmation password is not the same as password";
             _mocker.GetMock<IUserService>()
                 .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
                 .ReturnsAsync(false);
@@ -228,6 +229,57 @@ namespace MeAgendaAi.Unit.Services.CompanyTest
             _ = _companyService.AddAsync(request);
 
             _mocker.GetMock<ICompanyRepository>().Verify(verify => verify.AddAsync(It.IsAny<Company>()), Times.Never());
+        }
+        
+        [Test]
+        public void AddCompany_ShouldAddNotificationWhenWhenNotSendEmailConfirmation()
+        {
+            var request = new AddCompanyRequestBuilder().Generate();
+            var company = new CompanyBuilder().ByRequest(request).Generate();
+            var notification = new Notification("Email", "Confirmation email not sent");
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
+                .ReturnsAsync(false);
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+                .Returns(false);
+            _mocker.GetMock<IEmailService>()
+                .Setup(method => method.SendConfirmationEmail(company.Name.FullName,
+                    company.Email.Address, company.Id.ToString()))
+                .ReturnsAsync(false);
+
+            _ = _companyService.AddAsync(request);
+
+            _mocker.Get<NotificationContext>().Notifications.Should().ContainEquivalentOf(notification);
+        }
+        
+        [Test]
+        public void AddCompany_ShouldGenerateAnErrorLogWhenNotSendEmailConfirmation()
+        {
+            var request = new AddCompanyRequestBuilder().Generate();
+            var company = new CompanyBuilder().ByRequest(request).Generate();
+            var logMessageExpected = $"[{ActionType}/AddAsync] User {company.Id} confirmation email not sent";
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.HasUser(It.Is<string>(prop => prop == request.Email)))
+                .ReturnsAsync(false);
+            _mocker.GetMock<IUserService>()
+                .Setup(method => method.NotSamePassword(
+                    It.Is<string>(password => password == request.Password),
+                    It.Is<string>(confirmPassword => confirmPassword == request.ConfirmPassword)))
+                .Returns(false);
+            _mocker.GetMock<ICompanyRepository>()
+                .Setup(method => method.AddAsync(It.IsAny<Company>()))
+                .ReturnsAsync(company.Id);
+            _mocker.GetMock<IEmailService>()
+                .Setup(method => method.SendConfirmationEmail(company.Name.FullName,
+                    company.Email.Address, company.Id.ToString()))
+                .ReturnsAsync(false);
+
+            _ = _companyService.AddAsync(request);
+
+            _mocker.GetMock<ILogger<CompanyService>>().VerifyLog(LogLevel.Error, logMessageExpected);
         }
     }
 }

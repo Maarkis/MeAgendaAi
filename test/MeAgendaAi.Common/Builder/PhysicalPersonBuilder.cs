@@ -7,7 +7,7 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder
 {
-    public class PhysicalPersonBuilder : BaseBuilderEntity<PhysicalPerson>
+    public sealed class PhysicalPersonBuilder : BaseBuilderEntity<PhysicalPerson>
     {
         public PhysicalPersonBuilder() : base()
         {
@@ -17,6 +17,7 @@ namespace MeAgendaAi.Common.Builder
 
             RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
             RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());
+            RuleFor(prop => prop.IsActive, () => false);
         }
 
         public override PhysicalPerson Generate(string ruleSets = null!)
@@ -141,13 +142,19 @@ namespace MeAgendaAi.Common.Builder
             return builder;
         }
 
+        public static PhysicalPersonBuilder WithActive(this PhysicalPersonBuilder builder, bool active)
+        {
+            builder.RuleFor(prop => prop.IsActive, () => active);
+            return builder;
+        }
+
         public static PhysicalPersonBuilder ByRequest(this PhysicalPersonBuilder builder, AddPhysicalPersonRequest request)
         {
             builder.WithNameAndSurname(request.Name, request.Surname)
-                   .WithEmail(request.Email)
-                   .WithPassword(request.Password)
-                   .WithCPF(request.CPF)
-                   .WithRG(request.RG);
+                .WithEmail(request.Email)
+                .WithPassword(request.Password)
+                .WithCPF(request.CPF)
+                .WithRG(request.RG);
             return builder;
         }
     }

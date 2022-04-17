@@ -7,7 +7,7 @@ namespace MeAgendaAi.Infra.MailJet.Template
         protected readonly string FromEmail;
         protected readonly string FromName;
         protected readonly string Url;
-        protected Dictionary<string, int> Templates { get; }
+        private Dictionary<string, int> Templates { get; }
 
         protected Template(MailSender mailSender)
         {
@@ -22,6 +22,6 @@ namespace MeAgendaAi.Infra.MailJet.Template
         protected static string BuildUrl(string url, string? token = null) =>
             new Uri($"{url}/{token}").ToString();
 
-        protected static int ConvertSencondsInHour(int seconds) => TimeSpan.FromSeconds(seconds).Hours;
+        protected static int ConvertSecondsInHour(int seconds) => TimeSpan.FromSeconds(seconds).Hours;
     }
 }
