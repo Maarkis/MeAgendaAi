@@ -21,7 +21,7 @@ namespace MeAgendaAi.Unit.Domain
             var name = _faker.Name.FirstName();
             var cnpj = _faker.Random.Int(15).ToString();
             var description = _faker.Random.String2(length: _faker.Random.Int(min: 1, max: 160));
-            var limitCancelHours = _faker.Random.Int();
+            var limitCancelHours = _faker.Random.Int(min: 1);
 
             var company = new Company(email, password, name, cnpj, description, limitCancelHours);
 

@@ -4,7 +4,7 @@ using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Common.Builder.RequestAndResponse
 {
-    public class AddCompanyRequestBuilder : AutoFaker<AddCompanyRequest>
+    public sealed class AddCompanyRequestBuilder : AutoFaker<AddCompanyRequest>
     {
         public AddCompanyRequestBuilder()
         {
@@ -80,14 +80,14 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
             builder.WithConfirmPassword(confirmPassword);
             return builder;
         }
-        public static AddCompanyRequestBuilder WithCNPJ(this AddCompanyRequestBuilder builder, string cnpj)
+        public static AddCompanyRequestBuilder WithCnpj(this AddCompanyRequestBuilder builder, string cnpj)
         {
             builder.RuleFor(prop => prop.CNPJ, () => cnpj);
             return builder;
         }
-        public static AddCompanyRequestBuilder WithCNPJInvalid(this AddCompanyRequestBuilder builder, string cnpj = "")
+        public static AddCompanyRequestBuilder WithCnpjInvalid(this AddCompanyRequestBuilder builder, string cnpj = "")
         {
-            builder.WithCNPJ(cnpj);
+            builder.WithCnpj(cnpj);
             return builder;
         }
         public static AddCompanyRequestBuilder WithDescription(this AddCompanyRequestBuilder builder, string description)

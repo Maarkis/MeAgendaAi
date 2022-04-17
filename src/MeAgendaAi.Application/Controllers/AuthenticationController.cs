@@ -98,13 +98,27 @@ namespace MeAgendaAi.Application.Controllers
         [Route("{id:Guid}/Activate")]
         public async Task<ActionResult<BaseMessage>> Activate(Guid id)
         {
-            _logger.LogInformation("[{ActionType}/Activate] Starting user Activate process", ActionType);
+            _logger.LogInformation("[{ActionType}/Activate] Starting user activate process", ActionType);
             
             await _userService.Activate(id);
             
             _logger.LogInformation("[{ActionType}/Activate] Completing user activate process", ActionType);
             
             return Ok(new BaseMessage("User activated successfully", success: true));
+        }
+        
+        [HttpPatch]
+        [AllowAnonymous]
+        [Route("ResetPassword")]
+        public async Task<ActionResult<BaseMessage>> ResetPassword(ResetPasswordRequest request)
+        {
+            _logger.LogInformation("[{ActionType}/Activate] Starting reset password process", ActionType);
+
+            var response = await _userService.ResetPassword(request.Token, request.Password, request.ConfirmPassword);
+
+            _logger.LogInformation("[{ActionType}/Activate] Completing reset password process", ActionType);
+            
+            return Ok(new BaseMessage("User password reset successfully", success: response));
         }
     }
 }

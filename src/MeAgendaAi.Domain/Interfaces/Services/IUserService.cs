@@ -20,5 +20,7 @@ namespace MeAgendaAi.Domains.Interfaces.Services
         Task<string> RetrievePasswordAsync(string email);
         
         Task Activate(Guid id);
+
+        Task<bool> ResetPassword(string token, string password, string confirmPassword);
     }
 }

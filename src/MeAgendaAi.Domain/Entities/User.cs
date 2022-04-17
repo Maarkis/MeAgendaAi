@@ -37,7 +37,11 @@ namespace MeAgendaAi.Domains.Entities
 
         public bool Validate(bool includeSurname) => Validate(this, new UserValidator<User>(includeSurname));
 
-        public void Encrypt(string password) => Password = password;
+        public void Encrypt(string password)
+        {
+            Password = password;
+            UpdatedAt();
+        }
 
         public void Active()
         {

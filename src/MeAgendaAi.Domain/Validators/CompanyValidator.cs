@@ -13,7 +13,8 @@ namespace MeAgendaAi.Domains.Validators
                 .NotEmpty()
                 .WithMessage("CPNJ cannot be empty");
             RuleFor(prop => prop.LimitCancelHours)
-                .NotEmpty().WithMessage("Limit cancel hours cannot be empty");
+                .NotEmpty().WithMessage("Limit cancel hours cannot be empty")
+                .GreaterThan(0).WithMessage("Must be greater than zero");
             RuleFor(prop => prop.Description)
                 .NotEmpty().WithMessage("Description cannot be empty")
                 .NotNull().WithMessage("Description cannot be null")

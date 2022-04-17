@@ -61,10 +61,7 @@ namespace MeAgendaAi.Infra.Cache
         {
             var source = await _distributedCache.GetStringAsync(key);
 
-            if (source == null)
-                return default;
-
-            return source.Deserialize<T>();
+            return source == null ? default : source.Deserialize<T>();
         }
 
         private async Task SetStringAsync<T>(string key, T value, DistributedCacheEntryOptions? options = null)

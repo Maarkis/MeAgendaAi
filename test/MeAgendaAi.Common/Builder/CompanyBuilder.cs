@@ -6,7 +6,7 @@ using MeAgendaAi.Domains.ValueObjects;
 
 namespace MeAgendaAi.Common.Builder
 {
-    public class CompanyBuilder : BaseBuilderEntity<Company>
+    public sealed class CompanyBuilder : BaseBuilderEntity<Company>
     {
         public CompanyBuilder()
         {

@@ -9,10 +9,10 @@ namespace MeAgendaAi.Common.Builder.Common
         private const int LengthPasswordMinimum = 06;
         private const int LengthPasswordMaximum = 32;
 
-        public static string Generate(int lengthMininum = LengthPasswordMinimum, int lengthMaximium = LengthPasswordMaximum)
+        public static string Generate(int lengthMinimum = LengthPasswordMinimum, int lengthMaximum = LengthPasswordMaximum)
         {
             var faker = new Faker();
-            return faker.Internet.Password(length: faker.Random.Int(lengthMininum, lengthMaximium));
+            return faker.Internet.Password(length: faker.Random.Int(lengthMinimum, lengthMaximum));
         }
 
         public static string Encrypt(string password, Guid? guid = null)

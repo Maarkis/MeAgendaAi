@@ -6,7 +6,7 @@ namespace MeAgendaAi.Infra.Cryptography
 {
     public static class Encrypt
     {
-        private const int HasingInterationsCount = 10000;
+        private const int HashingInteractionsCount = 10000;
         private const int BytesRequested = (256 / 8);
 
         public static string EncryptString(string str, string salt)
@@ -31,7 +31,7 @@ namespace MeAgendaAi.Infra.Cryptography
 
         private static byte[] ComputeHash(
             string str, byte[] salt,
-            int iterations = HasingInterationsCount, int bytesRequest = BytesRequested) =>
+            int iterations = HashingInteractionsCount, int bytesRequest = BytesRequested) =>
                 KeyDerivation.Pbkdf2(
                     password: str, salt: salt, prf: KeyDerivationPrf.HMACSHA256,
                     iterationCount: iterations, numBytesRequested: bytesRequest);
