@@ -7,19 +7,19 @@ namespace MeAgendaAi.Unit.Validators
 {
     public class AddPhysicalPersonRequestValidatorTest
     {
-        private readonly AddPhysicalPersonRequestValidator Validator;
+        private readonly AddPhysicalPersonRequestValidator _validator;
 
         private const string ErrorMessageEmpty = "Can't be empty";
         private const string ErrorMessageNull = "Can't be null";
 
-        public AddPhysicalPersonRequestValidatorTest() => Validator = new AddPhysicalPersonRequestValidator();
+        public AddPhysicalPersonRequestValidatorTest() => _validator = new AddPhysicalPersonRequestValidator();
 
         [Test]
         public void AddPhysicalPersonValidator_ShouldValidateAndReturnValidAndWithoutError()
         {
             var request = new AddPhysicalPersonRequestBuilder().Generate();
 
-            var result = Validator.TestValidate(request);
+            var result = _validator.TestValidate(request);
 
             result.ShouldNotHaveAnyValidationErrors();
         }
@@ -37,7 +37,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithRGInvalid()
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result.ShouldHaveAnyValidationError();
         }
@@ -50,7 +50,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithNameInvalid(name: fieldContent)
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result
                 .ShouldHaveValidationErrorFor(field => field.Name)
@@ -65,7 +65,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithEmailInvalid(email: fieldContent)
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result
                 .ShouldHaveValidationErrorFor(field => field.Email)
@@ -80,7 +80,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithPasswordInvalid(password: fieldContent)
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result
                 .ShouldHaveValidationErrorFor(field => field.Password)
@@ -95,7 +95,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithConfirmPassword(confirmPassword: fieldContent)
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result
                 .ShouldHaveValidationErrorFor(field => field.ConfirmPassword)
@@ -110,7 +110,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithRGInvalid(rg: fieldContent)
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result
                 .ShouldHaveValidationErrorFor(field => field.RG)
@@ -125,7 +125,7 @@ namespace MeAgendaAi.Unit.Validators
                 .WithCPFInvalid(cpf: fieldContent)
                 .Generate();
 
-            var result = Validator.TestValidate(requestInvalid);
+            var result = _validator.TestValidate(requestInvalid);
 
             result
                 .ShouldHaveValidationErrorFor(field => field.CPF)

@@ -18,7 +18,7 @@ namespace MeAgendaAi.Integration.SetUp
     {
         public const string ConnectionStringDatabase = "AppDb";
         public const string NameSectionCacheDistribuited = "Redis";
-        public const string UrlApi = "http://localhost:5000/";
+        public const string UrlApi = "http://localhost:5000/api";
         protected WebApiFactory<Program>? Server { get; private set; }
         protected HttpClient Client { get; private set; } = default!;
         public AutoMocker Mocker { get; private set; } = default!;
@@ -78,7 +78,7 @@ namespace MeAgendaAi.Integration.SetUp
 
         public Uri RequisitionAssemblyFor(string entrypoint, string method = "", Dictionary<string, string>? parameters = null)
         {
-            var url = new StringBuilder($"{Client.BaseAddress}api/{entrypoint}/{method}");
+            var url = new StringBuilder($"{Client.BaseAddress}/{entrypoint}/{method}");
 
             if (parameters == null) 
                 return new(url.ToString());

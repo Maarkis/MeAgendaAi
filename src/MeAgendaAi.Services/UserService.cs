@@ -5,6 +5,7 @@ using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
+using MeAgendaAi.Infra.Extension;
 using MeAgendaAi.Infra.JWT;
 using MeAgendaAi.Infra.MailJet;
 using MeAgendaAí.Infra.Notification;
@@ -28,7 +29,8 @@ namespace MeAgendaAi.Services
         public UserService(
             IUserRepository userRepository, NotificationContext notificationContext,
             ILogger<UserService> logger, IJsonWebTokenService jsonWebTokenService,
-            IMapper mapper, IDistributedCacheRepository distributedCacheRepository, IEmailService emailService) : base(userRepository)
+            IMapper mapper, IDistributedCacheRepository distributedCacheRepository,
+            IEmailService emailService) : base(userRepository)
         {
             _userRepository = userRepository;
             _notificationContext = notificationContext;
@@ -163,6 +165,39 @@ namespace MeAgendaAi.Services
             await _userRepository.UpdateAsync(user);
             
             _logger.LogInformation("[{ActionType}/Activate] Updated successfully user {Id}", ActionType, id);
+        }
+        
+        public async Task<bool> ResetPassword(string token, string password, string confirmationPassword)
+        {
+            var userId = await _distributedCacheRepository.GetAsync<Guid>(token);
+            if (userId.IsEmpty())
+            {
+                _logger.LogError("[{ActionType}/ResetPassword] Token not found", ActionType);
+                _notificationContext.AddNotification("Token", "Token not found");
+                return false;
+            }
+
+            var user = await GetByIdAsync(userId);
+            if (user is null)
+            {
+                _logger.LogError("[{ActionType}/ResetPassword] User not found", ActionType);
+                _notificationContext.AddNotification("User", "User not found");
+                return false;
+            }
+
+            if (NotSamePassword(password, confirmationPassword))
+            {
+                _logger.LogError("[{ActionType}/ResetPassword] The confirmation password is not the same as the password", ActionType);
+                _notificationContext.AddNotification(
+                    "ConfirmPassword", 
+                    "The confirmation password is not the same as the password");
+                return false;
+            }
+            
+            user.Encrypt(Encrypt.EncryptString(password, userId.ToString()));
+            await _userRepository.UpdateAsync(user);
+            await _distributedCacheRepository.RemoveAsync(token);
+            return true;
         }
     }
 }
