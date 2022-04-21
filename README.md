@@ -83,7 +83,7 @@ dotnet ef migrations add _<NOME_MIGRATION>_ -s ./src/MeAgendaAi.Application/ -p 
 
 ## Aplicando migration
 
-```shell
+```bash
 dotnet ef database update -s ./src/MeAgendaAi.Application/
 ```
 
