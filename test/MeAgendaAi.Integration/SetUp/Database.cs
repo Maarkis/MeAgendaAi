@@ -19,7 +19,7 @@ namespace MeAgendaAi.Integration.SetUp
 
         public static async Task CleanAsync(string connectionString)
         {
-            using var dbConnection = new NpgsqlConnection(connectionString);
+            await using var dbConnection = new NpgsqlConnection(connectionString);
             await dbConnection.OpenAsync();
             await _checkpoint.Reset(dbConnection);
             await dbConnection.CloseAsync();
@@ -30,7 +30,7 @@ namespace MeAgendaAi.Integration.SetUp
     {
         public static async Task CleanAsync(string host, string port)
         {
-            var redis = ConnectionMultiplexer.Connect($"{host},{port},allowAdmin=true");
+            var redis = await ConnectionMultiplexer.ConnectAsync($"{host},{port},allowAdmin=true");
             var server = redis.GetServer($"{host}:{port}");
             await server.FlushDatabaseAsync();
         }

@@ -54,7 +54,7 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse
                 .WithName(physicalPerson.Name.FirstName)
                 .WithFullName(physicalPerson.Name.FullName)
                 .WithEmail(physicalPerson.Email.Address)
-                .WithCPF(physicalPerson.CPF);
+                .WithCPF(physicalPerson.Cpf);
             return builder;
         }
     }

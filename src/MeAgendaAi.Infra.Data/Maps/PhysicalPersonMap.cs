@@ -16,17 +16,17 @@ namespace MeAgendaAi.Infra.Data.Maps
 
             builder.Property(prop => prop.Id);
 
-            builder.HasIndex(prop => prop.CPF)
+            builder.HasIndex(prop => prop.Cpf)
                    .HasDatabaseName($"{INDEX_TABLE_NAME}_CPF")
                    .IsUnique();
 
-            builder.Property(prop => prop.CPF)
+            builder.Property(prop => prop.Cpf)
                    .IsRequired()
                    .HasColumnType("varchar(15)")
                    .HasMaxLength(15)
                    .HasColumnName("CPF");
 
-            builder.Property(prop => prop.RG)
+            builder.Property(prop => prop.Rg)
                    .IsRequired()
                    .HasColumnName("RG");
         }

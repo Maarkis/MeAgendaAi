@@ -6,7 +6,7 @@ public static class GuidExtensions
 	/// <param name="source">The source to act on.</param>
 	/// <returns>true if empty, false if not.</returns>
 	public static bool IsEmpty(this Guid? source) => !source.HasValue || IsEmpty(source.Value);
-	
+
 	/// <summary>A GUID extension method that query if 'source' is empty.</summary>
 	/// <param name="source">The source to act on.</param>
 	/// <returns>true if empty, false if not.</returns>

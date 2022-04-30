@@ -7,7 +7,7 @@ namespace MeAgendaAi.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : StandardController
     {
         private readonly IUserService _userService;
         private readonly IPhysicalPersonService _physicalPersonService;

@@ -15,8 +15,8 @@ namespace MeAgendaAi.Common.Builder
             RuleFor(x => x.Password, PasswordBuilder.Generate());
             RuleFor(x => x.Name, () => new NameObjectBuilder().Generate());
 
-            RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
-            RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());
+            RuleFor(x => x.Cpf, faker => faker.Random.Int(11).ToString());
+            RuleFor(x => x.Rg, faker => faker.Random.Int(9).ToString());
             RuleFor(prop => prop.IsActive, () => false);
         }
 
@@ -81,13 +81,13 @@ namespace MeAgendaAi.Common.Builder
 
         public static PhysicalPersonBuilder WithCPF(this PhysicalPersonBuilder builder, string cpf)
         {
-            builder.RuleFor(x => x.CPF, () => cpf);
+            builder.RuleFor(x => x.Cpf, () => cpf);
             return builder;
         }
 
         public static PhysicalPersonBuilder WithRG(this PhysicalPersonBuilder builder, string rg)
         {
-            builder.RuleFor(x => x.RG, () => rg);
+            builder.RuleFor(x => x.Rg, () => rg);
             return builder;
         }
 

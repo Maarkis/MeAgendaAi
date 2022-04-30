@@ -9,7 +9,7 @@ namespace MeAgendaAi.Infra.CrossCutting
 {
     public static class ConfigurationJwt
     {
-        public static IServiceCollection ConfigureJWT(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection ConfigureJwt(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.AddSingleton<IJsonWebTokenService, JwtService>();
 

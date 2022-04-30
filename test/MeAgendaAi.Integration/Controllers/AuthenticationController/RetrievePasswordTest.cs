@@ -18,6 +18,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
     internal class RetrievePasswordTest : TestBase
     {
         private readonly Faker _faker;
+        protected override string EntryPoint => "Authentication";
 
         public RetrievePasswordTest() =>
             _faker = new Faker("pt_BR");
@@ -33,7 +34,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
                .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
                .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: true, statusCode: (int)HttpStatusCode.OK, It.IsAny<JObject>()));
 
-            var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RetrievePassword", new Dictionary<string, string>()
+            var response = await Client.PostAsync(RequisitionAssemblyFor(EntryPoint, "RetrievePassword", new Dictionary<string, string>()
             {
                 {
                     "Email",
@@ -56,7 +57,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
                .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
                .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: true, statusCode: (int)HttpStatusCode.OK, It.IsAny<JObject>()));
 
-            var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RetrievePassword", new Dictionary<string, string>()
+            var response = await Client.PostAsync(RequisitionAssemblyFor(EntryPoint, "RetrievePassword", new Dictionary<string, string>()
             {
                 {
                     "Email",
@@ -79,7 +80,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
                .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
                .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: false, statusCode: (int)HttpStatusCode.BadRequest, It.IsAny<JObject>()));
 
-            var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RetrievePassword", new Dictionary<string, string>()
+            var response = await Client.PostAsync(RequisitionAssemblyFor(EntryPoint, "RetrievePassword", new Dictionary<string, string>()
             {
                 {
                     "Email",
@@ -106,7 +107,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
                .Setup(setup => setup.PostAsync(It.IsAny<MailjetRequest>()))
                .ReturnsAsync(new MailjetResponse(isSuccessStatusCode: false, statusCode: (int)HttpStatusCode.BadRequest, It.IsAny<JObject>()));
 
-            var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RetrievePassword", new Dictionary<string, string>()
+            var response = await Client.PostAsync(RequisitionAssemblyFor(EntryPoint, "RetrievePassword", new Dictionary<string, string>()
             {
                 {
                     "Email",
@@ -128,7 +129,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController
             };
             var responseExpected = new ErrorMessage<List<Notification>>(notification, "Errors");
 
-            var response = await Client.PostAsync(RequisitionAssemblyFor("Authentication", "RetrievePassword", new Dictionary<string, string>()
+            var response = await Client.PostAsync(RequisitionAssemblyFor(EntryPoint, "RetrievePassword", new Dictionary<string, string>()
             {
                 {
                     "Email",

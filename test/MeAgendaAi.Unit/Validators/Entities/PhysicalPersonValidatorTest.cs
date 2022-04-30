@@ -111,7 +111,7 @@ namespace MeAgendaAi.Unit.Validators.Entities
             var result = Validator.TestValidate(requestInvalid);
 
             result
-                .ShouldHaveValidationErrorFor(field => field.CPF)
+                .ShouldHaveValidationErrorFor(field => field.Cpf)
                 .WithErrorMessage(errorMessage);
         }
 
@@ -126,7 +126,7 @@ namespace MeAgendaAi.Unit.Validators.Entities
             var result = Validator.TestValidate(requestInvalid);
 
             result
-                .ShouldHaveValidationErrorFor(field => field.RG)
+                .ShouldHaveValidationErrorFor(field => field.Rg)
                 .WithErrorMessage(errorMessage);
         }
     }

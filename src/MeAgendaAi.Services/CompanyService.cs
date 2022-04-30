@@ -21,7 +21,7 @@ namespace MeAgendaAi.Services
         private readonly IDistributedCacheRepository _distributedCacheRepository;
         private readonly IEmailService _emailService;
 
-        private const string KeyReportCompany = "ReportCompany";
+        private const string KeyReportCompany = "CompaniesReport";
         private const double ExpireInSecondsReportCompany = 1200;
 
         private const string ActionType = "CompanyService";

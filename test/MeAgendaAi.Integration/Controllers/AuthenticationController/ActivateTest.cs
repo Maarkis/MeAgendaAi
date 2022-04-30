@@ -15,7 +15,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController;
 
 public class ActivateTest : TestBase
 {
-	private const string EntryPoint = "Authentication";
+	protected override string EntryPoint => "Authentication";
 
 	[Test]
 	public async Task Activate_ShouldReturn400BadRequestWhenNotFindingUser()
@@ -116,4 +116,5 @@ public class ActivateTest : TestBase
 		var result = await response.Content.ReadFromJsonAsync<BaseMessage>();
 		result.Should().BeEquivalentTo(resultExpected);
 	}
+
 }

@@ -15,7 +15,7 @@ builder.Services.ConfigureDatabase(builder.Configuration.GetConnectionString("Ap
 builder.Services.ConfigureServicesDependecies();
 builder.Services.ConfigureNotification();
 builder.Services.ConfigureMiddlewareNotification();
-builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(DefaultProfile));
 builder.Services.AddLogging(logging =>
 {
@@ -23,8 +23,8 @@ builder.Services.AddLogging(logging =>
     logging.AddConsole();
     logging.AddDebug();
 });
-builder.Services.ConfigureCacheDistruitedService();
-builder.Services.ConfigureCacheDistribuited(builder.Configuration);
+builder.Services.ConfigureCacheDistributedService();
+builder.Services.ConfigureCacheDistributed(builder.Configuration);
 builder.Services.ConfigureServiceAndHttpClientMailJet(builder.Configuration);
 
 var app = builder.Build();

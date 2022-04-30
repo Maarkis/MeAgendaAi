@@ -6,5 +6,6 @@ namespace MeAgendaAi.Domains.Interfaces.Services
     public interface IPhysicalPersonService : IService<PhysicalPerson>
     {
         Task<Guid> AddAsync(AddPhysicalPersonRequest request);
+        Task<byte[]?> ReportAsync();
     }
 }

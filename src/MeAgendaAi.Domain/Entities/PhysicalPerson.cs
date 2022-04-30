@@ -5,18 +5,17 @@ namespace MeAgendaAi.Domains.Entities
 {
     public class PhysicalPerson : User
     {
-        public string CPF { get; protected set; } = default!;
-        public string RG { get; protected set; } = default!;
+        public string Cpf { get; protected set; } = default!;
+        public string Rg { get; protected set; } = default!;
 
         private PhysicalPerson()
         {
         }
 
-        public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(email, password, name)
+        public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(email, password, name, surname)
         {
-            Name = new Name(name, surname);
-            CPF = cpf;
-            RG = rg;
+            Cpf = cpf;
+            Rg = rg;
 
             Validate();
         }

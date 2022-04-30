@@ -14,21 +14,21 @@ using System.Threading.Tasks;
 
 namespace MeAgendaAi.Integration.SetUp
 {
-    public class TestBase : IAsyncDisposable
+    public abstract class TestBase : IAsyncDisposable
     {
         public const string ConnectionStringDatabase = "AppDb";
-        public const string NameSectionCacheDistribuited = "Redis";
-        public const string UrlApi = "http://localhost:5000/api";
-        protected WebApiFactory<Program>? Server { get; private set; }
+        public const string NameSectionCacheDistributed = "Redis";
+        protected const string UrlApi = "http://localhost:5000/api";
+        protected abstract string EntryPoint { get; }
+        private WebApiFactory<Program>? Server { get; set; }
         protected HttpClient Client { get; private set; } = default!;
-        public AutoMocker Mocker { get; private set; } = default!;
-        protected IServiceScope ServiceScope { get; private set; } = default!;
-        protected IServiceProvider ServiceProvider { get; private set; } = default!;
+        protected AutoMocker Mocker { get; private set; } = default!;
+        private IServiceScope ServiceScope { get; set; } = default!;
+        private IServiceProvider ServiceProvider { get; set; } = default!;
         protected AppDbContext DbContext { get; private set; } = default!;
-        public IDistributedCache DbRedis { get; private set; } = default!;
-        protected ConfigurationRedis ConfigurationRedis { get; private set; } = default!;
-        public string ConnectionString { get; private set; } = default!;
-        protected static IConfiguration? Configuration { get; private set; } = default!;
+        protected IDistributedCache DbRedis { get; private set; } = default!;
+        private ConfigurationRedis ConfigurationRedis { get; set; } = default!;
+        private string ConnectionString { get; set; } = default!;
 
         [SetUp]
         public virtual async Task SetUpAsync()
@@ -54,7 +54,7 @@ namespace MeAgendaAi.Integration.SetUp
             ServiceProvider = Server.ServiceProvider;
             DbContext = ServiceProvider.GetRequiredService<AppDbContext>();
             DbRedis = ServiceProvider.GetRequiredService<IDistributedCache>();
-            Configuration = ServiceProvider.GetRequiredService<IConfiguration>();
+            ServiceProvider.GetRequiredService<IConfiguration>();
 
             Database.CreateDatabase(DbContext);
         }
@@ -70,13 +70,13 @@ namespace MeAgendaAi.Integration.SetUp
                     await asyncDisposable.DisposeAsync();
                 else
                     ServiceScope.Dispose();
-                Server.Dispose();
+                await Server.DisposeAsync();
                 Mocker.AsDisposable().Dispose();
                 GC.SuppressFinalize(this);
             }
         }
 
-        public Uri RequisitionAssemblyFor(string entrypoint, string method = "", Dictionary<string, string>? parameters = null)
+        protected Uri RequisitionAssemblyFor(string entrypoint, string method = "", Dictionary<string, string>? parameters = null)
         {
             var url = new StringBuilder($"{Client.BaseAddress}/{entrypoint}/{method}");
 

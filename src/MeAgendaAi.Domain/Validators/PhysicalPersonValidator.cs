@@ -7,12 +7,12 @@ namespace MeAgendaAi.Domains.Validators
     {
         public PhysicalPersonValidator() : base(includeSurname: true)
         {
-            RuleFor(prop => prop.CPF)
+            RuleFor(prop => prop.Cpf)
                 .NotNull()
                 .WithMessage("CPF cannot be null")
                 .NotEmpty()
                 .WithMessage("CPF cannot be empty");
-            RuleFor(prop => prop.RG)
+            RuleFor(prop => prop.Rg)
                 .NotNull()
                 .WithMessage("RG cannot be null")
                 .NotEmpty()

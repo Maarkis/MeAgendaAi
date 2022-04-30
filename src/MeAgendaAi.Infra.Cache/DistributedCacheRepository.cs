@@ -7,11 +7,7 @@ namespace MeAgendaAi.Infra.Cache
     public class DistributedCacheRepository : IDistributedCacheRepository
     {
         private readonly IDistributedCache _distributedCache;
-
-        public DistributedCacheRepository(IDistributedCache distributedCache)
-        {
-            _distributedCache = distributedCache;
-        }
+        public DistributedCacheRepository(IDistributedCache distributedCache) => _distributedCache = distributedCache;
 
         public Task<T?> GetAsync<T>(string key)
         {

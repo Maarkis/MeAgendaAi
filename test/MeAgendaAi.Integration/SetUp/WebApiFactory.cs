@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
-using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
@@ -18,30 +17,30 @@ using System.Security.Authentication;
 
 namespace MeAgendaAi.Integration.SetUp
 {
-    [SetUpFixture]
     public class WebApiFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-        private readonly string Environment;
-        public IConfiguration Configuration = default!;
         public IServiceScope ServiceScope = default!;
         public IServiceProvider ServiceProvider = default!;
         public ConfigurationRedis ConfigurationRedis = default!;
-        public AutoMocker Mocker = new();
-        public string ConnectionString => Configuration.GetConnectionString(TestBase.ConnectionStringDatabase);
+        public readonly AutoMocker Mocker = new();
+        public string ConnectionString => _configuration.GetConnectionString(TestBase.ConnectionStringDatabase);
 
-        public WebApiFactory(string environment = "Test") => (Environment) = (environment);
+        private readonly string _environment;
+        private IConfiguration _configuration = default!;
+        
+        public WebApiFactory(string environment = "Test") => (_environment) = (environment);
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder
-                .UseEnvironment(Environment)
+                .UseEnvironment(_environment)
                 .ConfigureAppConfiguration(config =>
                 {
-                    Configuration = new ConfigurationBuilder()
+                    _configuration = new ConfigurationBuilder()
                         .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Test.Integration.json"))
                         .Build();
 
-                    config.AddConfiguration(Configuration);
+                    config.AddConfiguration(_configuration);
                 })
                 .ConfigureServices(services =>
                 {
@@ -55,7 +54,7 @@ namespace MeAgendaAi.Integration.SetUp
                     });
 
                     ConfigurationRedis = new ConfigurationRedis();
-                    Configuration.GetSection(TestBase.NameSectionCacheDistribuited).Bind(ConfigurationRedis);
+                    _configuration.GetSection(TestBase.NameSectionCacheDistributed).Bind(ConfigurationRedis);
                     services.AddStackExchangeRedisCache(options =>
                     {
                         Enum.TryParse(ConfigurationRedis.SslProtocols, ignoreCase: true, out SslProtocols sslProtocols);
@@ -73,7 +72,7 @@ namespace MeAgendaAi.Integration.SetUp
                         };
                     });
 
-                    services.MockMailJetApi(Mocker, Configuration);
+                    services.MockMailJetApi(Mocker, _configuration);
 
                     var serviceProvider = services.BuildServiceProvider();
 

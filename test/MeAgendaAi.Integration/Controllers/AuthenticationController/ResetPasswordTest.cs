@@ -17,12 +17,7 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController;
 
 public class ResetPasswordTest : TestBase
 {
-	private const string EntryPoint = "Authentication";
-	
-	public ResetPasswordTest()
-	{
-		
-	}
+	protected override string EntryPoint => "Authentication";
 
 	[Test]
 	public async Task ResetPassword_ShouldReturn400BadRequestWhenNotFindingToken()
@@ -211,5 +206,4 @@ public class ResetPasswordTest : TestBase
 		var result = await response.Content.ReadFromJsonAsync<BaseMessage>();
 		result.Should().BeEquivalentTo(messageExpected);
 	}
-	
 }

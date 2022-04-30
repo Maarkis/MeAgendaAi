@@ -8,7 +8,7 @@ namespace MeAgendaAi.Infra.CrossCutting
 {
     public static class ConfigurationCacheDistributed
     {
-        public static IServiceCollection ConfigureCacheDistribuited(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection ConfigureCacheDistributed(this IServiceCollection services, ConfigurationManager configuration)
         {
             var configurationRedis = new ConfigurationRedis();
             configuration.GetSection("Redis").Bind(configurationRedis);
@@ -31,7 +31,7 @@ namespace MeAgendaAi.Infra.CrossCutting
             return services;
         }
 
-        public static IServiceCollection ConfigureCacheDistruitedService(this IServiceCollection services)
+        public static IServiceCollection ConfigureCacheDistributedService(this IServiceCollection services)
         {
             services.AddScoped<IDistributedCacheRepository, DistributedCacheRepository>();
             return services;

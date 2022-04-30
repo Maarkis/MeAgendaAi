@@ -21,7 +21,7 @@ namespace MeAgendaAi.Application.Mapper
                 .ForMember(dest => dest.Name, option => option.MapFrom(origin => origin.Name.FirstName))
                 .ForMember(dest => dest.FullName, option => option.MapFrom(origin => origin.Name.FullName))
                 .ForMember(dest => dest.Email, option => option.MapFrom(origin => origin.Email.Address))
-                .ForMember(dest => dest.CPF, option => option.MapFrom(origin => origin.CPF));
+                .ForMember(dest => dest.CPF, option => option.MapFrom(origin => origin.Cpf));
 
             CreateMap<AddPhysicalPersonRequest, PhysicalPerson>()
                 .ForPath(dest => dest.Email.Address, option => option.MapFrom(origin => origin.Email))
