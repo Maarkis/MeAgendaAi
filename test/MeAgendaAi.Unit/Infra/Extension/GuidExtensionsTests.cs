@@ -12,27 +12,27 @@ public class GuidExtensionsTests
 	{
 		Guid.Empty.IsEmpty().Should().BeTrue();
 	}
-	
+
 	[Test]
 	public void Guid_IsEmptyShouldReturnFalseWhenGuidIsValid()
 	{
 		Guid.NewGuid().IsEmpty().Should().BeFalse();
 	}
-	
+
 	[Test]
 	public void GuidNullable_IsEmptyShouldReturnTrueWhenGuidIsEmpty()
 	{
 		Guid? guid = null;
 		guid.IsEmpty().Should().BeTrue();
 	}
-	
+
 	[Test]
 	public void GuidNullable_IsEmptyShouldReturnTrueWhenGuidIsNull()
 	{
 		Guid? guid = Guid.Empty;
 		guid.IsEmpty().Should().BeTrue();
 	}
-	
+
 	[Test]
 	public void GuidNullable_IsEmptyShouldReturnFalseWhenGuidIsValid()
 	{

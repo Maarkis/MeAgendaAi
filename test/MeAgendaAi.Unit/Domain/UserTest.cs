@@ -1,167 +1,165 @@
-﻿using Bogus;
+﻿using System.Linq;
+using Bogus;
 using FluentAssertions;
 using MeAgendaAi.Domains.Entities;
 using NUnit.Framework;
-using System.Linq;
 
-namespace MeAgendaAi.Unit.Domain
+namespace MeAgendaAi.Unit.Domain;
+
+public class UserTest
 {
-    public class UserTest
-    {
-        private readonly Faker Faker;
+	private readonly Faker _faker;
 
-        public UserTest() => Faker = new Faker();
+	private const string CharsAccepted = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%*()/*-+";
 
-        [Test]
-        public void ShouldCreateAUserWithAllValidFields()
-        {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
-            var name = Faker.Name.FirstName();
+	public UserTest() => _faker = new Faker();
 
-            var user = new User(email, password, name);
+	[Test]
+	public void ShouldCreateAUserWithAllValidFields()
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
+		var name = _faker.Name.FirstName();
 
-            user.Valid.Should().BeTrue();
-            user.Invalid.Should().BeFalse();
-        }
+		var user = new User(email, password, name);
 
-        [Test]
-        public void ShouldCreateAUserWithAllValidFieldsAndNoValidationResult()
-        {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
-            var name = Faker.Name.FirstName();
+		user.Valid.Should().BeTrue();
+		user.Invalid.Should().BeFalse();
+	}
 
-            var user = new User(email, password, name);
+	[Test]
+	public void ShouldCreateAUserWithAllValidFieldsAndNoValidationResult()
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
+		var name = _faker.Name.FirstName();
 
-            var errors = user.ValidationResult.Errors.ToList();
-            errors.Should().BeEmpty();
-        }
+		var user = new User(email, password, name);
 
-        [TestCase("", "E-mail cannot be empty")]
-        [TestCase(null, "E-mail cannot be empty")]
-        [TestCase("email", "Invalid e-mail")]
-        [TestCase("email@", "Invalid e-mail")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithInvalidEmail(string email, string errorMessage)
-        {
-            var name = Faker.Name.FirstName();
-            var password = Faker.Internet.Password();
+		var errors = user.ValidationResult.Errors.ToList();
+		errors.Should().BeEmpty();
+	}
 
-            var user = new User(email, password, name);
+	[TestCase("", "E-mail cannot be empty")]
+	[TestCase(null, "E-mail cannot be empty")]
+	[TestCase("email", "Invalid e-mail")]
+	[TestCase("email@", "Invalid e-mail")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithInvalidEmail(string email, string errorMessage)
+	{
+		var name = _faker.Name.FirstName();
+		var password = _faker.Internet.Password();
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
+		var user = new User(email, password, name);
 
-        [TestCase("", "Password cannot be empty")]
-        [TestCase(null, "Password cannot be empty")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithInvalidPassword(string password, string errorMessage)
-        {
-            var email = Faker.Internet.Email();
-            var name = Faker.Name.FirstName();
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 
-            var user = new User(email, password, name);
+	[TestCase("", "Password cannot be empty")]
+	[TestCase(null, "Password cannot be empty")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithInvalidPassword(string password, string errorMessage)
+	{
+		var email = _faker.Internet.Email();
+		var name = _faker.Name.FirstName();
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
+		var user = new User(email, password, name);
 
-        [TestCase(0, "Password cannot be empty")]
-        [TestCase(2, "Password must contain at least 6 characters")]
-        [TestCase(5, "Password must contain at least 6 characters")]
-        [TestCase(33, "Password must contain a maximum of 32 characters")]
-        [TestCase(40, "Password must contain a maximum of 32 characters")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidPassword(int lengthPassword, string errorMessage)
-        {
-            var email = Faker.Internet.Email();
-            var name = Faker.Name.FirstName();
-            string charsAccepted = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%*()/*-+";
-            var password = Faker.Random.String2(lengthPassword, charsAccepted);
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 
-            var user = new User(email, password, name);
+	[TestCase(0, "Password cannot be empty")]
+	[TestCase(2, "Password must contain at least 6 characters")]
+	[TestCase(5, "Password must contain at least 6 characters")]
+	[TestCase(33, "Password must contain a maximum of 32 characters")]
+	[TestCase(40, "Password must contain a maximum of 32 characters")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidPassword(int lengthPassword, string errorMessage)
+	{
+		var email = _faker.Internet.Email();
+		var name = _faker.Name.FirstName();
+		var password = _faker.Random.String2(lengthPassword, CharsAccepted);
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
+		var user = new User(email, password, name);
 
-        [TestCase("", "Name cannot be empty")]
-        [TestCase(null, "Name cannot be empty")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithInvalidName(string name, string errorMessage)
-        {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 
-            var user = new User(email, password, name);
+	[TestCase("", "Name cannot be empty")]
+	[TestCase(null, "Name cannot be empty")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithInvalidName(string name, string errorMessage)
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
+		var user = new User(email, password, name);
 
-        [TestCase(0, "Name cannot be empty")]
-        [TestCase(1, "Name must contain at least 3 characters")]
-        [TestCase(2, "Name must contain at least 3 characters")]
-        [TestCase(61, "Name must contain a maximum of 60 characters")]
-        [TestCase(100, "Name must contain a maximum of 60 characters")]
-        [TestCase(101, "Name must contain a maximum of 60 characters")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidName(int lengthName, string errorMessage)
-        {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
-            string charsAccepted = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%*()/*-+";
-            var name = Faker.Random.String2(lengthName, charsAccepted);
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 
-            var user = new User(email, password, name);
+	[TestCase(0, "Name cannot be empty")]
+	[TestCase(1, "Name must contain at least 3 characters")]
+	[TestCase(2, "Name must contain at least 3 characters")]
+	[TestCase(61, "Name must contain a maximum of 60 characters")]
+	[TestCase(100, "Name must contain a maximum of 60 characters")]
+	[TestCase(101, "Name must contain a maximum of 60 characters")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidName(int lengthName, string errorMessage)
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
+		var name = _faker.Random.String2(lengthName, CharsAccepted);
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
+		var user = new User(email, password, name);
 
-        [TestCase("", "Surname cannot be empty")]
-        [TestCase(null, "Surname cannot be empty")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithInvalidSurname(string surname, string errorMessage)
-        {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
-            var name = Faker.Name.FirstName();
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 
-            var user = new User(email, password, name, surname);
+	[TestCase("", "Surname cannot be empty")]
+	[TestCase(null, "Surname cannot be empty")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithInvalidSurname(string surname, string errorMessage)
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
+		var name = _faker.Name.FirstName();
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
+		var user = new User(email, password, name, surname);
 
-        [TestCase(0, "Surname cannot be empty")]
-        [TestCase(1, "Surname must contain at least 3 characters")]
-        [TestCase(2, "Surname must contain at least 3 characters")]
-        [TestCase(81, "Surname must contain a maximum of 80 characters")]
-        [TestCase(100, "Surname must contain a maximum of 80 characters")]
-        [TestCase(101, "Surname must contain a maximum of 80 characters")]
-        public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidSurname(int lengthName, string errorMessage)
-        {
-            var email = Faker.Internet.Email();
-            var password = Faker.Internet.Password();
-            var name = Faker.Name.FirstName();
-            string charsAccepted = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%*()/*-+";
-            var surname = Faker.Random.String2(lengthName, charsAccepted);
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 
-            var user = new User(email, password, name, surname);
+	[TestCase(0, "Surname cannot be empty")]
+	[TestCase(1, "Surname must contain at least 3 characters")]
+	[TestCase(2, "Surname must contain at least 3 characters")]
+	[TestCase(81, "Surname must contain a maximum of 80 characters")]
+	[TestCase(100, "Surname must contain a maximum of 80 characters")]
+	[TestCase(101, "Surname must contain a maximum of 80 characters")]
+	public void ShouldCreateAnInvalidInstanceOfUserWithLengthInvalidSurname(int lengthName, string errorMessage)
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
+		var name = _faker.Name.FirstName();
+		var surname = _faker.Random.String2(lengthName, CharsAccepted);
 
-            var errors = user.ValidationResult.Errors;
-            errors.Should().Contain(error => error.ErrorMessage == errorMessage);
-            user.Valid.Should().BeFalse();
-            user.Invalid.Should().BeTrue();
-        }
-    }
+		var user = new User(email, password, name, surname);
+
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
 }

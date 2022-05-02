@@ -7,60 +7,63 @@ using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
 using NUnit.Framework;
 
-namespace MeAgendaAi.Unit.Mapping
+namespace MeAgendaAi.Unit.Mapping;
+
+public class DefaultProfileTest
 {
-    public class DefaultProfileTest
-    {
-        private readonly Mapper _mapper;
+	private readonly Mapper _mapper;
 
-        public DefaultProfileTest()
-        {
-            var configuration = new MapperConfiguration(cfg => cfg.AddProfile<DefaultProfile>());
-            _mapper = new Mapper(configuration);
-        }
+	public DefaultProfileTest()
+	{
+		var configuration = new MapperConfiguration(cfg => cfg.AddProfile<DefaultProfile>());
+		_mapper = new Mapper(configuration);
+	}
 
-        [Test]
-        public void Mapper_ShouldHaveValidConfiguration() =>
-            _mapper.ConfigurationProvider.AssertConfigurationIsValid();
+	[Test]
+	public void Mapper_ShouldHaveValidConfiguration()
+	{
+		_mapper.ConfigurationProvider.AssertConfigurationIsValid();
+	}
 
-        [Test]
-        public void Mapper_ShouldMapAddPhysicalPersonRequestToPhysicalPerson()
-        {
-            var request = new AddPhysicalPersonRequestBuilder().Generate();
-            var physicalPersonExpected = new PhysicalPersonBuilder().ByRequest(request).Generate();
+	[Test]
+	public void Mapper_ShouldMapAddPhysicalPersonRequestToPhysicalPerson()
+	{
+		var request = new AddPhysicalPersonRequestBuilder().Generate();
+		var physicalPersonExpected = new PhysicalPersonBuilder().ByRequest(request).Generate();
 
-            var physicalPerson = _mapper.Map<PhysicalPerson>(request);
+		var physicalPerson = _mapper.Map<PhysicalPerson>(request);
 
-            physicalPerson.Should().BeEquivalentTo(physicalPersonExpected,
-                 options => options.Excluding(prop => prop.Id).Excluding(prop => prop.CreatedAt).Excluding(prop => prop.LastUpdatedAt));
-        }
+		physicalPerson.Should().BeEquivalentTo(physicalPersonExpected,
+			options => options.Excluding(prop => prop.Id)
+				.Excluding(prop => prop.CreatedAt)
+				.Excluding(prop => prop.LastUpdatedAt));
+	}
 
-        [Test]
-        public void Mapper_ShouldMapPhysicalPersonToPhysicalPersonResponse()
-        {
-            var physicalPerson = new PhysicalPersonBuilder().Generate();
-            var responseExpected = new PhysicalPersonResponseBuilder().WithPhysicalPerson(physicalPerson).Generate();
+	[Test]
+	public void Mapper_ShouldMapPhysicalPersonToPhysicalPersonResponse()
+	{
+		var physicalPerson = new PhysicalPersonBuilder().Generate();
+		var responseExpected = new PhysicalPersonResponseBuilder().WithPhysicalPerson(physicalPerson).Generate();
 
-            var response = _mapper.Map<PhysicalPersonResponse>(physicalPerson);
+		var response = _mapper.Map<PhysicalPersonResponse>(physicalPerson);
 
-            response.Should().BeEquivalentTo(responseExpected);
-        }
+		response.Should().BeEquivalentTo(responseExpected);
+	}
 
-        [Test]
-        public void Mapper_ShouldMapUserToAuthenticateResponseCorrectly()
-        {
-            var user = new UserBuilder().Generate();
-            var authenticateResponseExpected = new AuthenticateResponse()
-            {
-                Id = user.Id,
-                Email = user.Email.Address,
-                CreatedAt = user.CreatedAt,
-                LastUpdatedAt = user.LastUpdatedAt
-            };
+	[Test]
+	public void Mapper_ShouldMapUserToAuthenticateResponseCorrectly()
+	{
+		var user = new UserBuilder().Generate();
+		var authenticateResponseExpected = new AuthenticateResponse
+		{
+			Id = user.Id,
+			Email = user.Email.Address,
+			CreatedAt = user.CreatedAt,
+			LastUpdatedAt = user.LastUpdatedAt
+		};
 
-            var response = _mapper.Map<AuthenticateResponse>(user);
+		var response = _mapper.Map<AuthenticateResponse>(user);
 
-            response.Should().BeEquivalentTo(authenticateResponseExpected);
-        }
-    }
+		response.Should().BeEquivalentTo(authenticateResponseExpected);
+	}
 }

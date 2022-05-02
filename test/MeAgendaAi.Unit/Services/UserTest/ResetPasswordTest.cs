@@ -17,12 +17,11 @@ namespace MeAgendaAi.Unit.Services.UserTest;
 
 public class ResetPasswordTest
 {
-	private readonly AutoMocker _mocker;
-	private readonly UserService _userService;
-	private readonly User _user;
-
 	private const string Token = "any-token-reset-password";
 	private const string ActionType = "UserService";
+	private readonly AutoMocker _mocker;
+	private readonly User _user;
+	private readonly UserService _userService;
 
 	public ResetPasswordTest()
 	{
@@ -50,7 +49,7 @@ public class ResetPasswordTest
 				.GetAsync<Guid>(It.Is<string>(prop => prop == token)));
 
 		_ = _userService.ResetPassword(token, It.IsAny<string>(), It.IsAny<string>());
-		
+
 		_mocker
 			.GetMock<ILogger<UserService>>()
 			.VerifyLog(LogLevel.Error, logMessageExpected);
@@ -64,7 +63,7 @@ public class ResetPasswordTest
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
 				.GetAsync<Guid>(It.Is<string>(prop => prop == token)));
-		
+
 		_ = _userService.ResetPassword(token, It.IsAny<string>(), It.IsAny<string>());
 
 		_mocker
@@ -73,7 +72,7 @@ public class ResetPasswordTest
 			.Should()
 			.ContainEquivalentOf(notificationExpected);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnFalseWhenNotFindingToken()
 	{
@@ -81,7 +80,7 @@ public class ResetPasswordTest
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
 				.GetAsync<Guid>(It.Is<string>(prop => prop == token)));
-		
+
 		var result = await _userService.ResetPassword(token, It.IsAny<string>(), It.IsAny<string>());
 
 		result.Should().BeFalse();
@@ -101,14 +100,14 @@ public class ResetPasswordTest
 			.ReturnsAsync((User)null!);
 
 		_ = _userService.ResetPassword(Token, It.IsAny<string>(), It.IsAny<string>());
-		
+
 		_mocker
 			.Get<NotificationContext>()
 			.Notifications
 			.Should()
 			.ContainEquivalentOf(notificationExpected);
 	}
-	
+
 	[Test]
 	public void ResetPassword_ShouldGenerateAnErrorLogWhenNotFindingUser()
 	{
@@ -123,12 +122,12 @@ public class ResetPasswordTest
 			.ReturnsAsync((User)null!);
 
 		_ = _userService.ResetPassword(Token, It.IsAny<string>(), It.IsAny<string>());
-		
+
 		_mocker
 			.GetMock<ILogger<UserService>>()
 			.VerifyLog(LogLevel.Error, logMessageExpected);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnFalseWhenNotFindingUser()
 	{
@@ -149,11 +148,11 @@ public class ResetPasswordTest
 	[Test]
 	public void ResetPassword_ShouldAddNotificationWhenPasswordNotSameAsConfirmationPassword()
 	{
-		const string password = "any-password"; 
+		const string password = "any-password";
 		const string confirmationPasswordIncorrect = "any-other-password";
 		var notificationExpected = new Notification(
-				"ConfirmPassword", 
-				"The confirmation password is not the same as the password");
+			"ConfirmPassword",
+			"The confirmation password is not the same as the password");
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
 				.GetAsync<Guid>(It.Is<string>(prop => prop == Token)))
@@ -164,20 +163,21 @@ public class ResetPasswordTest
 			.ReturnsAsync(_user);
 
 		_ = _userService.ResetPassword(Token, password, confirmationPasswordIncorrect);
-		
+
 		_mocker
 			.Get<NotificationContext>()
 			.Notifications
 			.Should()
 			.ContainEquivalentOf(notificationExpected);
 	}
-	
+
 	[Test]
 	public void ResetPassword_ShouldGenerateAnErrorLogWhenWhenPasswordNotSameAsConfirmationPassword()
 	{
-		const string password = "any-password"; 
+		const string password = "any-password";
 		const string confirmationPasswordIncorrect = "any-other-password";
-		var logMessageExpected = $"[{ActionType}/ResetPassword] The confirmation password is not the same as the password";
+		var logMessageExpected =
+			$"[{ActionType}/ResetPassword] The confirmation password is not the same as the password";
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
 				.GetAsync<Guid>(It.Is<string>(prop => prop == Token)))
@@ -193,11 +193,11 @@ public class ResetPasswordTest
 			.GetMock<ILogger<UserService>>()
 			.VerifyLog(LogLevel.Error, logMessageExpected);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnFalseWhenWhenPasswordNotSameAsConfirmationPassword()
 	{
-		const string password = "any-password"; 
+		const string password = "any-password";
 		const string confirmPassword = "any-other-password";
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
@@ -212,13 +212,14 @@ public class ResetPasswordTest
 
 		result.Should().BeFalse();
 	}
-	
+
 	[Test]
 	public void ResetPassword_ShouldCallUpdateAsyncMethodOnce()
 	{
-		const string password = "any-password"; 
+		const string password = "any-password";
 		const string confirmPassword = "any-password";
-		var logMessageExpected = $"[{ActionType}/ResetPassword] The confirmation password is not the same as the password";
+		var logMessageExpected =
+			$"[{ActionType}/ResetPassword] The confirmation password is not the same as the password";
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
 				.GetAsync<Guid>(It.Is<string>(prop => prop == Token)))
@@ -228,22 +229,21 @@ public class ResetPasswordTest
 				.GetByIdAsync(It.Is<Guid>(prop => prop == _user.Id)))
 			.ReturnsAsync(_user);
 		_mocker.GetMock<IUserRepository>()
-			.Setup(method => method.
-				UpdateAsync(It.Is<User>(prop => prop == _user)))
+			.Setup(method => method.UpdateAsync(It.Is<User>(prop => prop == _user)))
 			.ReturnsAsync(_user);
 
 		_ = _userService.ResetPassword(Token, password, confirmPassword);
-		
+
 		_mocker.GetMock<IUserRepository>()
 			.Verify(method => method
 					.UpdateAsync(It.Is<User>(propUser => propUser == _user)),
 				Times.Once);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnTrueWhenUpdatePassword()
 	{
-		const string password = "any-password"; 
+		const string password = "any-password";
 		const string confirmPassword = "any-password";
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
@@ -254,20 +254,19 @@ public class ResetPasswordTest
 				.GetByIdAsync(It.Is<Guid>(prop => prop == _user.Id)))
 			.ReturnsAsync(_user);
 		_mocker.GetMock<IUserRepository>()
-			.Setup(method => method.
-				UpdateAsync(It.Is<User>(prop => prop == _user)))
+			.Setup(method => method.UpdateAsync(It.Is<User>(prop => prop == _user)))
 			.ReturnsAsync(_user);
 
 		var result = await _userService.ResetPassword(Token, password, confirmPassword);
 
 		result.Should().BeTrue();
 	}
-	
-	
+
+
 	[Test]
 	public void ResetPassword_ShouldCallRemoveAsyncMethodOnce()
 	{
-		const string password = "any-password"; 
+		const string password = "any-password";
 		const string confirmPassword = "any-password";
 		_mocker.GetMock<IDistributedCacheRepository>()
 			.Setup(method => method
@@ -278,16 +277,13 @@ public class ResetPasswordTest
 				.GetByIdAsync(It.Is<Guid>(prop => prop == _user.Id)))
 			.ReturnsAsync(_user);
 		_mocker.GetMock<IUserRepository>()
-			.Setup(method => method.
-				UpdateAsync(It.Is<User>(prop => prop == _user)))
+			.Setup(method => method.UpdateAsync(It.Is<User>(prop => prop == _user)))
 			.ReturnsAsync(_user);
 
 		_ = _userService.ResetPassword(Token, password, confirmPassword);
 
 		_mocker.GetMock<IDistributedCacheRepository>()
-			.Verify(verify => verify.
-				RemoveAsync(It.Is<string>(prop => prop == Token)), 
+			.Verify(verify => verify.RemoveAsync(It.Is<string>(prop => prop == Token)),
 				Times.Once);
 	}
-
 }

@@ -1,9 +1,8 @@
 ﻿using MeAgendaAi.Domains.Entities;
 
-namespace MeAgendaAi.Domains.Interfaces.Repositories
+namespace MeAgendaAi.Domains.Interfaces.Repositories;
+
+public interface IUserRepository : IRepository<User>
 {
-    public interface IUserRepository : IRepository<User>
-    {
-        Task<User?> GetEmailAsync(string email);
-    }
+	Task<User?> GetEmailAsync(string email);
 }

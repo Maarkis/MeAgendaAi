@@ -1,10 +1,9 @@
 ﻿using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
 
-namespace MeAgendaAi.Domains.Interfaces.Services
+namespace MeAgendaAi.Domains.Interfaces.Services;
+
+public interface IPhysicalPersonService : IService<PhysicalPerson>
 {
-    public interface IPhysicalPersonService : IService<PhysicalPerson>
-    {
-        Task<Guid> AddAsync(AddPhysicalPersonRequest request);
-    }
+	Task<Guid> AddAsync(AddPhysicalPersonRequest request);
 }

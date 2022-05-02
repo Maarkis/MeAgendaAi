@@ -2,17 +2,16 @@
 using MeAgendaAi.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MeAgendaAi.Infra.CrossCutting
+namespace MeAgendaAi.Infra.CrossCutting;
+
+public static class ConfigurationServices
 {
-    public static class ConfigurationServices
-    {
-        public static IServiceCollection ConfigureServicesDependecies(this IServiceCollection services)
-        {
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPhysicalPersonService, PhysicalPersonService>();
-            services.AddScoped<ICompanyService, CompanyService>();
-            services.AddScoped<IReport, ReportService>();
-            return services;
-        }
-    }
+	public static IServiceCollection ConfigureServicesDependecies(this IServiceCollection services)
+	{
+		services.AddScoped<IUserService, UserService>();
+		services.AddScoped<IPhysicalPersonService, PhysicalPersonService>();
+		services.AddScoped<ICompanyService, CompanyService>();
+		services.AddScoped<IReport, ReportService>();
+		return services;
+	}
 }

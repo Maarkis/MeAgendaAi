@@ -22,6 +22,41 @@ namespace MeAgendaAi.Infra.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.PhoneNumber", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CountryCode")
+                        .HasColumnType("NUMERIC(3)")
+                        .HasColumnName("NUM_COUNTRY_CODE");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("DT_CREATED_AT");
+
+                    b.Property<decimal>("DialCode")
+                        .HasColumnType("NUMERIC(2)")
+                        .HasColumnName("NUM_DIAL_CODE");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("DT_LAST_UPDATED_AT");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("varchar(9)")
+                        .HasColumnName("NUM_NUMBER");
+
+                    b.Property<decimal>("Type")
+                        .HasColumnType("NUMERIC(1)")
+                        .HasColumnName("NM_TYPE");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_PHONE_NUMBERS", (string)null);
+                });
+
             modelBuilder.Entity("MeAgendaAi.Domains.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -103,30 +138,39 @@ namespace MeAgendaAi.Infra.Data.Migrations
                     b.ToTable("TB_PHYSICAL_PERSON", (string)null);
                 });
 
-            modelBuilder.Entity("MeAgendaAi.Domains.Entities.User", b =>
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.PhoneNumber", b =>
                 {
-                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.Email", "Email", b1 =>
+                    b.HasOne("MeAgendaAi.Domains.Entities.User", "User")
+                        .WithMany("PhoneNumbers")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.Name", "Contact", b1 =>
                         {
-                            b1.Property<Guid>("UserId")
+                            b1.Property<Guid>("PhoneNumberId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("Address")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("EMAIL");
+                            b1.Property<string>("FirstName")
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("NM_CONTACT");
 
-                            b1.HasKey("UserId");
+                            b1.HasKey("PhoneNumberId");
 
-                            b1.HasIndex("Address")
-                                .IsUnique()
-                                .HasDatabaseName("IN_USERS_EMAIL");
-
-                            b1.ToTable("TB_USERS");
+                            b1.ToTable("TB_PHONE_NUMBERS");
 
                             b1.WithOwner()
-                                .HasForeignKey("UserId");
+                                .HasForeignKey("PhoneNumberId");
                         });
 
+                    b.Navigation("Contact");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.User", b =>
+                {
                     b.OwnsOne("MeAgendaAi.Domains.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("UserId")
@@ -144,6 +188,28 @@ namespace MeAgendaAi.Infra.Data.Migrations
                                 .HasColumnName("NM_LAST_NAME");
 
                             b1.HasKey("UserId");
+
+                            b1.ToTable("TB_USERS");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsOne("MeAgendaAi.Domains.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("EMAIL");
+
+                            b1.HasKey("UserId");
+
+                            b1.HasIndex("Address")
+                                .IsUnique()
+                                .HasDatabaseName("IN_USERS_EMAIL");
 
                             b1.ToTable("TB_USERS");
 
@@ -174,6 +240,11 @@ namespace MeAgendaAi.Infra.Data.Migrations
                         .HasForeignKey("MeAgendaAi.Domains.Entities.PhysicalPerson", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MeAgendaAi.Domains.Entities.User", b =>
+                {
+                    b.Navigation("PhoneNumbers");
                 });
 #pragma warning restore 612, 618
         }

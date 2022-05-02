@@ -1,26 +1,26 @@
 ﻿using MeAgendaAi.Domains.Validators;
 
-namespace MeAgendaAi.Domains.Entities
+namespace MeAgendaAi.Domains.Entities;
+
+public class Company : User
 {
-    public class Company : User
-    {
-        public string CNPJ { get; protected set; } = default!;
-        public string Description { get; protected set; } = default!;
-        public int LimitCancelHours { get; protected set; } = default!;
+	protected Company()
+	{
+	}
 
-        protected Company()
-        {
-        }
+	public Company(string email, string password, string name, string cnpj, string description, int limitCancelHours) :
+		base(email, password, name)
+	{
+		CNPJ = cnpj;
+		Description = description;
+		LimitCancelHours = limitCancelHours;
 
-        public Company(string email, string password, string name, string cnpj, string description, int limitCancelHours) : base(email, password, name)
-        {
-            CNPJ = cnpj;
-            Description = description;
-            LimitCancelHours = limitCancelHours;
+		Validate();
+	}
 
-            Validate();
-        }
+	public string CNPJ { get; protected set; } = default!;
+	public string Description { get; protected set; } = default!;
+	public int LimitCancelHours { get; protected set; }
 
-        public bool Validate() => Validate(this, new CompanyValidator());
-    }
+	public bool Validate() => Validate(this, new CompanyValidator());
 }

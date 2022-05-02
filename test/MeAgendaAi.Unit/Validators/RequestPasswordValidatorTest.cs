@@ -7,18 +7,21 @@ namespace MeAgendaAi.Unit.Validators;
 
 public class RequestPasswordValidatorTest
 {
-	private readonly ResetPasswordRequestValidator _validator;
-	
 	private const string ErrorMessageEmpty = "Can't be empty";
 	private const string ErrorMessageNull = "Can't be null";
+	private readonly ResetPasswordRequestValidator _validator;
 
-	public RequestPasswordValidatorTest() =>  _validator = new ResetPasswordRequestValidator();
+	public RequestPasswordValidatorTest()
+	{
+		_validator = new ResetPasswordRequestValidator();
+	}
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithTokenFieldInvalidAndReturnError(string fieldContent, string errorMessage)
+	public void AddCompanyRequestValidator_ShouldValidateRequestWithTokenFieldInvalidAndReturnError(string fieldContent,
+		string errorMessage)
 	{
-		var requestInvalid = new ResetPasswordRequest()
+		var requestInvalid = new ResetPasswordRequest
 		{
 			Token = fieldContent,
 			Password = "any-password",
@@ -31,12 +34,13 @@ public class RequestPasswordValidatorTest
 			.ShouldHaveValidationErrorFor(field => field.Token)
 			.WithErrorMessage(errorMessage);
 	}
-	
+
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithPasswordFieldInvalidAndReturnError(string fieldContent, string errorMessage)
+	public void AddCompanyRequestValidator_ShouldValidateRequestWithPasswordFieldInvalidAndReturnError(
+		string fieldContent, string errorMessage)
 	{
-		var requestInvalid = new ResetPasswordRequest()
+		var requestInvalid = new ResetPasswordRequest
 		{
 			Token = "Token",
 			Password = fieldContent,
@@ -49,12 +53,13 @@ public class RequestPasswordValidatorTest
 			.ShouldHaveValidationErrorFor(field => field.Password)
 			.WithErrorMessage(errorMessage);
 	}
-	
+
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithConfirmPasswordFieldInvalidAndReturnError(string fieldContent, string errorMessage)
+	public void AddCompanyRequestValidator_ShouldValidateRequestWithConfirmPasswordFieldInvalidAndReturnError(
+		string fieldContent, string errorMessage)
 	{
-		var requestInvalid = new ResetPasswordRequest()
+		var requestInvalid = new ResetPasswordRequest
 		{
 			Token = "Token",
 			Password = "any-password",

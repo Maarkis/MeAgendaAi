@@ -1,52 +1,63 @@
-﻿using MeAgendaAi.Domains.Entities.Base;
+﻿using System.Collections.ObjectModel;
+using MeAgendaAi.Domains.Entities.Base;
 using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
+using MeAgendaAi.Infra.Extension;
 
-namespace MeAgendaAi.Domains.Entities
+namespace MeAgendaAi.Domains.Entities;
+
+public class User : Entity
 {
-    public class User : Entity
-    {
-        public Name Name { get; protected set; } = default!;
-        public Email Email { get; protected set; } = default!;
-        public string Password { get; protected set; } = default!;
-        public bool IsActive { get; protected set; }
+	public Name Name { get; protected set; } = default!;
+	public Email Email { get; protected set; } = default!;
+	public string Password { get; protected set; } = default!;
+	public bool IsActive { get; protected set; }
 
-        protected User()
-        {
-        }
+	private readonly ICollection<PhoneNumber> _phoneNumbers;
 
-        public User(string email, string password, string name)
-        {
-            Email = new Email(email);
-            Password = password;
-            Name = new Name(name);
-            IsActive = false;
+	public IReadOnlyCollection<PhoneNumber> PhoneNumbers =>
+		_phoneNumbers.IsEmpty() ? new List<PhoneNumber>() : new List<PhoneNumber>(_phoneNumbers);
 
-            Validate(includeSurname: false);
-        }
+	protected User()
+	{
+	}
 
-        public User(string email, string password, string name, string surname)
-        {
-            Email = new Email(email);
-            Password = password;
-            Name = new Name(name, surname);
-            IsActive = false;
+	public User(string email, string password, string name)
+	{
+		Email = new Email(email);
+		Password = password;
+		Name = new Name(name);
+		IsActive = false;
+		_phoneNumbers = new Collection<PhoneNumber>();
 
-            Validate(includeSurname: true);
-        }
+		Validate(false);
+	}
 
-        public bool Validate(bool includeSurname) => Validate(this, new UserValidator<User>(includeSurname));
+	public User(string email, string password, string name, string surname)
+	{
+		Email = new Email(email);
+		Password = password;
+		Name = new Name(name, surname);
+		IsActive = false;
+		_phoneNumbers = new Collection<PhoneNumber>();
 
-        public void Encrypt(string password)
-        {
-            Password = password;
-            UpdatedAt();
-        }
+		Validate(true);
+	}
 
-        public void Active()
-        {
-            IsActive = true;
-            UpdatedAt();
-        }
-    }
+	public bool Validate(bool includeSurname) =>
+		Validate(this, new UserValidator<User>(includeSurname));
+
+	public void Encrypt(string password)
+	{
+		Password = password;
+		UpdatedAt();
+	}
+
+	public void Active()
+	{
+		IsActive = true;
+		UpdatedAt();
+	}
+
+	public void AddPhoneNumber(PhoneNumber phoneNumber) => _phoneNumbers.Add(phoneNumber);
 }

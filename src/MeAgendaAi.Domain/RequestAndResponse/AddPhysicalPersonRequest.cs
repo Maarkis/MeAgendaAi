@@ -1,18 +1,19 @@
-﻿namespace MeAgendaAi.Domains.RequestAndResponse
-{
-    public class AddPhysicalPersonRequest : AddUserRequest
-    {
-        public string Surname { get; private set; }
-        public string CPF { get; private set; }
-        public string RG { get; private set; }
+﻿using System.Drawing;
 
-        public AddPhysicalPersonRequest(
-            string name, string email, string password,
-            string confirmPassword, string surname, string cpf, string rg) : base(name, email, password, confirmPassword)
-        {
-            Surname = surname;
-            CPF = cpf;
-            RG = rg;
-        }
-    }
+namespace MeAgendaAi.Domains.RequestAndResponse;
+
+public class AddPhysicalPersonRequest : AddUserRequest
+{
+	public AddPhysicalPersonRequest(
+		string name, string email, string password,
+		string confirmPassword, string surname, string cpf, string rg) : base(name, email, password, confirmPassword)
+	{
+		Surname = surname;
+		CPF = cpf;
+		RG = rg;
+	}
+
+	public string Surname { get; protected set; }
+	public string CPF { get; protected set; }
+	public string RG { get; protected set; }
 }
