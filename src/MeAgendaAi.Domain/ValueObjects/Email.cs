@@ -1,4 +1,5 @@
 ﻿using MeAgendaAi.Domains.Validators.ValueObjects;
+using static System.String;
 
 namespace MeAgendaAi.Domains.ValueObjects;
 
@@ -11,9 +12,8 @@ public class Email : ValueObject
 	}
 
 	public string Address { get; protected set; }
+	public string Domain => IsNullOrEmpty(Address) || NotContainAtSign() ? Empty : Address.Split("@")[1];
 
-	protected override IEnumerable<object> GetEqualityComponents()
-	{
-		yield return Address;
-	}
+	private bool NotContainAtSign() => !Address.Contains('@');
 }
+	

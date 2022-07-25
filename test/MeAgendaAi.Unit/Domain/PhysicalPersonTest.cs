@@ -3,6 +3,7 @@ using FluentAssertions;
 using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Common.Builder.ValuesObjects;
 using MeAgendaAi.Domains.Entities;
+using MeAgendaAi.Domains.ValueObjects;
 using NUnit.Framework;
 
 namespace MeAgendaAi.Unit.Domain;

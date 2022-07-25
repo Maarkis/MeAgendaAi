@@ -95,42 +95,4 @@ public class NameObjectTest
 		var errors = nameObject.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == messageError);
 	}
-
-	[Test]
-	public void EqualsShouldBeTrueWhenTwoNameObjectWithSameName()
-	{
-		var firstName = Faker.Person.FirstName;
-		var lastName = Faker.Person.LastName;
-		var name = new Name(firstName, lastName);
-		var otherName = new Name(firstName, lastName);
-
-		name.Equals(otherName).Should().BeTrue();
-	}
-
-	[Test]
-	public void EqualsShouldBeFalseTwoEmailObjectWithDifferentEmail()
-	{
-		var name = new Name(Faker.Person.FirstName, Faker.Person.LastName);
-		var otherName = new Name("other name", "other lastName");
-
-		name.Equals(otherName).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualsShouldBeFalseWhenCheckObjectNameWithNullObjectName()
-	{
-		var name = new Name(Faker.Person.FirstName, Faker.Person.LastName);
-		Name otherName = null!;
-
-		name.Equals(otherName).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualsShouldBeFalseWhenCheckObjectNameWithOtherObjectType()
-	{
-		var name = new Name(Faker.Person.FirstName, Faker.Person.LastName);
-		var differentObject = new Email(Faker.Internet.Email());
-
-		name.Equals(differentObject).Should().BeFalse();
-	}
 }

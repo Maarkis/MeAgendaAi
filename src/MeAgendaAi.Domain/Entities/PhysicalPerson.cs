@@ -10,9 +10,8 @@ public class PhysicalPerson : User
 	}
 
 	public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(
-		email, password, name)
+		email, password, name, surname)
 	{
-		Name = new Name(name, surname);
 		CPF = cpf;
 		RG = rg;
 

@@ -5,14 +5,14 @@ namespace MeAgendaAi.Domains.Validators.ValueObjects;
 
 public class NameValidator : AbstractValidator<Name>
 {
-	public NameValidator(bool includeSurname = true)
+	public NameValidator(bool includeValidateSurname = true)
 	{
 		RuleFor(prop => prop.FirstName)
 			.NotEmpty().WithMessage("Name cannot be empty")
 			.MinimumLength(3).WithMessage("Name must contain at least 3 characters")
 			.MaximumLength(60).WithMessage("Name must contain a maximum of 60 characters");
 
-		if (includeSurname)
+		if (includeValidateSurname)
 			RuleFor(prop => prop.Surname)
 				.NotEmpty().WithMessage("Surname cannot be empty")
 				.MinimumLength(3).WithMessage("Surname must contain at least 3 characters")

@@ -26,7 +26,7 @@ public abstract class Entity
 		return Valid = ValidationResult.IsValid;
 	}
 
-	protected virtual void UpdatedAt()
+	protected void UpdatedAt()
 	{
 		LastUpdatedAt = DateTime.Now;
 	}

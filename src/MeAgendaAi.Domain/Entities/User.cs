@@ -13,10 +13,12 @@ public class User : Entity
 	public string Password { get; protected set; } = default!;
 	public bool IsActive { get; protected set; }
 
-	private readonly ICollection<PhoneNumber> _phoneNumbers;
+	private readonly ICollection<PhoneNumber> _phoneNumbers = default!;
 
 	public IReadOnlyCollection<PhoneNumber> PhoneNumbers =>
-		_phoneNumbers.IsEmpty() ? new List<PhoneNumber>() : new List<PhoneNumber>(_phoneNumbers);
+		_phoneNumbers.IsEmpty() ? 
+			new List<PhoneNumber>() :
+			new List<PhoneNumber>(_phoneNumbers);
 
 	protected User()
 	{

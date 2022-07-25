@@ -13,7 +13,7 @@ public class Name : ValueObject
 		FirstName = firstName;
 		Surname = lastName;
 
-		Validate(this, new NameValidator(true));
+		Validate(this, new NameValidator());
 	}
 
 	public Name(string firstName)
@@ -28,11 +28,4 @@ public class Name : ValueObject
 	public string Surname { get; protected set; } = default!;
 
 	public string FullName => $"{FirstName} {Surname}".Trim();
-
-	protected override IEnumerable<object> GetEqualityComponents()
-	{
-		yield return FirstName;
-		yield return Surname;
-		yield return FullName;
-	}
 }

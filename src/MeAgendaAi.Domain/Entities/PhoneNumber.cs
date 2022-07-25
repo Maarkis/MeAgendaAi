@@ -50,7 +50,7 @@ public class PhoneNumber : Entity
 	public Name? Contact { get; protected set; }
 	public int CountryCode { get; protected set; }
 	public int DialCode { get; protected set; }
-	public string Number { get; protected set; }
+	public string Number { get; protected set; } = string.Empty;
 	public EPhoneNumberType Type { get; protected set; }
 	public virtual User User { get; set; } = default!;
 

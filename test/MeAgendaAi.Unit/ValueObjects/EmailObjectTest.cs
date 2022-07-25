@@ -30,9 +30,9 @@ public class EmailObjectTest
 	{
 		var emailExpected = _faker.Internet.Email();
 
-		var nameObject = new Email(emailExpected);
+		var emailObject = new Email(emailExpected);
 
-		nameObject.Address.Should().Be(emailExpected);
+		emailObject.Address.Should().Be(emailExpected);
 	}
 
 	[TestCase("E-mail cannot be empty", null)]
@@ -41,93 +41,21 @@ public class EmailObjectTest
 	[TestCase("Invalid e-mail", "teste.email")]
 	public void ShouldCreatedAnInvalidInstanceOfNameObjectWithErrorsInNameProperty(string messageError, string email)
 	{
-		var nameObject = new Email(email);
+		var emailObject = new Email(email);
 
-		nameObject.Valid.Should().BeFalse();
-		var errors = nameObject.ValidationResult.Errors;
+		emailObject.Valid.Should().BeFalse();
+		var errors = emailObject.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == messageError);
 	}
 
 	[Test]
-	public void EqualsShouldBeTrueWhenTwoEmailObjectWithSameEmail()
+	public void ShouldReturnEmailDomainCorrectly()
 	{
-		var address = _faker.Internet.Email();
-		var email = new Email(address);
-		var otherEmail = new Email(address);
+		var domain = _faker.Internet.DomainName();
+		var email = _faker.Internet.Email(_faker.Name.FirstName(), _faker.Name.LastName(), domain);
+		
+		var emailObject = new Email(email);
 
-		email.Equals(otherEmail).Should().BeTrue();
-	}
-
-	[Test]
-	public void EqualsShouldBeFalseTwoEmailObjectWithDifferentEmail()
-	{
-		var email = new Email(_faker.Internet.Email());
-		var otherEmail = new Email(_faker.Internet.Email());
-
-		email.Equals(otherEmail).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualsShouldBeFalseWhenCheckObjectEmailWithNullObjectEmail()
-	{
-		var email = new Email(_faker.Internet.Email());
-		Email otherEmail = null!;
-
-		email.Equals(otherEmail).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualsShouldBeFalseWhenCheckObjectEmailWithOtherObjectType()
-	{
-		var email = new Email(_faker.Internet.Email());
-		var differentObject = new Name("", "");
-
-		email.Equals(differentObject).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualityOperatorShouldBeTrueWhenCheckObjectEmailIsSame()
-	{
-		var address = _faker.Internet.Email();
-		var oneEmail = new Email(address);
-		var twoEmail = new Email(address);
-
-		(oneEmail == twoEmail).Should().BeTrue();
-	}
-
-	[Test]
-	public void EqualityOperatorShouldBeFalseWhenCheckObjectEmailIsNotSame()
-	{
-		var oneEmail = new Email(_faker.Internet.Email());
-		var twoEmail = new Email(_faker.Internet.Email());
-
-		(oneEmail == twoEmail).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualityOperatorShouldBeFalseWhenCheckObjectEmailOneIsNull()
-	{
-		Email oneEmail = null!;
-		var twoEmail = new Email(_faker.Internet.Email());
-
-		(oneEmail == twoEmail).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualityOperatorShouldBeFalseWhenCheckObjectEmailTwoIsNull()
-	{
-		var oneEmail = new Email(_faker.Internet.Email());
-		Email twoEmail = null!;
-
-		(oneEmail == twoEmail).Should().BeFalse();
-	}
-
-	[Test]
-	public void EqualityOperatorShouldBeTrueWhenCheckObjectEmailOneAndTwoIsNull()
-	{
-		Email oneEmail = null!;
-		Email twoEmail = null!;
-
-		(oneEmail == twoEmail).Should().BeTrue();
+		emailObject.Domain.Should().Be(domain);
 	}
 }

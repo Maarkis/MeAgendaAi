@@ -28,6 +28,7 @@ public class UserMap : BaseEntityConfigurationMap<User>
 			.HasColumnName("EMAIL");
 
 		builder.OwnsOne(prop => prop.Email)
+			.Ignore(prop => prop.Domain)
 			.Ignore(prop => prop.ValidationResult)
 			.Ignore(prop => prop.Valid)
 			.Ignore(prop => prop.Invalid);
