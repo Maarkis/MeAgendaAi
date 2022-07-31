@@ -3,6 +3,7 @@ using MeAgendaAi.Domains.Entities.Base;
 using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
 using MeAgendaAi.Infra.Extension;
+using Newtonsoft.Json;
 
 namespace MeAgendaAi.Domains.Entities;
 
@@ -12,8 +13,9 @@ public class User : Entity
 	public Email Email { get; protected set; } = default!;
 	public string Password { get; protected set; } = default!;
 	public bool IsActive { get; protected set; }
-
-	private readonly ICollection<PhoneNumber> _phoneNumbers = default!;
+	
+	[JsonProperty] // TODO This is a problem?
+	protected readonly ICollection<PhoneNumber> _phoneNumbers = default!;
 
 	public IReadOnlyCollection<PhoneNumber> PhoneNumbers =>
 		_phoneNumbers.IsEmpty() ? 
@@ -24,24 +26,24 @@ public class User : Entity
 	{
 	}
 
-	public User(string email, string password, string name)
+	public User(string email, string password, string name, IEnumerable<PhoneNumber> phones)
 	{
 		Email = new Email(email);
 		Password = password;
 		Name = new Name(name);
 		IsActive = false;
-		_phoneNumbers = new Collection<PhoneNumber>();
+		_phoneNumbers = new Collection<PhoneNumber>(phones.ToList());
 
 		Validate(false);
 	}
 
-	public User(string email, string password, string name, string surname)
+	public User(string email, string password, string name, string surname, IEnumerable<PhoneNumber> phones)
 	{
 		Email = new Email(email);
 		Password = password;
 		Name = new Name(name, surname);
 		IsActive = false;
-		_phoneNumbers = new Collection<PhoneNumber>();
+		_phoneNumbers = new Collection<PhoneNumber>(phones.ToList());
 
 		Validate(true);
 	}

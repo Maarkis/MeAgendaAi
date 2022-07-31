@@ -9,7 +9,8 @@ public class AddCompanyRequest : AddUserRequest
 		string confirmPassword,
 		string cnpj,
 		string description,
-		int limitCancelHours) : base(name, email, password, confirmPassword)
+		int limitCancelHours,
+		IEnumerable<PhoneRequest> phones) : base(name, email, password, confirmPassword, phones)
 	{
 		CNPJ = cnpj;
 		Description = description;

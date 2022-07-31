@@ -1,6 +1,8 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Collections.Generic;
+using FluentValidation.TestHelper;
 using MeAgendaAi.Application.Validators;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
+using MeAgendaAi.Domains.RequestAndResponse;
 using NUnit.Framework;
 
 namespace MeAgendaAi.Unit.Validators;
@@ -34,6 +36,7 @@ public class AddPhysicalPersonRequestValidatorTest
 			.WithPasswordInvalid()
 			.WithCpfInvalid()
 			.WithRgInvalid()
+			.WithPhonesInvalid()
 			.Generate();
 
 		var result = _validator.TestValidate(requestInvalid);
@@ -43,7 +46,7 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithNameFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithNameFieldInvalidAndReturnError(string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -59,7 +62,7 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithEmailFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithEmailFieldInvalidAndReturnError(string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -75,7 +78,7 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithPasswordFieldInvalidAndReturnError(
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithPasswordFieldInvalidAndReturnError(
 		string fieldContent, string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -91,7 +94,7 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithConfirmPasswordFieldInvalidAndReturnError(
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithConfirmPasswordFieldInvalidAndReturnError(
 		string fieldContent, string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -107,7 +110,7 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithRGFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithRGFieldInvalidAndReturnError(string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -123,7 +126,7 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddCompanyRequestValidator_ShouldValidateRequestWithCPFFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithCPFFieldInvalidAndReturnError(string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -135,5 +138,34 @@ public class AddPhysicalPersonRequestValidatorTest
 		result
 			.ShouldHaveValidationErrorFor(field => field.CPF)
 			.WithErrorMessage(errorMessage);
+	}
+	
+	
+	[Test]
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithPhonesNullFieldAndReturnError()
+	{
+		var requestInvalid = new AddPhysicalPersonRequestBuilder()
+			.WithPhonesInvalid()
+			.Generate();
+
+		var result = _validator.TestValidate(requestInvalid);
+
+		result
+			.ShouldHaveValidationErrorFor(field => field.Phones)
+			.WithErrorMessage(ErrorMessageNull);
+	}
+	
+	[Test]
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithPhonesEmptyListFieldAndReturnError()
+	{
+		var requestInvalid = new AddPhysicalPersonRequestBuilder()
+			.WithPhonesInvalid(new List<PhoneRequest>())
+			.Generate();
+
+		var result = _validator.TestValidate(requestInvalid);
+
+		result
+			.ShouldHaveValidationErrorFor(field => field.Phones)
+			.WithErrorMessage(ErrorMessageEmpty);
 	}
 }

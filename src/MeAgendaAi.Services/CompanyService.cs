@@ -60,7 +60,7 @@ public class CompanyService : Service<Company>, ICompanyService
 		}
 
 		var company = new Company(request.Email, request.Password, request.Name, request.CNPJ, request.Description,
-			request.LimitCancelHours);
+			request.LimitCancelHours, request.Phones.ToPhoneNumbers());
 		if (company.Invalid)
 		{
 			_notificationContext.AddNotifications(company.ValidationResult);

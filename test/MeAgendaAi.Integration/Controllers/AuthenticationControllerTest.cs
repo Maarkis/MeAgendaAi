@@ -189,10 +189,10 @@ public class AddCompanyAuthenticationControllerTest : TestBase
 	{
 		var requestInvalid = new AddCompanyRequestBuilder().WithNameInvalid(100).Generate();
 		var companyInvalid = new CompanyBuilder().ByRequest(requestInvalid).Generate();
-		var noticationContext = new NotificationContext();
-		noticationContext.AddNotifications(companyInvalid.ValidationResult);
+		var notificationContext = new NotificationContext();
+		notificationContext.AddNotifications(companyInvalid.ValidationResult);
 		var listErrorsExpected = new List<Notification>();
-		listErrorsExpected.AddRange(noticationContext.Notifications.ToList());
+		listErrorsExpected.AddRange(notificationContext.Notifications.ToList());
 
 		var response =
 			await Client.PostAsJsonAsync(RequisitionAssemblyFor("Authentication", "AddCompany"), requestInvalid);

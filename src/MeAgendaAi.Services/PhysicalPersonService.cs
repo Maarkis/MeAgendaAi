@@ -48,7 +48,7 @@ public class PhysicalPersonService : Service<PhysicalPerson>, IPhysicalPersonSer
 		}
 
 		var physicalPerson = new PhysicalPerson(request.Email, request.Password, request.Name, request.Surname,
-			request.CPF, request.RG);
+			request.CPF, request.RG, request.Phones.ToPhoneNumbers());
 		if (physicalPerson.Invalid)
 		{
 			_notificationContext.AddNotifications(physicalPerson.ValidationResult);

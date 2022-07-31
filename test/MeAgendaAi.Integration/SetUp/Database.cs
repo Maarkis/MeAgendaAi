@@ -2,6 +2,7 @@
 using MeAgendaAi.Infra.Data;
 using Npgsql;
 using Respawn;
+using Respawn.Graph;
 using StackExchange.Redis;
 
 namespace MeAgendaAi.Integration.SetUp;
@@ -11,7 +12,7 @@ public static class Database
 	private static readonly Checkpoint _checkpoint = new()
 	{
 		SchemasToInclude = new[] { "public" },
-		TablesToIgnore = new[] { "_EFMigrationsHistory" },
+		TablesToIgnore = new[] { new Table("_EFMigrationsHistory") },
 		DbAdapter = DbAdapter.Postgres
 	};
 

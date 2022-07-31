@@ -52,7 +52,8 @@ public class ObjectExtensionsTests<TType> where TType : class
 
 		var stringDeserialize = objectSerialize.Deserialize<TType>();
 
-		stringDeserialize.Should().BeEquivalentTo(objectType);
+		stringDeserialize.Should().BeEquivalentTo(objectType,
+			config => config.IgnoringCyclicReferences().AllowingInfiniteRecursion());
 	}
 
 	[Test]

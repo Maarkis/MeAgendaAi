@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using FluentAssertions;
+using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Entities;
 using NUnit.Framework;
 
@@ -9,10 +11,15 @@ namespace MeAgendaAi.Unit.Domain;
 public class UserTest
 {
 	private readonly Faker _faker;
+	private readonly PhoneNumberBuilder _phoneNumberBuilder;
 
 	private const string CharsAccepted = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%*()/*-+";
 
-	public UserTest() => _faker = new Faker();
+	public UserTest()
+	{
+		_faker = new Faker();
+		_phoneNumberBuilder = new PhoneNumberBuilder();
+	}
 
 	[Test]
 	public void ShouldCreateAUserWithAllValidFields()
@@ -20,8 +27,10 @@ public class UserTest
 		var email = _faker.Internet.Email();
 		var password = _faker.Internet.Password();
 		var name = _faker.Name.FirstName();
+		var phoneNumber = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		
+		var user = new User(email, password, name, phoneNumber);
 
 		user.Valid.Should().BeTrue();
 		user.Invalid.Should().BeFalse();
@@ -33,8 +42,9 @@ public class UserTest
 		var email = _faker.Internet.Email();
 		var password = _faker.Internet.Password();
 		var name = _faker.Name.FirstName();
+		var phoneNumber = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		var user = new User(email, password, name, phoneNumber);
 
 		var errors = user.ValidationResult.Errors.ToList();
 		errors.Should().BeEmpty();
@@ -48,8 +58,9 @@ public class UserTest
 	{
 		var name = _faker.Name.FirstName();
 		var password = _faker.Internet.Password();
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		var user = new User(email, password, name, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
@@ -63,8 +74,9 @@ public class UserTest
 	{
 		var email = _faker.Internet.Email();
 		var name = _faker.Name.FirstName();
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		var user = new User(email, password, name, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
@@ -82,8 +94,9 @@ public class UserTest
 		var email = _faker.Internet.Email();
 		var name = _faker.Name.FirstName();
 		var password = _faker.Random.String2(lengthPassword, CharsAccepted);
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		var user = new User(email, password, name, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
@@ -97,8 +110,9 @@ public class UserTest
 	{
 		var email = _faker.Internet.Email();
 		var password = _faker.Internet.Password();
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		var user = new User(email, password, name, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
@@ -117,8 +131,9 @@ public class UserTest
 		var email = _faker.Internet.Email();
 		var password = _faker.Internet.Password();
 		var name = _faker.Random.String2(lengthName, CharsAccepted);
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name);
+		var user = new User(email, password, name, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
@@ -133,8 +148,9 @@ public class UserTest
 		var email = _faker.Internet.Email();
 		var password = _faker.Internet.Password();
 		var name = _faker.Name.FirstName();
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name, surname);
+		var user = new User(email, password, name, surname, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
@@ -154,11 +170,28 @@ public class UserTest
 		var password = _faker.Internet.Password();
 		var name = _faker.Name.FirstName();
 		var surname = _faker.Random.String2(lengthName, CharsAccepted);
+		var phones = _phoneNumberBuilder.Generate(1);
 
-		var user = new User(email, password, name, surname);
+		var user = new User(email, password, name, surname, phones);
 
 		var errors = user.ValidationResult.Errors;
 		errors.Should().Contain(error => error.ErrorMessage == errorMessage);
+		user.Valid.Should().BeFalse();
+		user.Invalid.Should().BeTrue();
+	}
+	
+	[Test]
+	public void ShouldCreateAnInvalidInstanceOfUserWithInvalidPhoneNumber()
+	{
+		var email = _faker.Internet.Email();
+		var password = _faker.Internet.Password();
+		var name = _faker.Name.FirstName();
+		var phones = _phoneNumberBuilder.Generate(0);
+
+		var user = new User(email, password, name, phones);
+
+		var errors = user.ValidationResult.Errors;
+		errors.Should().Contain(error => error.ErrorMessage == "Phone number cannot be empty");
 		user.Valid.Should().BeFalse();
 		user.Invalid.Should().BeTrue();
 	}

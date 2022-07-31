@@ -1,5 +1,6 @@
 ﻿using MeAgendaAi.Infra.Extension.Newtonsoft;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MeAgendaAi.Infra.Extension;
 
@@ -18,13 +19,22 @@ public static class ObjectExtension
 		if (string.IsNullOrEmpty(source))
 			throw new ArgumentNullException(nameof(source));
 
+		return Deserialize<T, IContractResolver>(source, new CustomContractResolver());
+	}
+
+	private static T? Deserialize<T, TContractResolver>(this string source, TContractResolver contract) where TContractResolver : IContractResolver
+	{
+		if (string.IsNullOrEmpty(source))
+			throw new ArgumentNullException(nameof(source));
+
+
 		var settingsDeserializeObject = new JsonSerializerSettings
 		{
 			ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
 			DefaultValueHandling = DefaultValueHandling.Ignore,
 			NullValueHandling = NullValueHandling.Ignore,
 			MissingMemberHandling = MissingMemberHandling.Ignore,
-			ContractResolver = new CustomContractResolver()
+			ContractResolver = contract,
 		};
 
 		return JsonConvert.DeserializeObject<T>(source, settingsDeserializeObject);

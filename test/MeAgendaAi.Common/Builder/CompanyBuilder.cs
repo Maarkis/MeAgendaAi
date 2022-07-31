@@ -17,7 +17,7 @@ public sealed class CompanyBuilder : BaseBuilderEntity<Company>
 		RuleFor(prop => prop.CNPJ, faker => faker.Random.Int(14).ToString());
 		RuleFor(prop => prop.Description, faker => faker.Lorem.Sentences(1));
 		RuleFor(prop => prop.LimitCancelHours, faker => faker.Random.Int(1, 24));
-		RuleFor(prop => prop.PhoneNumbers, () => new List<PhoneNumber>());
+		RuleFor("_phoneNumbers", _ => new PhoneNumberBuilder().Generate(1));
 	}
 
 	public override Company Generate(string ruleSets = null!)
@@ -142,7 +142,14 @@ public static class CompanyBuilderExtensions
 			.WithPassword(request.Password)
 			.WithCnpj(request.CNPJ)
 			.WithDescription(request.Description)
-			.WithLimitCancelHours(request.LimitCancelHours);
+			.WithLimitCancelHours(request.LimitCancelHours)
+			.WithPhoneNumbers(request.Phones.ToPhoneNumbers().ToList());
+		return builder;
+	}
+	
+	public static CompanyBuilder WithPhoneNumbers(this CompanyBuilder builder, IEnumerable<PhoneNumber> phoneNumbers)
+	{
+		builder.RuleFor("_phoneNumbers", _ => phoneNumbers);
 		return builder;
 	}
 }

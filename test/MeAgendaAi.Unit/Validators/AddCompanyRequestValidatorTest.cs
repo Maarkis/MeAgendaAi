@@ -1,6 +1,8 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Collections.Generic;
+using FluentValidation.TestHelper;
 using MeAgendaAi.Application.Validators;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
+using MeAgendaAi.Domains.RequestAndResponse;
 using NUnit.Framework;
 
 namespace MeAgendaAi.Unit.Validators;
@@ -152,5 +154,33 @@ public class AddCompanyRequestValidatorTest
 		result
 			.ShouldHaveValidationErrorFor(field => field.LimitCancelHours)
 			.WithErrorMessage(errorMessage);
+	}
+	
+	[Test]
+	public void AddCompanyRequestValidator_ShouldValidateRequestWithPhonesNullFieldAndReturnError()
+	{
+		var requestInvalid = new AddCompanyRequestBuilder()
+			.WithPhonesInvalid()
+			.Generate();
+
+		var result = _validator.TestValidate(requestInvalid);
+
+		result
+			.ShouldHaveValidationErrorFor(field => field.Phones)
+			.WithErrorMessage(ErrorMessageNull);
+	}
+	
+	[Test]
+	public void AddCompanyRequestValidator_ShouldValidateRequestWithPhonesEmptyListFieldAndReturnError()
+	{
+		var requestInvalid = new AddCompanyRequestBuilder()
+			.WithPhonesInvalid(new List<PhoneRequest>())
+			.Generate();
+
+		var result = _validator.TestValidate(requestInvalid);
+
+		result
+			.ShouldHaveValidationErrorFor(field => field.Phones)
+			.WithErrorMessage(ErrorMessageEmpty);
 	}
 }

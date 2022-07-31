@@ -5,8 +5,14 @@ namespace MeAgendaAi.Domains.RequestAndResponse;
 public class AddPhysicalPersonRequest : AddUserRequest
 {
 	public AddPhysicalPersonRequest(
-		string name, string email, string password,
-		string confirmPassword, string surname, string cpf, string rg) : base(name, email, password, confirmPassword)
+		string name,
+		string email,
+		string password,
+		string confirmPassword,
+		string surname,
+		string cpf,
+		string rg,
+		IEnumerable<PhoneRequest> phones) : base(name, email, password, confirmPassword, phones)
 	{
 		Surname = surname;
 		CPF = cpf;

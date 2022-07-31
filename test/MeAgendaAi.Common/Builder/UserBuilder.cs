@@ -13,7 +13,7 @@ public sealed class UserBuilder : BaseBuilderEntity<User>
 		RuleFor(prop => prop.Password, faker => faker.Internet.Password());
 		RuleFor(prop => prop.Name, () => new NameObjectBuilder().Generate());
 		RuleFor(prop => prop.IsActive, () => true);
-		RuleFor(prop => prop.PhoneNumbers, () => new List<PhoneNumber>());
+		RuleFor("_phoneNumbers", _ => new PhoneNumberBuilder().Generate(1));
 	}
 
 	public override User Generate(string ruleSets = null!)
@@ -128,6 +128,12 @@ public static class UserBuilderBuilderExtensions
 	public static UserBuilder WithDeactivate(this UserBuilder builder)
 	{
 		builder.RuleFor(prop => prop.IsActive, () => false);
+		return builder;
+	}
+	
+	public static UserBuilder WithPhoneNumber(this UserBuilder builder, IEnumerable<PhoneNumber> phoneNumber)
+	{
+		builder.RuleFor("_phoneNumbers", _ => new PhoneNumberBuilder().Generate(1));
 		return builder;
 	}
 }

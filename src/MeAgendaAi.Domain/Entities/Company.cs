@@ -8,8 +8,8 @@ public class Company : User
 	{
 	}
 
-	public Company(string email, string password, string name, string cnpj, string description, int limitCancelHours) :
-		base(email, password, name)
+	public Company(string email, string password, string name, string cnpj, string description, int limitCancelHours, IEnumerable<PhoneNumber> phones) :
+		base(email, password, name, phones)
 	{
 		CNPJ = cnpj;
 		Description = description;
@@ -23,12 +23,4 @@ public class Company : User
 	public int LimitCancelHours { get; protected set; }
 
 	public bool Validate() => Validate(this, new CompanyValidator());
-
-	// protected override IEnumerable<object> GetEqualityComponents()
-	// {
-	// 	yield return base.GetEqualityComponents();
-	// 	yield return CNPJ;
-	// 	yield return Description;
-	// 	yield return LimitCancelHours;
-	// }
 }

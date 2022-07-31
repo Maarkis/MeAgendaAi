@@ -6,7 +6,7 @@ namespace MeAgendaAi.Common.Builder.RequestAndResponse;
 
 public sealed class AddCompanyRequestBuilder : AutoFaker<AddCompanyRequest>
 {
-	public AddCompanyRequestBuilder()
+	public AddCompanyRequestBuilder() : base("pt_BR")
 	{
 		var password = new Faker().Internet.Password();
 		RuleFor(prop => prop.Email, faker => faker.Internet.Email());
@@ -17,6 +17,7 @@ public sealed class AddCompanyRequestBuilder : AutoFaker<AddCompanyRequest>
 		RuleFor(prop => prop.CNPJ, faker => faker.Random.Int(14).ToString());
 		RuleFor(prop => prop.Description, faker => faker.Lorem.Sentences(1));
 		RuleFor(prop => prop.LimitCancelHours, faker => faker.Random.Int(1, 24));
+		RuleFor(prop => prop.Phones, new PhoneRequestBuilder().Generate(1));
 	}
 }
 
@@ -130,6 +131,20 @@ public static class AddCompanyRequestBuilderExtensions
 		int limitCancelHours)
 	{
 		builder.RuleFor(prop => prop.LimitCancelHours, () => limitCancelHours);
+		return builder;
+	}
+
+	public static AddCompanyRequestBuilder WithPhones(this AddCompanyRequestBuilder builder,
+		IEnumerable<PhoneRequest>? phones)
+	{
+		builder.RuleFor(prop => prop.Phones, () => phones);
+		return builder;
+	}
+	
+	public static AddCompanyRequestBuilder WithPhonesInvalid(this AddCompanyRequestBuilder builder,
+		IEnumerable<PhoneRequest>? phones = null)
+	{
+		builder.WithPhones(phones);
 		return builder;
 	}
 }

@@ -19,11 +19,11 @@ public class PhoneNumberMap : BaseEntityConfigurationMap<PhoneNumber>
 
 		builder.HasOne(prop => prop.User)
 			.WithMany(prop => prop.PhoneNumbers)
-			.HasForeignKey(prop => prop.Id);
+			.HasForeignKey(prop => prop.UserId);
 
 		builder.OwnsOne(prop => prop.Contact)
 			.Property(prop => prop.FirstName)
-			.IsRequired(false)
+			.IsRequired(required: false)
 			.HasColumnType("varchar(80)")
 			.HasMaxLength(80)
 			.HasColumnName("NM_CONTACT");

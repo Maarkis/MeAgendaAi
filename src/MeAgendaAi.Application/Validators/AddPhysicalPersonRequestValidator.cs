@@ -31,5 +31,8 @@ public class AddPhysicalPersonRequestValidator : AbstractValidator<AddPhysicalPe
 		RuleFor(prop => prop.CPF)
 			.NotEmpty().WithMessage(ErrorMessageEmpty)
 			.NotNull().WithMessage(ErrorMessageNull);
+		RuleFor(prop => prop.Phones)
+			.NotEmpty().WithMessage(ErrorMessageEmpty)
+			.NotNull().WithMessage(ErrorMessageNull);
 	}
 }

@@ -9,8 +9,8 @@ public class PhysicalPerson : User
 	{
 	}
 
-	public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(
-		email, password, name, surname)
+	public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg, IEnumerable<PhoneNumber> phones) : base(
+		email, password, name, surname, phones)
 	{
 		CPF = cpf;
 		RG = rg;

@@ -16,11 +16,10 @@ public sealed class PhysicalPersonBuilder : BaseBuilderEntity<PhysicalPerson>
 		RuleFor(x => x.Email, () => new EmailObjectBuilder().Generate());
 		RuleFor(x => x.Password, PasswordBuilder.Generate());
 		RuleFor(x => x.Name, () => new NameObjectBuilder().Generate());
-
 		RuleFor(x => x.CPF, faker => faker.Random.Int(11).ToString());
 		RuleFor(x => x.RG, faker => faker.Random.Int(9).ToString());
 		RuleFor(prop => prop.IsActive, () => false);
-		RuleFor(prop => prop.PhoneNumbers, () => new Collection<PhoneNumber>());
+		RuleFor("_phoneNumbers", _ => new PhoneNumberBuilder().Generate(1));
 	}
 
 	public override PhysicalPerson Generate(string ruleSets = null!)
@@ -158,14 +157,15 @@ public static class PhysicalPersonBuilderExtensions
 			.WithEmail(request.Email)
 			.WithPassword(request.Password)
 			.WithCpf(request.CPF)
-			.WithRg(request.RG);
+			.WithRg(request.RG)
+			.WithPhoneNumbers(request.Phones.ToPhoneNumbers());
 		return builder;
 	}
 
 	public static PhysicalPersonBuilder WithPhoneNumbers(this PhysicalPersonBuilder builder,
-		Collection<PhoneNumber> phoneNumbers)
+		IEnumerable<PhoneNumber> phoneNumbers)
 	{
-		builder.RuleFor(prop => prop.PhoneNumbers, () => phoneNumbers);
+		builder.RuleFor("_phoneNumbers", _ => phoneNumbers.ToList());
 		return builder;
 	}
 }

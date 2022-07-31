@@ -36,13 +36,15 @@ public class PhoneNumber : Entity
 		Validate();
 	}
 
-	public PhoneNumber(int countryCode, int dialCode, string number, EPhoneNumberType type, string contact)
+	public PhoneNumber(int countryCode, int dialCode, string number, EPhoneNumberType type, string? contact)
 	{
 		Number = number.OnlyNumbers();
 		CountryCode = countryCode;
 		DialCode = dialCode;
 		Type = type;
-		Contact = new Name(contact);
+		
+		if(contact is not null)
+			Contact = new Name(contact);
 
 		Validate();
 	}
@@ -52,6 +54,8 @@ public class PhoneNumber : Entity
 	public int DialCode { get; protected set; }
 	public string Number { get; protected set; } = string.Empty;
 	public EPhoneNumberType Type { get; protected set; }
+	
+	public virtual Guid UserId { get; protected set; }
 	public virtual User User { get; set; } = default!;
 
 	public string FullPhoneNumberFormatted() => $"+{CountryCode} {DialCode} {Formatted()}";

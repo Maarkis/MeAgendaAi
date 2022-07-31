@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MeAgendaAi.Domains.RequestAndResponse;
+using MeAgendaAi.Domains.Validators;
 
 namespace MeAgendaAi.Application.Validators;
 
@@ -21,5 +22,7 @@ public class AddCompanyRequestValidator : AbstractValidator<AddCompanyRequest>
 		RuleFor(prop => prop.Description).NotEmpty().WithMessage(ErrorMessageEmpty).NotNull()
 			.WithMessage(ErrorMessageNull);
 		RuleFor(prop => prop.LimitCancelHours).NotEmpty().WithMessage(ErrorMessageEmpty);
+		RuleFor(prop => prop.Phones)
+			.NotEmpty().WithMessage(ErrorMessageEmpty).NotNull().WithMessage(ErrorMessageNull);
 	}
 }

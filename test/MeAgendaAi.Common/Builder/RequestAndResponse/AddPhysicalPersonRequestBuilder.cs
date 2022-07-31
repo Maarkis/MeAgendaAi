@@ -1,13 +1,14 @@
 ﻿using AutoBogus;
 using Bogus;
 using MeAgendaAi.Common.Builder.Common;
+using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
 
 namespace MeAgendaAi.Common.Builder.RequestAndResponse;
 
 public sealed class AddPhysicalPersonRequestBuilder : AutoFaker<AddPhysicalPersonRequest>
 {
-	public AddPhysicalPersonRequestBuilder()
+	public AddPhysicalPersonRequestBuilder() : base("pt_BR")
 	{
 		var password = PasswordBuilder.Generate();
 		RuleFor(prop => prop.Name, faker => faker.Name.FirstName());
@@ -18,6 +19,7 @@ public sealed class AddPhysicalPersonRequestBuilder : AutoFaker<AddPhysicalPerso
 		RuleFor(prop => prop.Surname, faker => faker.Name.LastName());
 		RuleFor(prop => prop.CPF, faker => faker.Random.Int(11).ToString());
 		RuleFor(prop => prop.RG, faker => faker.Random.Int(9).ToString());
+		RuleFor(prop => prop.Phones, new PhoneRequestBuilder().Generate(1));
 	}
 }
 
@@ -146,6 +148,19 @@ public static class AddPhysicalPersonRequestBuilderExtensions
 		string rg = "")
 	{
 		builder.WithRg(rg);
+		return builder;
+	}
+
+	public static AddPhysicalPersonRequestBuilder WithPhones(this AddPhysicalPersonRequestBuilder builder,
+		IEnumerable<PhoneRequest>? phones)
+	{
+		builder.RuleFor(prop => prop.Phones, () => phones);
+		return builder;
+	}
+	public static AddPhysicalPersonRequestBuilder WithPhonesInvalid(this AddPhysicalPersonRequestBuilder builder,
+		IEnumerable<PhoneRequest>? phones = null)
+	{
+		builder.WithPhones(phones);
 		return builder;
 	}
 }

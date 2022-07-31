@@ -23,15 +23,15 @@ public class CompanyController : ControllerBase
 	[Route("Report")]
 	public async Task<ActionResult> Report()
 	{
-		_logger.LogInformation("[{ActionType}/Report] Starting process to generate company report.", ActionType);
+		_logger.LogInformation("[{ActionType}/Report] Starting process to generate company report", ActionType);
 
-		var type = "csv";
+		const string type = "csv";
 		var nameArchive = $"Report_Company_{DateTime.Now.ToShortDateString()}.{type}";
 		var report = await _companyService.ReportAsync();
 		if (report == null)
 			return NotFound(new BaseMessage("No companies found."));
 
-		_logger.LogInformation("[{ActionType}/Report] Finalizing process to generate company report.", ActionType);
+		_logger.LogInformation("[{ActionType}/Report] Finalizing process to generate company report", ActionType);
 
 		return File(report, "csv/text", nameArchive);
 	}
