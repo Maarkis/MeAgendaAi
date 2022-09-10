@@ -1,8 +1,7 @@
-﻿namespace MeAgendaAi.Infra.JWT
+﻿namespace MeAgendaAi.Infra.JWT;
+
+public class RefreshToken
 {
-    public class RefreshToken
-    {
-        public string Token { get; set; } = default!;
-        public DateTime ExpiresIn { get; set; }
-    }
+	public string Token { get; set; } = default!;
+	public DateTime ExpiresIn { get; set; }
 }

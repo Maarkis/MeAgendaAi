@@ -1,26 +1,28 @@
 ﻿using MeAgendaAi.Domains.Validators;
 using MeAgendaAi.Domains.ValueObjects;
 
-namespace MeAgendaAi.Domains.Entities
+namespace MeAgendaAi.Domains.Entities;
+
+public class PhysicalPerson : User
 {
-    public class PhysicalPerson : User
-    {
-        public string CPF { get; protected set; } = default!;
-        public string RG { get; protected set; } = default!;
+	private PhysicalPerson()
+	{
+	}
 
-        private PhysicalPerson()
-        {
-        }
+	public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg, IEnumerable<PhoneNumber> phones) : base(
+		email, password, name, surname, phones)
+	{
+		CPF = cpf;
+		RG = rg;
 
-        public PhysicalPerson(string email, string password, string name, string surname, string cpf, string rg) : base(email, password, name)
-        {
-            Name = new Name(name, surname);
-            CPF = cpf;
-            RG = rg;
+		Validate();
+	}
 
-            Validate();
-        }
+	public string CPF { get; protected set; } = default!;
+	public string RG { get; protected set; } = default!;
 
-        public bool Validate() => Validate(this, new PhysicalPersonValidator());
-    }
+	public bool Validate()
+	{
+		return Validate(this, new PhysicalPersonValidator());
+	}
 }

@@ -1,32 +1,33 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 
-namespace MeAgendaAi.Domains.Entities.Base
+namespace MeAgendaAi.Domains.Entities.Base;
+
+public abstract class Entity
 {
-    public abstract class Entity
-    {
-        public Guid Id { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime? LastUpdatedAt { get; protected set; }
-        public bool Valid { get; protected set; }
-        public bool Invalid => !Valid;
-        public ValidationResult ValidationResult { get; protected set; }
+	protected Entity()
+	{
+		Id = Guid.NewGuid();
+		CreatedAt = DateTime.Now;
+		LastUpdatedAt = null;
+		ValidationResult = new ValidationResult();
+	}
 
-        protected Entity()
-        {
-            Id = Guid.NewGuid();
-            CreatedAt = DateTime.Now;
-            LastUpdatedAt = null;
-            ValidationResult = new();
-        }
+	public Guid Id { get; protected set; }
+	public DateTime CreatedAt { get; protected set; }
+	public DateTime? LastUpdatedAt { get; protected set; }
+	public bool Valid { get; protected set; }
+	public bool Invalid => !Valid;
+	public ValidationResult ValidationResult { get; protected set; }
 
-        protected virtual bool Validate<T>(T entity, AbstractValidator<T> validationRules)
-        {
-            ValidationResult = validationRules.Validate(entity);
-            return Valid = ValidationResult.IsValid;
-        }
+	protected virtual bool Validate<T>(T entity, AbstractValidator<T> validationRules)
+	{
+		ValidationResult = validationRules.Validate(entity);
+		return Valid = ValidationResult.IsValid;
+	}
 
-        protected virtual void UpdatedAt() => LastUpdatedAt = DateTime.Now;
-        
-    }
+	protected void UpdatedAt()
+	{
+		LastUpdatedAt = DateTime.Now;
+	}
 }

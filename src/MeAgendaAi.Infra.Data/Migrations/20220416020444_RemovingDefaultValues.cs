@@ -1,10 +1,14 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿
 
 #nullable disable
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
+
 namespace MeAgendaAi.Infra.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class RemovingDefaultValues : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

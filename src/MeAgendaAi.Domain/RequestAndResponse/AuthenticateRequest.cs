@@ -1,14 +1,7 @@
-﻿namespace MeAgendaAi.Domains.RequestAndResponse
-{
-    public class AuthenticateRequest
-    {
-        public string Email { get; private set; }
-        public string Password { get; private set; }
+﻿namespace MeAgendaAi.Domains.RequestAndResponse;
 
-        public AuthenticateRequest(string email, string password)
-        {
-            Email = email;
-            Password = password;
-        }
-    }
+public class AuthenticateRequest
+{
+	public string Email { get; set; } = default!;
+	public string Password { get; set; } = default!;
 }

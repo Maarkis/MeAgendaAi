@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Flurl;
 using MeAgendaAi.Common.Builder;
-using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Extension;
 using MeAgendaAí.Infra.Notification;
@@ -18,11 +17,6 @@ namespace MeAgendaAi.Integration.Controllers.AuthenticationController;
 public class ResetPasswordTest : TestBase
 {
 	private const string EntryPoint = "Authentication";
-	
-	public ResetPasswordTest()
-	{
-		
-	}
 
 	[Test]
 	public async Task ResetPassword_ShouldReturn400BadRequestWhenNotFindingToken()
@@ -33,14 +27,14 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-confirm-password"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
 
 		response.Should().Be400BadRequest();
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnErrorMessageWhenNotFindingToken()
 	{
@@ -55,15 +49,15 @@ public class ResetPasswordTest : TestBase
 			new("Token", "Token not found")
 		};
 		var responseExpected = new ErrorMessage<List<Notification>>(notification, "Errors");
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
-	
+
 		var result = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
 		result.Should().BeEquivalentTo(responseExpected);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturn400BadRequestWhenNotFindingUser()
 	{
@@ -76,14 +70,14 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-password"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
 
 		response.Should().Be400BadRequest();
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnErrorMessageWhenNotFindingUser()
 	{
@@ -101,7 +95,7 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-password"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
@@ -109,7 +103,7 @@ public class ResetPasswordTest : TestBase
 		var result = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
 		result.Should().BeEquivalentTo(responseExpected);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturn400BadRequestWhenConfirmationPasswordNotSamePassword()
 	{
@@ -129,14 +123,14 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-incorrect-password-confirmation"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
 
 		response.Should().Be400BadRequest();
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnErrorMessageWhenConfirmationPasswordNotSamePassword()
 	{
@@ -156,7 +150,7 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-incorrect-password-confirmation"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
@@ -164,7 +158,7 @@ public class ResetPasswordTest : TestBase
 		var result = await response.Content.ReadFromJsonAsync<ErrorMessage<List<Notification>>>();
 		result.Should().BeEquivalentTo(responseExpected);
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturn200OkWhenResetPasswordUser()
 	{
@@ -180,14 +174,14 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-password"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
 
 		response.Should().Be200Ok();
 	}
-	
+
 	[Test]
 	public async Task ResetPassword_ShouldReturnSuccessWhenResetPasswordUser()
 	{
@@ -203,7 +197,7 @@ public class ResetPasswordTest : TestBase
 			Password = "any-password",
 			ConfirmPassword = "any-password"
 		};
-		
+
 		var response = await Client.PatchAsJsonAsync(UrlApi
 			.AppendPathSegment(EntryPoint)
 			.AppendPathSegment("ResetPassword"), request);
@@ -211,5 +205,4 @@ public class ResetPasswordTest : TestBase
 		var result = await response.Content.ReadFromJsonAsync<BaseMessage>();
 		result.Should().BeEquivalentTo(messageExpected);
 	}
-	
 }

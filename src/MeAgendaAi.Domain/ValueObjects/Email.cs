@@ -1,20 +1,19 @@
 ﻿using MeAgendaAi.Domains.Validators.ValueObjects;
+using static System.String;
 
-namespace MeAgendaAi.Domains.ValueObjects
+namespace MeAgendaAi.Domains.ValueObjects;
+
+public class Email : ValueObject
 {
-    public class Email : ValueObject
-    {        
-        public string Address { get; protected set; }
+	public Email(string address)
+	{
+		Address = address;
+		Validate(this, new EmailValidator());
+	}
 
-        public Email(string address) : base()
-        {
-            Address = address;
-            Validate(this, new EmailValidator());
-        }
+	public string Address { get; protected set; }
+	public string Domain => IsNullOrEmpty(Address) || NotContainAtSign() ? Empty : Address.Split("@")[1];
 
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Address;
-        }
-    }
+	private bool NotContainAtSign() => !Address.Contains('@');
 }
+	

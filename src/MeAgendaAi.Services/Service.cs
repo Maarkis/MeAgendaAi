@@ -2,18 +2,29 @@
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Services;
 
-namespace MeAgendaAi.Services
+namespace MeAgendaAi.Services;
+
+public abstract class Service<T> : IService<T> where T : Entity
 {
-    public abstract class Service<T> : IService<T> where T : Entity
-    {
-        private readonly IRepository<T> _repository;
+	private readonly IRepository<T> _repository;
 
-        protected Service(IRepository<T> repository) => _repository = repository;
+	protected Service(IRepository<T> repository)
+	{
+		_repository = repository;
+	}
 
-        public async Task<Guid> AddAsync(T entity) => await _repository.AddAsync(entity);
+	public async Task<Guid> AddAsync(T entity)
+	{
+		return await _repository.AddAsync(entity);
+	}
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
+	public async Task<IEnumerable<T>> GetAllAsync()
+	{
+		return await _repository.GetAllAsync();
+	}
 
-        public async Task<T?> GetByIdAsync(Guid id) => await _repository.GetByIdAsync(id);
-    }
+	public async Task<T?> GetByIdAsync(Guid id)
+	{
+		return await _repository.GetByIdAsync(id);
+	}
 }

@@ -1,8 +1,7 @@
 ﻿using MeAgendaAi.Domains.Entities;
 
-namespace MeAgendaAi.Domains.Interfaces.Repositories
+namespace MeAgendaAi.Domains.Interfaces.Repositories;
+
+public interface IPhysicalPersonRepository : IRepository<PhysicalPerson>
 {
-    public interface IPhysicalPersonRepository : IRepository<PhysicalPerson>
-    {
-    }
 }

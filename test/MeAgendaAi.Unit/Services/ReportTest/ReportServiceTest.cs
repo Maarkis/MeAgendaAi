@@ -1,76 +1,76 @@
-﻿using FluentAssertions;
+﻿using System.Text;
+using FluentAssertions;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Services;
 using MeAgendaAi.Services.CSVMaps;
 using NUnit.Framework;
-using System.Text;
 
-namespace MeAgendaAi.Unit.Services.ReportTest
+namespace MeAgendaAi.Unit.Services.ReportTest;
+
+public class ReportServiceTest
 {
-    public class ReportServiceTest
-    {
-        private readonly ReportService _reportService;
+	private static readonly object[] EncondigCases =
+	{
+		new object[] { Encoding.UTF8 },
+		new object[] { Encoding.UTF32 },
+		new object[] { Encoding.ASCII },
+		new object[] { Encoding.Latin1 }
+	};
 
-        public ReportServiceTest() => _reportService = new ReportService();
+	private readonly ReportService _reportService;
 
-        [Test]
-        public void ReportCompany_ShouldNotReturnNull()
-        {
-            const int QuantityCompanies = 10;
-            var companies = new CompanyBuilder().Generate(QuantityCompanies);
+	public ReportServiceTest()
+	{
+		_reportService = new ReportService();
+	}
 
-            var result = _reportService.Generate<Company, CompanyMap>(companies);
+	[Test]
+	public void ReportCompany_ShouldNotReturnNull()
+	{
+		const int QuantityCompanies = 10;
+		var companies = new CompanyBuilder().Generate(QuantityCompanies);
 
-            result.Should().NotBeNullOrEmpty();
-        }
+		var result = _reportService.Generate<Company, CompanyMap>(companies);
 
-        [Test]
-        public void ReportCompany_ShouldGenerateEmptyReportWhenListOfCompaniesIsNull()
-        {
-            var result = _reportService.Generate<Company, CompanyMap>(null!);
+		result.Should().NotBeNullOrEmpty();
+	}
 
-            result.Should().BeEmpty();
-        }
+	[Test]
+	public void ReportCompany_ShouldGenerateEmptyReportWhenListOfCompaniesIsNull()
+	{
+		var result = _reportService.Generate<Company, CompanyMap>(null!);
 
-        [Test]
-        public void ReportCompany_ShouldGenerateEmptyReportWhenListOfCompaniesZero()
-        {
-            const int QuantityCompanies = 0;
-            var companies = new CompanyBuilder().Generate(QuantityCompanies);
+		result.Should().BeEmpty();
+	}
 
-            var result = _reportService.Generate<Company, CompanyMap>(companies);
+	[Test]
+	public void ReportCompany_ShouldGenerateEmptyReportWhenListOfCompaniesZero()
+	{
+		const int QuantityCompanies = 0;
+		var companies = new CompanyBuilder().Generate(QuantityCompanies);
 
-            result.Should().BeEmpty();
-        }
+		var result = _reportService.Generate<Company, CompanyMap>(companies);
 
-        [TestCase(";")]
-        [TestCase(".")]
-        [TestCase("|")]
-        [TestCase("-")]
-        public void ReportCompany_ShouldDefineDemiliterCorrectly(string delimiter)
-        {
-            _reportService.SetDelimiter(delimiter);
+		result.Should().BeEmpty();
+	}
 
-            _reportService.Delimiter.Should().Be(delimiter);
-        }
+	[TestCase(";")]
+	[TestCase(".")]
+	[TestCase("|")]
+	[TestCase("-")]
+	public void ReportCompany_ShouldDefineDemiliterCorrectly(string delimiter)
+	{
+		_reportService.SetDelimiter(delimiter);
 
-        [TestCaseSource(nameof(EncondigCases))]
-        public void ReportCompany_ShouldDefineEncodeCorrectly(Encoding encoding)
-        {
-            _reportService.SetEncoding(encoding);
+		_reportService.Delimiter.Should().Be(delimiter);
+	}
 
-            _reportService.Encoding.Should().Be(encoding);
-        }
+	[TestCaseSource(nameof(EncondigCases))]
+	public void ReportCompany_ShouldDefineEncodeCorrectly(Encoding encoding)
+	{
+		_reportService.SetEncoding(encoding);
 
-        private static readonly object[] EncondigCases =
-        {
-            new object[] { Encoding.UTF8 },
-            new object[] { Encoding.UTF32 },
-            new object[] { Encoding.ASCII },
-            new object[] { Encoding.Latin1 }
-        };
-    }
-
-
+		_reportService.Encoding.Should().Be(encoding);
+	}
 }

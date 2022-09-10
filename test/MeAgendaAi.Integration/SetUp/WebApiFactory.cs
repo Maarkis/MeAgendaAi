@@ -1,4 +1,8 @@
-﻿using MeAgendaAi.Infra.CrossCutting;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Security.Authentication;
+using MeAgendaAi.Infra.CrossCutting;
 using MeAgendaAi.Infra.Data;
 using MeAgendaAi.Infra.MailJet;
 using MeAgendaAi.Infra.MailJet.Settings;
@@ -11,99 +15,98 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using NUnit.Framework;
-using System;
-using System.IO;
-using System.Linq;
-using System.Security.Authentication;
+using StackExchange.Redis;
 
-namespace MeAgendaAi.Integration.SetUp
+namespace MeAgendaAi.Integration.SetUp;
+
+[SetUpFixture]
+public class WebApiFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
-    [SetUpFixture]
-    public class WebApiFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
-    {
-        private readonly string Environment;
-        public IConfiguration Configuration = default!;
-        public IServiceScope ServiceScope = default!;
-        public IServiceProvider ServiceProvider = default!;
-        public ConfigurationRedis ConfigurationRedis = default!;
-        public AutoMocker Mocker = new();
-        public string ConnectionString => Configuration.GetConnectionString(TestBase.ConnectionStringDatabase);
+	private readonly string Environment;
+	public IConfiguration Configuration = default!;
+	public ConfigurationRedis ConfigurationRedis = default!;
+	public AutoMocker Mocker = new();
+	public IServiceProvider ServiceProvider = default!;
+	public IServiceScope ServiceScope = default!;
 
-        public WebApiFactory(string environment = "Test") => (Environment) = (environment);
+	public WebApiFactory(string environment = "Test")
+	{
+		Environment = environment;
+	}
 
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder
-                .UseEnvironment(Environment)
-                .ConfigureAppConfiguration(config =>
-                {
-                    Configuration = new ConfigurationBuilder()
-                        .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Test.Integration.json"))
-                        .Build();
+	public string ConnectionString => Configuration.GetConnectionString(TestBase.ConnectionStringDatabase);
 
-                    config.AddConfiguration(Configuration);
-                })
-                .ConfigureServices(services =>
-                {
-                    var descriptor = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<AppDbContext>));
-                    if (descriptor != null)
-                        services.Remove(descriptor);
+	protected override void ConfigureWebHost(IWebHostBuilder builder)
+	{
+		builder
+			.UseEnvironment(Environment)
+			.ConfigureAppConfiguration(config =>
+			{
+				Configuration = new ConfigurationBuilder()
+					.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Test.Integration.json"))
+					.Build();
 
-                    services.AddDbContext<AppDbContext>((options, context) =>
-                    {
-                        context.UseNpgsql(ConnectionString);
-                    });
+				config.AddConfiguration(Configuration);
+			})
+			.ConfigureServices(services =>
+			{
+				var descriptor = services.SingleOrDefault(service =>
+					service.ServiceType == typeof(DbContextOptions<AppDbContext>));
+				if (descriptor != null)
+					services.Remove(descriptor);
 
-                    ConfigurationRedis = new ConfigurationRedis();
-                    Configuration.GetSection(TestBase.NameSectionCacheDistribuited).Bind(ConfigurationRedis);
-                    services.AddStackExchangeRedisCache(options =>
-                    {
-                        Enum.TryParse(ConfigurationRedis.SslProtocols, ignoreCase: true, out SslProtocols sslProtocols);
-                        options.InstanceName = ConfigurationRedis.InstanceName;
-                        options.ConfigurationOptions = new()
-                        {
-                            EndPoints = { ConfigurationRedis.Host, ConfigurationRedis.Port },
-                            ConnectRetry = ConfigurationRedis.ConnectRetry,
-                            ConnectTimeout = ConfigurationRedis.ConnectTimeout,
-                            KeepAlive = ConfigurationRedis.KeepAlive,
-                            AbortOnConnectFail = ConfigurationRedis.AbortConnect,
-                            Ssl = ConfigurationRedis.Ssl,
-                            SslProtocols = sslProtocols,
-                            ResolveDns = ConfigurationRedis.ResolveDns
-                        };
-                    });
+				services.AddDbContext<AppDbContext>((options, context) => { context.UseNpgsql(ConnectionString); });
 
-                    services.MockMailJetApi(Mocker, Configuration);
+				ConfigurationRedis = new ConfigurationRedis();
+				Configuration.GetSection(TestBase.NameSectionCacheDistribuited).Bind(ConfigurationRedis);
+				services.AddStackExchangeRedisCache(options =>
+				{
+					Enum.TryParse(ConfigurationRedis.SslProtocols, true, out SslProtocols sslProtocols);
+					options.InstanceName = ConfigurationRedis.InstanceName;
+					options.ConfigurationOptions = new ConfigurationOptions
+					{
+						EndPoints = { ConfigurationRedis.Host, ConfigurationRedis.Port },
+						ConnectRetry = ConfigurationRedis.ConnectRetry,
+						ConnectTimeout = ConfigurationRedis.ConnectTimeout,
+						KeepAlive = ConfigurationRedis.KeepAlive,
+						AbortOnConnectFail = ConfigurationRedis.AbortConnect,
+						Ssl = ConfigurationRedis.Ssl,
+						SslProtocols = sslProtocols,
+						ResolveDns = ConfigurationRedis.ResolveDns
+					};
+				});
 
-                    var serviceProvider = services.BuildServiceProvider();
+				services.MockMailJetApi(Mocker, Configuration);
 
-                    ServiceScope = serviceProvider.CreateScope();
-                    ServiceProvider = ServiceScope.ServiceProvider;
-                });
+				var serviceProvider = services.BuildServiceProvider();
 
-            base.ConfigureWebHost(builder);
-        }
-    }
+				ServiceScope = serviceProvider.CreateScope();
+				ServiceProvider = ServiceScope.ServiceProvider;
+			});
 
-    public static class MockService
-    {
-        public static IServiceCollection MockMailJetApi(this IServiceCollection services, AutoMocker mocker, IConfiguration configuration)
-        {
-            var mailSender = new MailSender();
-            configuration.GetSection(MailSender.SectionName).Bind(mailSender);
-            var descriptor = services.SingleOrDefault(service => service.ServiceType == typeof(IEmailService));
-            if (descriptor != null)
-                services.Remove(descriptor);
+		base.ConfigureWebHost(builder);
+	}
+}
 
-            mocker.GetMock<IOptions<MailSender>>()
-                .Setup(setup => setup.Value)
-                .Returns(mailSender);
+public static class MockService
+{
+	public static IServiceCollection MockMailJetApi(this IServiceCollection services, AutoMocker mocker,
+		IConfiguration configuration)
+	{
+		var mailSender = new MailSender();
+		configuration.GetSection(MailSender.SectionName).Bind(mailSender);
+		var descriptor = services.SingleOrDefault(service => service.ServiceType == typeof(IEmailService));
+		if (descriptor != null)
+			services.Remove(descriptor);
 
-            var mockMailjetClient = mocker.CreateInstance<EmailService>();
+		mocker.GetMock<IOptions<MailSender>>()
+			.Setup(setup => setup.Value)
+			.Returns(mailSender);
 
-            services.TryAddScoped<IEmailService>(serviceProvider => mockMailjetClient);
+		var mockMailjetClient = mocker.CreateInstance<EmailService>();
 
-            return services;
-        }
-    }
+		services.TryAddScoped<IEmailService>(serviceProvider => mockMailjetClient);
+
+		return services;
+	}
 }

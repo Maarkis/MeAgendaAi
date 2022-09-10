@@ -7,7 +7,7 @@ public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequ
 {
 	private const string ErrorMessageEmpty = "Can't be empty";
 	private const string ErrorMessageNull = "Can't be null";
-	
+
 	public ResetPasswordRequestValidator()
 	{
 		RuleFor(prop => prop.Token)

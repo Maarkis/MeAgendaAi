@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using FluentAssertions.Extensions;
-using Mailjet.Client.Resources;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Interfaces.Repositories;
@@ -16,10 +15,9 @@ namespace MeAgendaAi.Unit.Services.UserTest;
 
 public class ActivateServiceTest
 {
+	private const string ActionType = "UserService";
 	private readonly AutoMocker _mocker;
 	private readonly UserService _userService;
-	
-	private const string ActionType = "UserService";
 
 	public ActivateServiceTest()
 	{
@@ -34,7 +32,7 @@ public class ActivateServiceTest
 		_mocker.GetMock<ILogger<UserService>>().Reset();
 		_mocker.GetMock<IUserRepository>().Reset();
 	}
-	
+
 	[Test]
 	public void Activate_ShouldGenerateAnErrorLogWhenNotFindUser()
 	{
@@ -44,10 +42,10 @@ public class ActivateServiceTest
 			.Setup(method => method.GetByIdAsync(It.Is<Guid>(prop => prop == userId)));
 
 		_ = _userService.Activate(userId);
-		
+
 		_mocker.GetMock<ILogger<UserService>>().VerifyLog(LogLevel.Error, logMessageExpected);
 	}
-	
+
 	[Test]
 	public void Activate_ShouldAddNotificationWhenNotFindUser()
 	{
@@ -64,7 +62,7 @@ public class ActivateServiceTest
 			.Should()
 			.ContainEquivalentOf(notification);
 	}
-	
+
 	[Test]
 	public void Activate_ShouldGenerateAnErrorLogWhenUserIsActive()
 	{
@@ -76,10 +74,10 @@ public class ActivateServiceTest
 			.ReturnsAsync(user);
 
 		_ = _userService.Activate(userId);
-		
+
 		_mocker.GetMock<ILogger<UserService>>().VerifyLog(LogLevel.Error, logMessageExpected);
 	}
-	
+
 	[Test]
 	public void Activate_ShouldAddNotificationWhenUserIsActive()
 	{
@@ -91,13 +89,13 @@ public class ActivateServiceTest
 			.ReturnsAsync(user);
 
 		_ = _userService.Activate(userId);
-		
+
 		_mocker.Get<NotificationContext>()
 			.Notifications
 			.Should()
 			.ContainEquivalentOf(notification);
 	}
-	
+
 	[Test]
 	public void Activate_ShouldActiveUser()
 	{
@@ -115,7 +113,7 @@ public class ActivateServiceTest
 		user.IsActive.Should().BeTrue();
 		user.LastUpdatedAt.Should().BeCloseTo(DateTime.Now, 1.Seconds());
 	}
-	
+
 	[Test]
 	public void Activate_ShouldMethodCallUpdateAsyncOnce()
 	{

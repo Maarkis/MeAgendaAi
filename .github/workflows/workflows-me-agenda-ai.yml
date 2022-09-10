@@ -2,9 +2,9 @@ name: dotnet package
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
 
 jobs:
   build:
@@ -13,35 +13,35 @@ jobs:
       ASPNETCORE_ENVIRONMENT: Development
     strategy:
       matrix:
-        dotnet-version: ["6.0.x"]        
-
+        dotnet-version: [ "6.0.x" ]
+    
     steps:
-        - name: Git checkout
-          uses: actions/checkout@v2
-        
-        - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-          uses: actions/setup-dotnet@v1.7.2
-          with:
-            dotnet-version: ${{matrix.dotnet-version}}
-            include-prerelease: true
+      - name: Git checkout
+        uses: actions/checkout@v2
 
-        - name: Clean project
-          run: dotnet clean MeAgendaAi.sln
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{matrix.dotnet-version}}
+          include-prerelease: true
 
-        - name: Install dependencies
-          run: dotnet restore MeAgendaAi.sln
+      - name: Clean project
+        run: dotnet clean MeAgendaAi.sln
 
-        - name: Build
-          run: dotnet build MeAgendaAi.sln --configuration Release --no-restore
+      - name: Install dependencies
+        run: dotnet restore MeAgendaAi.sln
 
-        - name: Initialize docker (Docker-compose)
-          run: docker-compose up -d --build
+      - name: Build
+        run: dotnet build MeAgendaAi.sln --configuration Release --no-restore
 
-        #- name: Start Redis
-        #  uses: supercharge/redis-github-action@1.4.0
-        #  with:
-        #    redis-version: ${{ matrix.redis-version }}
-        #    redis-container-name: "redis-meagendaai-test"
+      - name: Initialize docker (Docker-compose)
+        run: docker-compose up -d --build
+      
+      #- name: Start Redis
+      #  uses: supercharge/redis-github-action@1.4.0
+      #  with:
+      #    redis-version: ${{ matrix.redis-version }}
+      #    redis-container-name: "redis-meagendaai-test"
 
-        - name: Test
-          run: dotnet test MeAgendaAi.sln --no-restore --verbosity normal
+      - name: Test
+        run: dotnet test MeAgendaAi.sln --no-restore --verbosity normal
