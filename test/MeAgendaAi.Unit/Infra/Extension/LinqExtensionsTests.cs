@@ -44,6 +44,6 @@ public class LinqExtensionsTests<TType> where TType : class
 
 	private static List<TType> CreateList(int quantity)
 	{
-		return new AutoFaker<TType>().Generate(quantity);
+		return new AutoFaker<TType>().Configure(config => config.WithRecursiveDepth(1).WithTreeDepth(1)).Generate(quantity);
 	}
 }
