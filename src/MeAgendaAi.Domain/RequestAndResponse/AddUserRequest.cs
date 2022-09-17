@@ -2,7 +2,8 @@
 
 public abstract class AddUserRequest
 {
-	protected AddUserRequest(string name, string email, string password, string confirmPassword, IEnumerable<PhoneRequest> phones)
+	protected AddUserRequest(string name, string email, string password, string confirmPassword,
+		IEnumerable<PhoneRequest> phones)
 	{
 		Name = name;
 		Email = email;

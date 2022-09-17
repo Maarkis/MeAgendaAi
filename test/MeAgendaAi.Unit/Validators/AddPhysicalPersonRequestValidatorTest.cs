@@ -46,7 +46,8 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithNameFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithNameFieldInvalidAndReturnError(
+		string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -62,7 +63,8 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithEmailFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithEmailFieldInvalidAndReturnError(
+		string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -110,7 +112,8 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithRGFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithRGFieldInvalidAndReturnError(
+		string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -126,7 +129,8 @@ public class AddPhysicalPersonRequestValidatorTest
 
 	[TestCase("", ErrorMessageEmpty)]
 	[TestCase(null, ErrorMessageNull)]
-	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithCPFFieldInvalidAndReturnError(string fieldContent,
+	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithCPFFieldInvalidAndReturnError(
+		string fieldContent,
 		string errorMessage)
 	{
 		var requestInvalid = new AddPhysicalPersonRequestBuilder()
@@ -139,8 +143,8 @@ public class AddPhysicalPersonRequestValidatorTest
 			.ShouldHaveValidationErrorFor(field => field.CPF)
 			.WithErrorMessage(errorMessage);
 	}
-	
-	
+
+
 	[Test]
 	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithPhonesNullFieldAndReturnError()
 	{
@@ -154,7 +158,7 @@ public class AddPhysicalPersonRequestValidatorTest
 			.ShouldHaveValidationErrorFor(field => field.Phones)
 			.WithErrorMessage(ErrorMessageNull);
 	}
-	
+
 	[Test]
 	public void AddPhysicalPersonRequestValidator_ShouldValidateRequestWithPhonesEmptyListFieldAndReturnError()
 	{

@@ -22,7 +22,8 @@ public static class ObjectExtension
 		return Deserialize<T, IContractResolver>(source, new CustomContractResolver());
 	}
 
-	private static T? Deserialize<T, TContractResolver>(this string source, TContractResolver contract) where TContractResolver : IContractResolver
+	private static T? Deserialize<T, TContractResolver>(this string source, TContractResolver contract)
+		where TContractResolver : IContractResolver
 	{
 		if (string.IsNullOrEmpty(source))
 			throw new ArgumentNullException(nameof(source));

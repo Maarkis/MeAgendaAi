@@ -140,7 +140,7 @@ public static class AddCompanyRequestBuilderExtensions
 		builder.RuleFor(prop => prop.Phones, () => phones);
 		return builder;
 	}
-	
+
 	public static AddCompanyRequestBuilder WithPhonesInvalid(this AddCompanyRequestBuilder builder,
 		IEnumerable<PhoneRequest>? phones = null)
 	{

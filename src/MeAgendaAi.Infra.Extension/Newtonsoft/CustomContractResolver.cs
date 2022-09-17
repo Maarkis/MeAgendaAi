@@ -13,10 +13,10 @@ public class CustomContractResolver : DefaultContractResolver
 		var prop = base.CreateProperty(member, memberSerialization);
 
 		if (prop.Writable) return prop;
-		
+
 		var property = member as PropertyInfo;
 		if (property == null) return prop;
-		
+
 		var hasNonPublicSetter = property.GetSetMethod(true) != null;
 		prop.Writable = hasNonPublicSetter;
 

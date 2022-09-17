@@ -7,6 +7,7 @@ namespace MeAgendaAi.Common.Builder.ValuesObjects;
 public sealed class NameObjectBuilder : BaseBuilderValueObject<Name>
 {
 	private bool _validateSurname = true;
+
 	public NameObjectBuilder()
 	{
 		RuleFor(prop => prop.FirstName, faker => faker.Name.FirstName());
@@ -17,9 +18,7 @@ public sealed class NameObjectBuilder : BaseBuilderValueObject<Name>
 	{
 		var valueObjets = base.Generate(ruleSets);
 		valueObjets.Validate(valueObjets,
-			validateSurname ? 
-				new NameValidator() : 
-				new NameValidator(includeValidateSurname: _validateSurname));
+			validateSurname ? new NameValidator() : new NameValidator(includeValidateSurname: _validateSurname));
 		return valueObjets;
 	}
 

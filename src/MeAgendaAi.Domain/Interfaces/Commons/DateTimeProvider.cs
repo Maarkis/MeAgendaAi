@@ -12,7 +12,7 @@ public interface IDateTimeProvider
 	public DateTime SetTime(int hour, int minute, int second);
 	public DateTime SetTime(int hour, int minute);
 	public DateTime SetTime(int hour);
-	public DateTime SetTime(DateTime date, int hour, int minute, int second);
+	public DateTime SetTime(int hour, int minute, int second, DateTime date);
 	public TimeOnly CurrentTime();
 	public int LastDayMonth();
 	public int LastDayMonth(DateTime date);
@@ -28,5 +28,4 @@ public interface IDateTimeProvider
 	public DateOnly OneYearForward(DateTime date);
 	public bool IsWeekend(DateTime date);
 	public bool IsWeekend(DateOnly date);
-
 }

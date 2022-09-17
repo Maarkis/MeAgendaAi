@@ -13,11 +13,12 @@ public class PhoneRequestTest
 	public void ShouldConvertPhoneRequestToPhoneNumber()
 	{
 		var phoneRequest = new PhoneRequestBuilder().Generate();
-		var phoneNumberExpected = new PhoneNumber(phoneRequest.CountryCode, phoneRequest.DialCode, phoneRequest.Phone, phoneRequest.Type, phoneRequest.Contact);
+		var phoneNumberExpected = new PhoneNumber(phoneRequest.CountryCode, phoneRequest.DialCode, phoneRequest.Phone,
+			phoneRequest.Type, phoneRequest.Contact);
 
 		var phoneNumber = phoneRequest.ToPhoneNumber();
 
-		phoneNumber.Should().BeEquivalentTo(phoneNumberExpected, 
+		phoneNumber.Should().BeEquivalentTo(phoneNumberExpected,
 			config => config.Excluding(prop => prop.CreatedAt).Excluding(prop => prop.Id));
 	}
 }
@@ -32,13 +33,15 @@ public class PhoneRequestExtensionsTest
 		var phoneRequest = new List<PhoneRequest> { phoneRequestOne, phoneRequestTwo };
 		var phoneNumberExpected = new List<PhoneNumber>()
 		{
-			new(phoneRequestOne.CountryCode, phoneRequestOne.DialCode, phoneRequestOne.Phone, phoneRequestOne.Type, phoneRequestOne.Contact),
-			new(phoneRequestTwo.CountryCode, phoneRequestTwo.DialCode, phoneRequestTwo.Phone, phoneRequestTwo.Type, phoneRequestTwo.Contact)
+			new(phoneRequestOne.CountryCode, phoneRequestOne.DialCode, phoneRequestOne.Phone, phoneRequestOne.Type,
+				phoneRequestOne.Contact),
+			new(phoneRequestTwo.CountryCode, phoneRequestTwo.DialCode, phoneRequestTwo.Phone, phoneRequestTwo.Type,
+				phoneRequestTwo.Contact)
 		};
 
 		var phoneNumber = phoneRequest.ToPhoneNumbers();
 
-		phoneNumber.Should().BeEquivalentTo(phoneNumberExpected, 
+		phoneNumber.Should().BeEquivalentTo(phoneNumberExpected,
 			config => config.Excluding(prop => prop.CreatedAt).Excluding(prop => prop.Id));
 	}
 }

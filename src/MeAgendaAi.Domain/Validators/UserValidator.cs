@@ -8,11 +8,11 @@ public class UserValidator<T> : AbstractValidator<T> where T : User
 {
 	private const int LengthPasswordMinimum = 06;
 	private const int LengthPasswordMaximum = 32;
-	
+
 	public UserValidator(bool includeSurname)
 	{
 		var phoneNumberValidator = new PhoneNumberValidator();
-		
+
 		RuleFor(prop => prop.Name).SetValidator(new NameValidator(includeSurname));
 		RuleFor(prop => prop.Email)
 			.SetValidator(new EmailValidator());

@@ -30,7 +30,7 @@ public class CompanyTest
 		var description = _faker.Random.String2(_faker.Random.Int(1, 160));
 		var limitCancelHours = _faker.Random.Int(1);
 		var phones = _phoneNumberBuilder.Generate(1);
-		
+
 		var company = new Company(email, password, name, cnpj, description, limitCancelHours, phones);
 
 		company.Valid.Should().BeTrue();

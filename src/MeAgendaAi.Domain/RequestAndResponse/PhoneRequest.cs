@@ -19,11 +19,11 @@ public class PhoneRequest
 	public int DialCode { get; init; }
 	public EPhoneNumberType Type { get; init; }
 	public string? Contact { get; init; }
-	
-	public PhoneNumber ToPhoneNumber() => 
-		string.IsNullOrWhiteSpace(Contact) ? 
-			new PhoneNumber(CountryCode, DialCode, Phone, Type) : 
-			new PhoneNumber(CountryCode, DialCode, Phone, Type, Contact);
+
+	public PhoneNumber ToPhoneNumber() =>
+		string.IsNullOrWhiteSpace(Contact)
+			? new PhoneNumber(CountryCode, DialCode, Phone, Type)
+			: new PhoneNumber(CountryCode, DialCode, Phone, Type, Contact);
 }
 
 public static class PhoneRequestExtensions

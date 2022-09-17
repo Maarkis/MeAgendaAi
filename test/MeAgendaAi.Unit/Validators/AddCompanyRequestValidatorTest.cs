@@ -155,7 +155,7 @@ public class AddCompanyRequestValidatorTest
 			.ShouldHaveValidationErrorFor(field => field.LimitCancelHours)
 			.WithErrorMessage(errorMessage);
 	}
-	
+
 	[Test]
 	public void AddCompanyRequestValidator_ShouldValidateRequestWithPhonesNullFieldAndReturnError()
 	{
@@ -169,7 +169,7 @@ public class AddCompanyRequestValidatorTest
 			.ShouldHaveValidationErrorFor(field => field.Phones)
 			.WithErrorMessage(ErrorMessageNull);
 	}
-	
+
 	[Test]
 	public void AddCompanyRequestValidator_ShouldValidateRequestWithPhonesEmptyListFieldAndReturnError()
 	{

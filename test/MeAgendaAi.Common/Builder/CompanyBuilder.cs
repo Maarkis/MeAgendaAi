@@ -146,7 +146,7 @@ public static class CompanyBuilderExtensions
 			.WithPhoneNumbers(request.Phones.ToPhoneNumbers().ToList());
 		return builder;
 	}
-	
+
 	public static CompanyBuilder WithPhoneNumbers(this CompanyBuilder builder, IEnumerable<PhoneNumber> phoneNumbers)
 	{
 		builder.RuleFor("_phoneNumbers", _ => phoneNumbers);

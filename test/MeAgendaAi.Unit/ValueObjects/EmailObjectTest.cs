@@ -53,7 +53,7 @@ public class EmailObjectTest
 	{
 		var domain = _faker.Internet.DomainName();
 		var email = _faker.Internet.Email(_faker.Name.FirstName(), _faker.Name.LastName(), domain);
-		
+
 		var emailObject = new Email(email);
 
 		emailObject.Domain.Should().Be(domain);

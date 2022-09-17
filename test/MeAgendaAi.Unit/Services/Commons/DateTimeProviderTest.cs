@@ -1,5 +1,6 @@
 ﻿using System;
 using Bogus;
+using Bogus.DataSets;
 using FluentAssertions;
 using FluentAssertions.Extensions;
 using MeAgendaAi.Services.Commons;
@@ -17,13 +18,13 @@ public class DateTimeProviderTest
 		_dateTimeProvider = new DateTimeProvider();
 		_faker = new Faker("pt_BR");
 	}
-	
+
 	[Test]
 	public void Now_ShouldReturnCurrentDateAndTimeCorrectly()
 	{
 		_dateTimeProvider.Now.Should().BeCloseTo(DateTime.Now, 0.1.Seconds());
 	}
-	
+
 	[Test]
 	public void Today_ShouldReturnCurrentDateCorrectly()
 	{
@@ -31,20 +32,20 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.Today.Should().Be(today);
 	}
-	
+
 	[Test]
 	public void Tomorrow_ShouldReturnTomorrowDateCorrectly()
 	{
 		var tomorrow = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day).AddDays(1);
-		
+
 		_dateTimeProvider.Tomorrow.Should().Be(tomorrow);
 	}
-	
+
 	[Test]
 	public void Yesterday_ShouldReturnYesterdayDateCorrectly()
 	{
 		var yesterday = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day).AddDays(-1);
-		
+
 		_dateTimeProvider.Yesterday.Should().Be(yesterday);
 	}
 
@@ -55,7 +56,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.EndOfDay().Should().Be(endOfDay);
 	}
-	
+
 	[Test]
 	public void EndOfDayDateTime_ShouldReturnTheEndOfDayOfASpecifiedDateCorrectly()
 	{
@@ -63,7 +64,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.EndOfDay(DateTime.Now).Should().Be(endOfDay);
 	}
-	
+
 	[Test]
 	public void EndOfDayDateOnly_ShouldReturnTheEndOfDayOfASpecifiedDateCorrectly()
 	{
@@ -79,13 +80,14 @@ public class DateTimeProviderTest
 		var hour = _faker.Random.Int(min: 1, max: 23);
 		var minute = _faker.Random.Int(min: 1, max: 59);
 		var second = _faker.Random.Int(min: 1, max: 59);
-		var expectedDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, hour, minute, second);
+		var expectedDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, hour, minute,
+			second);
 
 		var result = _dateTimeProvider.SetTime(hour, minute, second);
 
 		result.Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void SetTimeHourAndMinute_ShouldReturnDateTimeWithSpecifiedHourAndMinuteAndSecondCorrectly()
 	{
@@ -97,7 +99,7 @@ public class DateTimeProviderTest
 
 		result.Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void SetTimeHour_ShouldReturnDateTimeWithSpecifiedHourAndMinuteAndSecondCorrectly()
 	{
@@ -108,7 +110,7 @@ public class DateTimeProviderTest
 
 		result.Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void SetTimeSpecifiedDate_ShouldReturnDateTimeWithSpecifiedHourAndMinuteAndSecondCorrectly()
 	{
@@ -118,7 +120,7 @@ public class DateTimeProviderTest
 		var randomDate = _faker.Date.Past();
 		var expectedDate = new DateTime(randomDate.Year, randomDate.Month, randomDate.Day, hour, minute, second);
 
-		var result = _dateTimeProvider.SetTime(randomDate, hour, minute, second);
+		var result = _dateTimeProvider.SetTime(hour, minute, second, randomDate);
 
 		result.Should().Be(expectedDate);
 	}
@@ -131,7 +133,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.GoToLastDayOfMonth().Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void GoToLastDayOfMonthDateTime_ShouldReturnTheLastDateOfTheMonthForASpecificDateCorrectly()
 	{
@@ -141,7 +143,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.GoToLastDayOfMonth(randomDate).Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void GoToLastDayOfMonthDateOnly_ShouldReturnTheLastDateOfTheMonthForASpecificDateCorrectly()
 	{
@@ -160,7 +162,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.LastDayMonth().Should().Be(expectedDay);
 	}
-	
+
 	[Test]
 	public void LastDayMonthDateTime_ShouldReturnTheLastDateOfTheMonthForASpecificDateCorrectly()
 	{
@@ -169,7 +171,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.LastDayMonth(randomDate).Should().Be(expectedDay);
 	}
-	
+
 	[Test]
 	public void LastDayMonthDateOnly_ShouldReturnTheLastDateOfTheMonthForASpecificDateCorrectly()
 	{
@@ -179,7 +181,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.LastDayMonth(randomDateInDateOnly).Should().Be(expectedDay);
 	}
-	
+
 	[Test]
 	public void OneYearAgo_ShouldReturnOneYearBehindTheCurrentDayCorrectly()
 	{
@@ -187,7 +189,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.OneYearAgo().Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void OneYearAgoDateTime_ShouldReturnOneYearBehindASpecifiedDateCorrectly()
 	{
@@ -195,7 +197,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.OneYearAgo(DateTime.Today).Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void OneYearAgoDateOnly_ShouldReturnOneYearBehindASpecifiedDateCorrectly()
 	{
@@ -205,7 +207,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.OneYearAgo(randomDateInDateOnly).Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void OneYearForward_ShouldReturnOneYearAheadTheCurrentDayCorrectly()
 	{
@@ -213,7 +215,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.OneYearForward().Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void OneYearAgoDateTime_ShouldReturnOneYearAheadASpecifiedDateCorrectly()
 	{
@@ -221,7 +223,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.OneYearForward(DateTime.Today).Should().Be(expectedDate);
 	}
-	
+
 	[Test]
 	public void OneYearAgoDateOnly_ShouldReturnOneYearAheadASpecifiedDateCorrectly()
 	{
@@ -231,13 +233,15 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.OneYearForward(randomDateInDateOnly).Should().Be(expectedDate);
 	}
-	
+
 	[Test] // TODO: review test implementation :)
 	public void CurrentTime_ShouldReturnTheCurrentTimeCorrectly()
 	{
-		var currentTimeExpected = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond);
+		var currentTimeExpected = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second,
+			DateTime.Now.Millisecond);
 
-		_dateTimeProvider.CurrentTime().ToTimeSpan().Should().BeCloseTo(currentTimeExpected.ToTimeSpan(), 0.1.Seconds());
+		_dateTimeProvider.CurrentTime().ToTimeSpan().Should()
+			.BeCloseTo(currentTimeExpected.ToTimeSpan(), 0.1.Seconds());
 	}
 
 	[Test]
@@ -247,7 +251,7 @@ public class DateTimeProviderTest
 
 		_dateTimeProvider.IsWeekend(dateInWeekend).Should().BeTrue();
 	}
-	
+
 	[Test]
 	public void IsWeekendDateOnly_ShouldReturnTrueWhenDateIsOnTheWeekend()
 	{
@@ -257,7 +261,7 @@ public class DateTimeProviderTest
 	}
 
 	private DateTime RandomDateInWeekend()
-	{		
+	{
 		DateTime date;
 		do date = _faker.Date.Past();
 		while (NotWeekend(date));

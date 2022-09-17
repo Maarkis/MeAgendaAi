@@ -8,7 +8,8 @@ public class Company : User
 	{
 	}
 
-	public Company(string email, string password, string name, string cnpj, string description, int limitCancelHours, IEnumerable<PhoneNumber> phones) :
+	public Company(string email, string password, string name, string cnpj, string description, int limitCancelHours,
+		IEnumerable<PhoneNumber> phones) :
 		base(email, password, name, phones)
 	{
 		CNPJ = cnpj;

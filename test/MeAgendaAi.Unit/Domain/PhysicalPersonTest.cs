@@ -31,7 +31,7 @@ public class PhysicalPersonTest
 		var cpf = _faker.Random.Int(11).ToString();
 		var rg = _faker.Random.Int(9).ToString();
 		var phones = _phoneNumberBuilder.Generate(1);
-		
+
 		var physicalPerson = new PhysicalPerson(email, password, name, surname, cpf, rg, phones);
 
 		physicalPerson.Valid.Should().BeTrue();

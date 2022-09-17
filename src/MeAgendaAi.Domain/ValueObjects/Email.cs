@@ -16,4 +16,3 @@ public class Email : ValueObject
 
 	private bool NotContainAtSign() => !Address.Contains('@');
 }
-	

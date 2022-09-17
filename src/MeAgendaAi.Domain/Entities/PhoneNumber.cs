@@ -42,8 +42,8 @@ public class PhoneNumber : Entity
 		CountryCode = countryCode;
 		DialCode = dialCode;
 		Type = type;
-		
-		if(contact is not null)
+
+		if (contact is not null)
 			Contact = new Name(contact);
 
 		Validate();
@@ -54,7 +54,7 @@ public class PhoneNumber : Entity
 	public int DialCode { get; protected set; }
 	public string Number { get; protected set; } = string.Empty;
 	public EPhoneNumberType Type { get; protected set; }
-	
+
 	public virtual Guid UserId { get; protected set; }
 	public virtual User User { get; set; } = default!;
 

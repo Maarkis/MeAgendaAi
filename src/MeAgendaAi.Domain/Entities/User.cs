@@ -13,14 +13,12 @@ public class User : Entity
 	public Email Email { get; protected set; } = default!;
 	public string Password { get; protected set; } = default!;
 	public bool IsActive { get; protected set; }
-	
+
 	[JsonProperty] // TODO This is a problem?
 	protected readonly ICollection<PhoneNumber> _phoneNumbers = default!;
 
 	public IReadOnlyCollection<PhoneNumber> PhoneNumbers =>
-		_phoneNumbers.IsEmpty() ? 
-			new List<PhoneNumber>() :
-			new List<PhoneNumber>(_phoneNumbers);
+		_phoneNumbers.IsEmpty() ? new List<PhoneNumber>() : new List<PhoneNumber>(_phoneNumbers);
 
 	protected User()
 	{

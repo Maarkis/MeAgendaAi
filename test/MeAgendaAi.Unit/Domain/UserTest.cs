@@ -29,7 +29,7 @@ public class UserTest
 		var name = _faker.Name.FirstName();
 		var phoneNumber = _phoneNumberBuilder.Generate(1);
 
-		
+
 		var user = new User(email, password, name, phoneNumber);
 
 		user.Valid.Should().BeTrue();
@@ -179,7 +179,7 @@ public class UserTest
 		user.Valid.Should().BeFalse();
 		user.Invalid.Should().BeTrue();
 	}
-	
+
 	[Test]
 	public void ShouldCreateAnInvalidInstanceOfUserWithInvalidPhoneNumber()
 	{

@@ -130,7 +130,7 @@ public static class UserBuilderBuilderExtensions
 		builder.RuleFor(prop => prop.IsActive, () => false);
 		return builder;
 	}
-	
+
 	public static UserBuilder WithPhoneNumber(this UserBuilder builder, IEnumerable<PhoneNumber> phoneNumber)
 	{
 		builder.RuleFor("_phoneNumbers", _ => new PhoneNumberBuilder().Generate(1));

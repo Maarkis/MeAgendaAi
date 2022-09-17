@@ -157,6 +157,7 @@ public static class AddPhysicalPersonRequestBuilderExtensions
 		builder.RuleFor(prop => prop.Phones, () => phones);
 		return builder;
 	}
+
 	public static AddPhysicalPersonRequestBuilder WithPhonesInvalid(this AddPhysicalPersonRequestBuilder builder,
 		IEnumerable<PhoneRequest>? phones = null)
 	{

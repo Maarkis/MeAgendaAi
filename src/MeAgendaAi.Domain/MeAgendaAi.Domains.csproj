@@ -8,10 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="10.3.4" />
+        <PackageReference Include="FluentValidation" Version="10.3.4"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MeAgendaAi.Infra.Extension\MeAgendaAi.Infra.Extension.csproj" />
+        <ProjectReference Include="..\MeAgendaAi.Infra.Extension\MeAgendaAi.Infra.Extension.csproj"/>
     </ItemGroup>
 </Project>
