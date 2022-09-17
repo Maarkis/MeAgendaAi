@@ -7,7 +7,7 @@ using Flurl;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Extension;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Integration.SetUp;
 using Microsoft.Extensions.Caching.Distributed;
 using NUnit.Framework;

@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.CrossCutti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.3 - Notification", "4.3 - Notification", "{613341E0-5860-46CF-8EE7-5FD60F59C33F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAí.Infra.Notification", "src\MeAgendaAí.Infra.Notification\MeAgendaAí.Infra.Notification.csproj", "{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeAgendaAi.Infra.Notification", "src\MeAgendaAi.Infra.Notification\MeAgendaAi.Infra.Notification.csproj", "{EE4AFA2A-C00B-433A-89C9-78C94F8F9E34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.4 - Security", "4.4 - Security", "{9F9FD0FB-5E71-43C7-96E2-99333DDDDE4F}"
 EndProject

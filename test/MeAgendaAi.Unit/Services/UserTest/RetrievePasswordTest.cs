@@ -6,7 +6,7 @@ using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Infra.MailJet;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;

@@ -6,7 +6,7 @@ using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
 using MeAgendaAi.Infra.Extension;
 using MeAgendaAi.Infra.MailJet;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Services.CSVMaps;
 using Microsoft.Extensions.Logging;
 

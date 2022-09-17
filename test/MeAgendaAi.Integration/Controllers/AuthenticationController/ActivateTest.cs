@@ -6,7 +6,7 @@ using FluentAssertions;
 using Flurl;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.RequestAndResponse;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Integration.SetUp;
 using NUnit.Framework;
 

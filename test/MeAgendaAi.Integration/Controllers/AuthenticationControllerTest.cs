@@ -11,7 +11,7 @@ using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Common.Builder.Common;
 using MeAgendaAi.Common.Builder.RequestAndResponse;
 using MeAgendaAi.Domains.RequestAndResponse;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Integration.SetUp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;

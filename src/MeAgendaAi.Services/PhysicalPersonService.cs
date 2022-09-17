@@ -4,7 +4,7 @@ using MeAgendaAi.Domains.Interfaces.Services;
 using MeAgendaAi.Domains.RequestAndResponse;
 using MeAgendaAi.Infra.Cryptography;
 using MeAgendaAi.Infra.MailJet;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using Microsoft.Extensions.Logging;
 
 namespace MeAgendaAi.Services;

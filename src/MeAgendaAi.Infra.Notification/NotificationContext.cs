@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using FluentValidation.Results;
 
-namespace MeAgendaAí.Infra.Notification;
+namespace MeAgendaAi.Infra.Notification;
 
 public class NotificationContext
 {
@@ -40,18 +40,9 @@ public class NotificationContext
 			AddNotification(err.PropertyName, err.ErrorMessage);
 	}
 
-	public void Clear()
-	{
-		_notifications.Clear();
-	}
+	public void Clear() => _notifications.Clear();
 
-	public void SetResponseContentType(string contentType)
-	{
-		ResponseContentType = contentType;
-	}
+	public void SetResponseContentType(string contentType) => ResponseContentType = contentType;
 
-	public void SetResponseStatusCode(HttpStatusCode statusCode)
-	{
-		StatusCode = statusCode;
-	}
+	public void SetResponseStatusCode(HttpStatusCode statusCode) => StatusCode = statusCode;
 }

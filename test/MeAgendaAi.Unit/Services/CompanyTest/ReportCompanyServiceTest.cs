@@ -7,7 +7,7 @@ using MeAgendaAi.Domains.Entities;
 using MeAgendaAi.Domains.Interfaces.Repositories;
 using MeAgendaAi.Domains.Interfaces.Repositories.Cache;
 using MeAgendaAi.Domains.Interfaces.Services;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Services;
 using MeAgendaAi.Services.CSVMaps;
 using Microsoft.Extensions.Logging;

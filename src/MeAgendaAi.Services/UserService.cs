@@ -8,7 +8,7 @@ using MeAgendaAi.Infra.Cryptography;
 using MeAgendaAi.Infra.Extension;
 using MeAgendaAi.Infra.JWT;
 using MeAgendaAi.Infra.MailJet;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using Microsoft.Extensions.Logging;
 
 namespace MeAgendaAi.Services;

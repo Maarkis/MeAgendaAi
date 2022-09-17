@@ -2,9 +2,9 @@
 using System.Net;
 using FluentAssertions;
 using FluentValidation.Results;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using NUnit.Framework;
-using Noti = MeAgendaAí.Infra.Notification.Notification;
+using Noti = MeAgendaAi.Infra.Notification.Notification;
 
 namespace MeAgendaAi.Unit.Infra.Notification;
 

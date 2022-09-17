@@ -4,7 +4,7 @@ using FluentAssertions.Extensions;
 using MeAgendaAi.Common;
 using MeAgendaAi.Common.Builder;
 using MeAgendaAi.Domains.Interfaces.Repositories;
-using MeAgendaAí.Infra.Notification;
+using MeAgendaAi.Infra.Notification;
 using MeAgendaAi.Services;
 using Microsoft.Extensions.Logging;
 using Moq;

@@ -1,4 +1,4 @@
-﻿namespace MeAgendaAí.Infra.Notification;
+﻿namespace MeAgendaAi.Infra.Notification;
 
 public class Notification
 {

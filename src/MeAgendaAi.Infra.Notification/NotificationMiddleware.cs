@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 
-namespace MeAgendaAí.Infra.Notification;
+namespace MeAgendaAi.Infra.Notification;
 
 public class NotificationMiddleware : IAsyncResultFilter
 {

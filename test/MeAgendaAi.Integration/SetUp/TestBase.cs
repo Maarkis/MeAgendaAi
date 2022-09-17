@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MeAgendaAi.Application;
 using MeAgendaAi.Infra.CrossCutting;
 using MeAgendaAi.Infra.Data;
 using Microsoft.AspNetCore.Mvc.Testing;

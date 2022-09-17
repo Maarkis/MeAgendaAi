@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services
 	.AddControllers()
-	.AddValidation<Program>();
+	.AddValidation<MeAgendaAi.Application.Program>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAndConfigureSwaggerGen();
@@ -45,6 +45,9 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program
+namespace MeAgendaAi.Application
 {
+	public partial class Program
+	{
+	}
 }
